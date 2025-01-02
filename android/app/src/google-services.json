@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "626001687018",
+    "project_id": "rupee-mate",
+    "storage_bucket": "rupee-mate.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:626001687018:android:c52ab33c5570fecdb6c293",
+        "android_client_info": {
+          "package_name": "com.rupeemate.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "626001687018-3ku75amge59oks0podmi713prsavsg7a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rupeemate.android",
+            "certificate_hash": "5319b93850db8e18de24d7317ebd206fdf234244"
+          }
+        },
+        {
+          "client_id": "626001687018-nif34smkfitbr25m3p1ulfloilorqvfd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAqfw6NHBSw_nWOFHVEF_0bFnmXFMi3v8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "626001687018-nif34smkfitbr25m3p1ulfloilorqvfd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

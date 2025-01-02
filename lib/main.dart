@@ -1,32 +1,79 @@
 import 'package:flutter/services.dart';
+import 'package:trackexpense/data/remote/profile/profile_repository_impl.dart';
+import 'package:trackexpense/data/remote/rupeemate/rupeemate_repo_impl.dart';
 import 'package:trackexpense/utils/utils.dart';
+import 'package:trackexpense/view/screen/authenticate/bloc/user_authenticate_bloc.dart';
+import 'package:trackexpense/view/screen/dashboard/home/bloc/rupee_monthly_data_bloc.dart';
+import 'package:trackexpense/view/screen/dashboard/profile/bloc/logout/logout_bloc.dart';
+import 'package:trackexpense/view/screen/moneyData/bloc/rupee_data_bloc.dart';
+import 'package:trackexpense/view/screen/moneyData/view/addData/bloc/add_expense_bloc_bloc.dart';
+import 'package:trackexpense/view/screen/dashboard/profile/bloc/profileData/profile_data_bloc.dart';
+import 'package:trackexpense/view/screen/splash/bloc/bloc/fetch_profile_data_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  SystemChrome.setPreferredOrientations([
+  await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown
+    DeviceOrientation.portraitDown,
   ]);
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.dark
-    )
+      statusBarIconBrightness: Brightness.dark,
+    ),
   );
-  // await Firebase.initializeApp();
+  MobileAds.instance.initialize();
+  await Firebase.initializeApp();
+
+  final profileDataBloc = ProfileDataBloc();
+  final profileRepository = ProfileRepositoryImpl();
+  final rupeeMateRepository = RupeeMateRepositoryImpl();
+
   runApp(
-    // MultiBlocProvider(
-    //   providers: [
-        // BlocProvider(
-        //   create: (context) => AddproductBloc(productRepository: ProductRepositoryImpl()),
-        // ),
-      // ],
-      // child: 
-      const MyApp(),
-    // ),
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => AddExpenseBlocBloc(
+            rupeeMateRepository: rupeeMateRepository,
+          ),
+        ),
+        BlocProvider(
+          create: (context) => profileDataBloc,
+        ),
+        BlocProvider(
+          create: (context) => UserAuthenticateBloc(
+            profileRepository: profileRepository,
+            profileDataBloc: profileDataBloc,
+          ),
+        ),
+        BlocProvider(
+          create: (context) => FetchProfileDataBloc(
+            profileRepository: profileRepository,
+            profileDataBloc: profileDataBloc,
+          ),
+        ),
+        BlocProvider(
+          create: (context) => LogoutBloc(
+            profileDataBloc: profileDataBloc,
+          ),
+        ),
+        BlocProvider(
+          create: (context) => RupeeDataBloc(
+            rupeeMateRepository: rupeeMateRepository,
+          ),
+        ),
+        BlocProvider(
+          create: (context) => RupeeMonthlyDataBloc(
+            rupeeMateRepository: rupeeMateRepository,
+          ),
+        ),
+      ],
+      child: const MyApp(),
+    ),
   );
 }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

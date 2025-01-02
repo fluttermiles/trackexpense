@@ -1,4 +1,4 @@
-package com.example.trackexpense
+package com.rupeemate.android
 
 import io.flutter.embedding.android.FlutterActivity
 

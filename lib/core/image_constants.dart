@@ -21,4 +21,5 @@ class DummyConstants {
 
 class AnimationConstant {
   static const logout = 'assets/animation/logout.json';
+  static const comingsoon = 'assets/animation/comingsoon.json';
 }

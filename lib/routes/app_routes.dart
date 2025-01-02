@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:trackexpense/homepage.dart';
+import 'package:trackexpense/view/screen/dashboard/view/dashboard.dart';
+import 'package:trackexpense/view/screen/authenticate/view/signin.dart';
+import 'package:trackexpense/view/screen/moneyData/view/money_data_screen.dart';
 import 'package:trackexpense/view/screen/splash/view/splash_view.dart';
+// import 'package:trackexpense/view/screen/splash/view/splash_view.dart';
 
 enum AppRoute {
   splashScreen,
+  moneyDataScreen,
+  signInPage,
+  dashboardPage
 }
 
 final GoRouter router = GoRouter(
@@ -13,7 +19,25 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: AppRoute.splashScreen.name,
       path: '/',
-      builder: (context, state) => const HomePage(),
+      builder: (context, state) => const SplashView(),
+    ),
+    GoRoute(
+      name: AppRoute.signInPage.name,
+      path: '/signInPage',
+      builder: (context, state) => const SignInPage(),
+    ),
+    GoRoute(
+      name: AppRoute.dashboardPage.name,
+      path: '/dashboardPage',
+      builder: (context, state) => const DashBoardPage(),
+    ),
+    GoRoute(
+      name: AppRoute.moneyDataScreen.name,
+      path: '/moneyDataScreen',
+      builder: (context, state) {
+        final DateTime data = state.extra! as DateTime;
+        return MoneyDataScreen(selectedDate: data,);
+      },
     ),
   ],
   errorBuilder: (context, state) {
