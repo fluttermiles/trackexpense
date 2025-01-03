@@ -5,7 +5,7 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:trackexpense/utils/app_sizes.dart';
 import 'package:trackexpense/utils/colors.dart';
 import 'package:trackexpense/utils/utils.dart';
-import 'package:trackexpense/view/screen/dashboard/home/bloc/rupee_monthly_data_bloc.dart';
+import 'package:trackexpense/view/screen/dashboard/home/bloc/rupeeMonthlyDataBloc/rupee_monthly_data_bloc.dart';
 import 'package:trackexpense/view/screen/dashboard/profile/bloc/profileData/profile_data_bloc.dart';
 
 class HomeView extends StatefulWidget {
@@ -19,6 +19,8 @@ class _HomeViewState extends State<HomeView> {
 
   DateTime focusedDate = DateTime.now(); 
   DateTime? selectedDate;
+  double expense = 0.0;
+  double credit = 0.0;
   
 
   Timer? _debounceTimer;
@@ -47,14 +49,6 @@ class _HomeViewState extends State<HomeView> {
       },
     ),
   );
-
-  Future<double> getExpense(int month, int year) async {
-    double totalAmount = context.read<RupeeMonthlyDataBloc>().state.newExpenseData
-      .where((item) => item.year == year && item.month == month && item.type == 'Expense')
-      .fold(0.0, (sum, item) => sum + (item.amount ?? 0.0));
-
-    return totalAmount;
-  }
 
   @override
   void initState() {
@@ -312,7 +306,7 @@ class _HomeViewState extends State<HomeView> {
                           ),
                           SizedBox(height: 4),
                           Text(
-                            '₹ 1,840.00',
+                            '₹ ${credit.toStringAsFixed(2)}',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 18,
@@ -340,7 +334,7 @@ class _HomeViewState extends State<HomeView> {
                           ),
                           SizedBox(height: 4),
                           Text(
-                            '₹ 284.00',
+                            '₹ ${expense.toStringAsFixed(2)}',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 18,
