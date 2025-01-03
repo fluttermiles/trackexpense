@@ -3,6 +3,8 @@ import 'package:trackexpense/data/remote/profile/profile_repository_impl.dart';
 import 'package:trackexpense/data/remote/rupeemate/rupeemate_repo_impl.dart';
 import 'package:trackexpense/utils/utils.dart';
 import 'package:trackexpense/view/screen/authenticate/bloc/user_authenticate_bloc.dart';
+import 'package:trackexpense/view/screen/dashboard/home/bloc/expenseCreditBloc/expense_credit_bloc.dart';
+import 'package:trackexpense/view/screen/dashboard/home/bloc/rupeeMonthlyBloc/rupee_monthly_bloc.dart';
 import 'package:trackexpense/view/screen/dashboard/home/bloc/rupeeMonthlyDataBloc/rupee_monthly_data_bloc.dart';
 import 'package:trackexpense/view/screen/dashboard/profile/bloc/logout/logout_bloc.dart';
 import 'package:trackexpense/view/screen/moneyData/bloc/rupee_data_bloc.dart';
@@ -27,6 +29,7 @@ void main() async {
   await Firebase.initializeApp();
 
   final profileDataBloc = ProfileDataBloc();
+  final expenseCreditBloc = ExpenseCreditBloc();
   final profileRepository = ProfileRepositoryImpl();
   final rupeeMateRepository = RupeeMateRepositoryImpl();
 
@@ -66,7 +69,14 @@ void main() async {
         BlocProvider(
           create: (context) => RupeeMonthlyDataBloc(
             rupeeMateRepository: rupeeMateRepository,
+            expenseCreditBloc: expenseCreditBloc
           ),
+        ),
+        BlocProvider(
+          create: (context) => expenseCreditBloc,
+        ),
+        BlocProvider(
+          create: (context) => RupeeMonthlyBloc(rupeeMateRepository: rupeeMateRepository),
         ),
       ],
       child: const MyApp(),

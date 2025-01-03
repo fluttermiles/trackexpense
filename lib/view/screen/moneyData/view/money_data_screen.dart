@@ -1,5 +1,6 @@
 import 'package:trackexpense/data/remote/rupeemate/models/rupeemate_model.dart';
 import 'package:trackexpense/utils/box_shadow.dart';
+import 'package:trackexpense/utils/capitalize.dart';
 import 'package:trackexpense/utils/colors.dart';
 import 'package:trackexpense/utils/utils.dart';
 import 'package:intl/intl.dart';
@@ -141,7 +142,7 @@ class _MoneyDataScreenState extends State<MoneyDataScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(item.title ?? '', style: TextStyle(fontSize: 16, color: kWhite)),
+                    Text(capitalize(item.title ?? ''), style: TextStyle(fontSize: 16, color: kWhite)),
                     Text('${item.amount ?? 0.0}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: kWhite)),
                   ],
                 ),

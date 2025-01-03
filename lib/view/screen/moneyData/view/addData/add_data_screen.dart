@@ -153,7 +153,7 @@ class _AddDataBottomSheetState extends State<AddDataBottomSheet> {
                       String rupeeId = const Uuid().v4();
 
                       final RupeeMateModel rupeeMateModel = RupeeMateModel(
-                          title: title,
+                          title: title.toLowerCase(),
                           description: description,
                           amount: parsedAmount,
                           date: DateTime.now(),
