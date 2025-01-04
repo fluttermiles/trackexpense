@@ -13,7 +13,7 @@ class RupeeMonthlyDataBloc extends Bloc<RupeeMonthlyDataBlocEvent, RupeeMonthlyD
   RupeeMonthlyDataBloc({required this.rupeeMateRepository, required this.expenseCreditBloc}) : super(RupeeMonthlyDataBlocInitial()) {
     on<RupeeMonthlyData>((event, emit) async {
       emit(RupeeMonthlyDataBlocLoading());
-      final response = await rupeeMateRepository.getRupeeData(userId: event.userId, year: event.year, month: event.month);
+      final response = await rupeeMateRepository.getRupeeData(userId: event.userId);
       switch(response) {
         case DataStateSuccess<List<RupeeMateModel>>(data: var data):
           Logger.printSuccess(data.toString());

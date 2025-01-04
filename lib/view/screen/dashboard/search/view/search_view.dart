@@ -3,6 +3,7 @@ import 'package:trackexpense/utils/colors.dart';
 import 'package:trackexpense/utils/utils.dart';
 import 'package:trackexpense/view/screen/dashboard/home/bloc/expenseCreditBloc/expense_credit_bloc.dart';
 import 'package:trackexpense/view/screen/dashboard/home/bloc/rupeeMonthlyDataBloc/rupee_monthly_data_bloc.dart';
+import 'package:trackexpense/view/screen/dashboard/search/view/filter/filter_bottomsheet.dart';
 import 'package:trackexpense/view/screen/dashboard/search/widget/custom_search_widget.dart';
 import 'package:trackexpense/view/screen/dashboard/search/widget/monthly_line_chart.dart';
 import 'package:trackexpense/view/screen/dashboard/search/widget/monthly_pie_chart.dart';
@@ -37,20 +38,38 @@ class _SearchViewState extends State<SearchView> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: Row(
-                  children: [
-                    CustomSearchField(),
-                    gapW8,
-                    InkWell(
-                      onTap: () {
-                        
-                      },
-                      child: Icon(Icons.tune, color: kWhite, size: 34,)
-                    )
-                  ],
-                )
-              ),
+                  width: MediaQuery.of(context).size.width,
+                  child: Row(
+                    children: [
+                      BlocBuilder<RupeeMonthlyDataBloc, RupeeMonthlyDataBlocState>(
+                        builder: (context, state) {
+                          return CustomSearchField(
+                            suggestions: state.uniqueTitles,
+                            onSuggestionSelected: (String? value) {},
+                          );
+                        },
+                      ),
+                      gapW8,
+                      InkWell(
+                          onTap: () {
+                            showModalBottomSheet(
+                              backgroundColor: kBlack,
+                              context: context,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(16)),
+                              ),
+                              isScrollControlled: true,
+                              builder: (context) => FilterBottomSheet(),
+                            );
+                          },
+                          child: Icon(
+                            Icons.tune,
+                            color: kWhite,
+                            size: 34,
+                          ))
+                    ],
+                  )),
             ),
             gapH24,
             Padding(
@@ -89,7 +108,12 @@ class _SearchViewState extends State<SearchView> {
             ),
             BlocBuilder<ExpenseCreditBloc, ExpenseCreditBlocState>(
               builder: (context, state) {
-                return MonthlyPieChart(credit: state.credit, expense: state.expense, lend: state.lend, debt: state.debt,);
+                return MonthlyPieChart(
+                  credit: state.credit,
+                  expense: state.expense,
+                  lend: state.lend,
+                  debt: state.debt,
+                );
               },
             )
           ],

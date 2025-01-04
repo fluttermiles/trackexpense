@@ -2,6 +2,7 @@ import 'package:trackexpense/core/image_constants.dart';
 import 'package:trackexpense/utils/colors.dart';
 import 'package:trackexpense/utils/utils.dart';
 import 'package:trackexpense/view/screen/authenticate/bloc/user_authenticate_bloc.dart';
+import 'package:trackexpense/view/screen/dashboard/home/bloc/rupeeMonthlyDataBloc/rupee_monthly_data_bloc.dart';
 
 class SignInPage extends StatelessWidget {
   const SignInPage({super.key});
@@ -57,6 +58,7 @@ class SignInPage extends StatelessWidget {
                   BlocListener<UserAuthenticateBloc, UserAuthenticateBlocState>(
                     listener: (context, state) {
                       if(state is UserAuthenticateBlocLoaded) {
+                        context.read<RupeeMonthlyDataBloc>().add(RupeeMonthlyData(month: DateTime.now().month, year: DateTime.now().year, userId: state.profileData.userId ?? ''));
                         context.pushReplacementNamed(AppRoute.dashboardPage.name);
                       }
                     },

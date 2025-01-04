@@ -68,7 +68,7 @@ class MonthlyPieChartState extends State<MonthlyPieChart> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Indicator(
-                color: AppColors.contentColorBlue,
+                color: AppColors.contentColorPink,
                 text: 'Expense',
                 isSquare: true,
                 textColor: kWhite,
@@ -77,7 +77,7 @@ class MonthlyPieChartState extends State<MonthlyPieChart> {
                 height: 4,
               ),
               Indicator(
-                color: AppColors.contentColorYellow,
+                color: AppColors.contentColorGreen,
                 text: 'Credit',
                 isSquare: true,
                 textColor: kWhite,
@@ -86,7 +86,7 @@ class MonthlyPieChartState extends State<MonthlyPieChart> {
                 height: 4,
               ),
               Indicator(
-                color: AppColors.contentColorPurple,
+                color: Colors.orange,
                 text: 'Lend',
                 isSquare: true,
                 textColor: kWhite,
@@ -95,7 +95,7 @@ class MonthlyPieChartState extends State<MonthlyPieChart> {
                 height: 4,
               ),
               Indicator(
-                color: AppColors.contentColorGreen,
+                color: AppColors.contentColorCyan,
                 text: 'Debt',
                 isSquare: true,
                 textColor: kWhite,
@@ -114,73 +114,102 @@ class MonthlyPieChartState extends State<MonthlyPieChart> {
   }
 
   List<PieChartSectionData> showingSections() {
-    final total = widget.credit + widget.expense + widget.lend + widget.debt;
-    final creditPercentage = (widget.credit / total) * 100;
-    final expensePercentage = (widget.expense / total) * 100;
-    final lendPercentage = (widget.lend / total) * 100;
-    final debtPercentage = (widget.debt / total) * 100;
+  final total = widget.credit + widget.expense + widget.lend + widget.debt;
 
+  if (total == 0) {
     return List.generate(4, (i) {
       final isTouched = i == touchedIndex;
       final fontSize = isTouched ? 25.0 : 16.0;
       final radius = isTouched ? 60.0 : 50.0;
       const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
-      switch (i) {
-        case 0:
-          return PieChartSectionData(
-            color: AppColors.contentColorBlue,
-            value: expensePercentage,
-            title: '${expensePercentage.toStringAsFixed(1)}%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: AppColors.mainTextColor1,
-              shadows: shadows,
-            ),
-          );
-        case 1:
-          return PieChartSectionData(
-            color: AppColors.contentColorYellow,
-            value: creditPercentage,
-            title: '${creditPercentage.toStringAsFixed(1)}%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: AppColors.mainTextColor1,
-              shadows: shadows,
-            ),
-          );
-        case 2:
-          return PieChartSectionData(
-            color: AppColors.contentColorPurple,
-            value: lendPercentage,
-            title: '${lendPercentage.toStringAsFixed(1)}%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: AppColors.mainTextColor1,
-              shadows: shadows,
-            ),
-          );
-        case 3:
-          return PieChartSectionData(
-            color: AppColors.contentColorGreen,
-            value: debtPercentage,
-            title: '${debtPercentage.toStringAsFixed(1)}%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: AppColors.mainTextColor1,
-              shadows: shadows,
-            ),
-          );
-        default:
-          throw Error();
-      }
+      final colors = [
+        AppColors.contentColorPink,
+        AppColors.contentColorGreen,
+        Colors.orange,
+        AppColors.contentColorCyan,
+      ];
+
+      return PieChartSectionData(
+        color: colors[i],
+        value: 25,
+        title: '25%',
+        radius: radius,
+        titleStyle: TextStyle(
+          fontSize: fontSize,
+          fontWeight: FontWeight.bold,
+          color: AppColors.mainTextColor1,
+          shadows: shadows,
+        ),
+      );
     });
   }
+
+  final creditPercentage = (widget.credit / total) * 100;
+  final expensePercentage = (widget.expense / total) * 100;
+  final lendPercentage = (widget.lend / total) * 100;
+  final debtPercentage = (widget.debt / total) * 100;
+
+  return List.generate(4, (i) {
+    final isTouched = i == touchedIndex;
+    final fontSize = isTouched ? 25.0 : 16.0;
+    final radius = isTouched ? 60.0 : 50.0;
+    const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
+    switch (i) {
+      case 0:
+        return PieChartSectionData(
+          color: AppColors.contentColorPink,
+          value: expensePercentage,
+          title: '${expensePercentage.toStringAsFixed(1)}%',
+          radius: radius,
+          titleStyle: TextStyle(
+            fontSize: fontSize,
+            fontWeight: FontWeight.bold,
+            color: AppColors.mainTextColor1,
+            shadows: shadows,
+          ),
+        );
+      case 1:
+        return PieChartSectionData(
+          color: AppColors.contentColorGreen,
+          value: creditPercentage,
+          title: '${creditPercentage.toStringAsFixed(1)}%',
+          radius: radius,
+          titleStyle: TextStyle(
+            fontSize: fontSize,
+            fontWeight: FontWeight.bold,
+            color: AppColors.mainTextColor1,
+            shadows: shadows,
+          ),
+        );
+      case 2:
+        return PieChartSectionData(
+          color: Colors.orange,
+          value: lendPercentage,
+          title: '${lendPercentage.toStringAsFixed(1)}%',
+          radius: radius,
+          titleStyle: TextStyle(
+            fontSize: fontSize,
+            fontWeight: FontWeight.bold,
+            color: AppColors.mainTextColor1,
+            shadows: shadows,
+          ),
+        );
+      case 3:
+        return PieChartSectionData(
+          color: AppColors.contentColorCyan,
+          value: debtPercentage,
+          title: '${debtPercentage.toStringAsFixed(1)}%',
+          radius: radius,
+          titleStyle: TextStyle(
+            fontSize: fontSize,
+            fontWeight: FontWeight.bold,
+            color: AppColors.mainTextColor1,
+            shadows: shadows,
+          ),
+        );
+      default:
+        throw Error();
+    }
+  });
+}
 }

@@ -62,6 +62,7 @@ dependencies:
   path_provider: ^2.1.5
   json_annotation: ^4.9.0
   fl_chart: ^0.70.0
+  searchfield: ^1.2.2
 
 dev_dependencies:
   flutter_test:
@@ -93,7 +94,7 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - assets/
-    # - assets/images/
+    - assets/images/
     - assets/icons/
     - assets/animation/
 

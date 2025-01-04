@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:trackexpense/view/screen/dashboard/view/dashboard.dart';
 import 'package:trackexpense/view/screen/authenticate/view/signin.dart';
 import 'package:trackexpense/view/screen/moneyData/view/money_data_screen.dart';
+import 'package:trackexpense/view/screen/moneyMonthlyData/view/money_data_screen.dart';
 import 'package:trackexpense/view/screen/splash/view/splash_view.dart';
 // import 'package:trackexpense/view/screen/splash/view/splash_view.dart';
 
@@ -10,7 +11,8 @@ enum AppRoute {
   splashScreen,
   moneyDataScreen,
   signInPage,
-  dashboardPage
+  dashboardPage,
+  moneyMonthlyScreen
 }
 
 final GoRouter router = GoRouter(
@@ -30,6 +32,11 @@ final GoRouter router = GoRouter(
       name: AppRoute.dashboardPage.name,
       path: '/dashboardPage',
       builder: (context, state) => const DashBoardPage(),
+    ),
+    GoRoute(
+      name: AppRoute.moneyMonthlyScreen.name,
+      path: '/moneyMonthlyScreen',
+      builder: (context, state) => const MoneyMonthlyScreen(),
     ),
     GoRoute(
       name: AppRoute.moneyDataScreen.name,

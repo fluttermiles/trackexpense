@@ -148,13 +148,13 @@ class _MoneyDataScreenState extends State<MoneyDataScreen> {
                 ),
               ),
             )),
-          items.length < 5 ? const SizedBox() : Divider(color: kWhite, thickness: 0.3,),
-          items.length < 5 ? const SizedBox() : Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('View More', style: TextStyle(fontSize: 14, color: kWhite))
-            ],
-          )
+          // items.length < 5 ? const SizedBox() : Divider(color: kWhite, thickness: 0.3,),
+          // items.length < 5 ? const SizedBox() : Row(
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: [
+          //     Text('View More', style: TextStyle(fontSize: 14, color: kWhite))
+          //   ],
+          // )
         ],
       ),
     );
