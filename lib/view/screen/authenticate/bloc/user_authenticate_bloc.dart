@@ -48,7 +48,7 @@ class UserAuthenticateBloc extends Bloc<UserAuthenticateBlocEvent, UserAuthentic
           switch(response) {
             case DataStateSuccess<ProfileModel>(data: var data):
               emit(UserAuthenticateBlocLoaded(data: data));
-              profileObjectRepository.setProfileToObjectBox(profileModel: profileModel);
+              profileObjectRepository.setProfileToObjectBox(profileModel: data);
               profileDataBloc.add(ProfileData(profileModel: data));
               Logger.printSuccess(data.toString());
             case DataStateError<ProfileModel>(ex: var ex):
@@ -60,6 +60,7 @@ class UserAuthenticateBloc extends Bloc<UserAuthenticateBlocEvent, UserAuthentic
           switch(response) {
             case DataStateSuccess<ProfileModel>(data: var data):
               emit(UserAuthenticateBlocLoaded(data: data));
+              profileObjectRepository.setProfileToObjectBox(profileModel: data);
               profileDataBloc.add(ProfileData(profileModel: data));
               Logger.printSuccess(data.toString());
             case DataStateError<ProfileModel>(ex: var ex):
