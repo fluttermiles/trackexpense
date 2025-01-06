@@ -35,7 +35,27 @@ extension RupeeMonthlyDataBlocExtension on RupeeMonthlyDataBlocState {
     }
   }
 
+  List<String> get uniqueTitles {
+    switch(this){
+      case RupeeMonthlyDataBlocLoaded(data: final data):
+        List<String> uniqueTitles = data.map((item) => item.title ?? '').toSet().toList();
+        uniqueTitles.add('All');
+        return uniqueTitles;
+      default:
+        return [];
+    }
+  }
+
   List<RupeeMateModel> get newExpenseData {
+    switch(this){
+      case RupeeMonthlyDataBlocLoaded(data: final data):
+        return data.where((item) => item.month == DateTime.now().month && item.year == DateTime.now().year).toList();
+      default:
+        return [];
+    }
+  }
+
+  List<RupeeMateModel> get allData {
     switch(this){
       case RupeeMonthlyDataBlocLoaded(data: final data):
         return data;

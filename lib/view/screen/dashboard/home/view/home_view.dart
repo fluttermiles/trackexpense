@@ -7,6 +7,7 @@ import 'package:trackexpense/utils/colors.dart';
 import 'package:trackexpense/utils/utils.dart';
 import 'package:trackexpense/view/screen/dashboard/home/bloc/expenseCreditBloc/expense_credit_bloc.dart';
 import 'package:trackexpense/view/screen/dashboard/home/bloc/rupeeMonthlyBloc/rupee_monthly_bloc.dart';
+import 'package:trackexpense/view/screen/dashboard/home/bloc/rupeeMonthlyDataBloc/rupee_monthly_data_bloc.dart';
 import 'package:trackexpense/view/screen/dashboard/home/widgets/monthly_balance_widget.dart';
 import 'package:trackexpense/view/screen/dashboard/profile/bloc/profileData/profile_data_bloc.dart';
 
@@ -218,8 +219,9 @@ class _HomeViewState extends State<HomeView> {
                             focusedDate = focusedDay;
                           });
                           Logger.printSuccess('$selectedDay $focusedDay');
-                          context.pushNamed(AppRoute.moneyDataScreen.name,
-                              extra: selectedDay);
+                          context.pushNamed(AppRoute.moneyDataScreen.name, extra: selectedDay).then((value){
+                            context.read<RupeeMonthlyDataBloc>().add(RupeeMonthlyData(month: DateTime.now().month, year: DateTime.now().year, userId: state.profileData.userId ?? ''));
+                          });
                         },
                       ),
                       Positioned(

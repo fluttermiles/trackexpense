@@ -1,6 +1,7 @@
 import 'package:trackexpense/utils/app_sizes.dart';
 import 'package:trackexpense/utils/colors.dart';
 import 'package:trackexpense/utils/utils.dart';
+import 'package:trackexpense/view/screen/dashboard/home/bloc/expenseCreditBloc/expense_credit_bloc.dart';
 import 'package:trackexpense/view/screen/dashboard/profile/bloc/logout/logout_bloc.dart';
 import 'package:trackexpense/view/screen/dashboard/profile/bloc/profileData/profile_data_bloc.dart';
 
@@ -14,10 +15,6 @@ class ProfileView extends StatefulWidget {
 class _ProfileViewState extends State<ProfileView> {
   String selectedDay = 'We';
   List<Map<String, dynamic>> tileNames = [
-    {
-      "icon": Icons.notifications,
-      "title": "Notifications",
-    },
     {
       "icon": Icons.privacy_tip_outlined,
       "title": "Privacy Policy",
@@ -53,7 +50,7 @@ class _ProfileViewState extends State<ProfileView> {
       ),
       body: BlocListener<LogoutBloc, LogoutBlocState>(
         listener: (context, state) {
-          if(state is LogoutBlocLoaded){
+          if (state is LogoutBlocLoaded) {
             context.pushReplacementNamed(AppRoute.signInPage.name);
           }
         },
@@ -132,25 +129,32 @@ class _ProfileViewState extends State<ProfileView> {
                     itemBuilder: (context, index) {
                       return InkWell(
                         onTap: () async {
-                          if (index == 4) {
+                          if(index == 0) {
+                            context.pushNamed(AppRoute.privacyPolicy.name);
+                          }
+                          if(index == 1) {
+                            context.pushNamed(AppRoute.termsCondition.name);
+                          }
+                          if (index == 3) {
                             showDialog(
                               context: context,
                               builder: (context) {
                                 return AlertDialog(
+                                  shadowColor: kGrey,
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(15)),
-                                  backgroundColor: kWhite,
+                                  backgroundColor: kBlack,
                                   title: const Text(
                                     "Logout",
                                     style: TextStyle(
-                                      color: primaryColor,
-                                      fontSize: 20,
+                                      color: kWhite,
+                                      fontSize: 24,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                   content: const Text(
                                     "Are you sure you want Logout? ",
-                                    style: TextStyle(color: primaryColor),
+                                    style: TextStyle(color: kGrey),
                                   ),
                                   actions: [
                                     TextButton(
@@ -159,7 +163,7 @@ class _ProfileViewState extends State<ProfileView> {
                                       },
                                       child: const Text(
                                         "No",
-                                        style: TextStyle(color: Colors.red),
+                                        style: TextStyle(color: kWhite),
                                       ),
                                     ),
                                     TextButton(
@@ -173,7 +177,7 @@ class _ProfileViewState extends State<ProfileView> {
                                       },
                                       child: const Text(
                                         "Yes",
-                                        style: TextStyle(color: primaryColor),
+                                        style: TextStyle(color: redColor),
                                       ),
                                     ),
                                   ],
@@ -234,113 +238,117 @@ class _ProfileViewState extends State<ProfileView> {
                   top: 180,
                   left: MediaQuery.of(context).size.width * 0.05,
                   right: MediaQuery.of(context).size.width * 0.05,
-                  child: Container(
-                    width: MediaQuery.of(context).size.width * 0.9,
-                    padding: EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                        color: kBlack, // Black background
-                        borderRadius: BorderRadius.circular(16),
-                        boxShadow: [
-                          BoxShadow(
-                              color: const Color.fromARGB(255, 80, 78, 78),
-                              spreadRadius: 1,
-                              blurRadius: 10,
-                              offset: const Offset(0, 3))
-                        ]),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Total Balance Section
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  child: BlocBuilder<ExpenseCreditBloc, ExpenseCreditBlocState>(
+                    builder: (context, state) {
+                      return Container(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        padding: EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                            color: kBlack, // Black background
+                            borderRadius: BorderRadius.circular(16),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: const Color.fromARGB(255, 80, 78, 78),
+                                  spreadRadius: 1,
+                                  blurRadius: 10,
+                                  offset: const Offset(0, 3))
+                            ]),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            // Total Balance Section
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Current Month Balance',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Icon(Icons.more_vert, color: Colors.white),
+                              ],
+                            ),
+                            SizedBox(height: 8),
                             Text(
-                              'Total Balance',
+                              '₹ ${(state.credit + state.lend - state.expense - state.debt).toStringAsFixed(2)}',
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 18,
+                                fontSize: 32,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            Icon(Icons.more_vert, color: Colors.white),
-                          ],
-                        ),
-                        SizedBox(height: 8),
-                        Text(
-                          '₹ 2,548.00',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 32,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 16),
-                        // Income and Expense Section
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            // Income
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            SizedBox(height: 16),
+                            // Income and Expense Section
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Row(
+                                // Income
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Icon(Icons.arrow_downward,
-                                        color: Colors.green, size: 20),
-                                    SizedBox(width: 4),
+                                    Row(
+                                      children: [
+                                        Icon(Icons.arrow_downward,
+                                            color: Colors.green, size: 20),
+                                        SizedBox(width: 4),
+                                        Text(
+                                          'Credit',
+                                          style: TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 4),
                                     Text(
-                                      'Credit',
+                                      '₹ ${state.credit}',
                                       style: TextStyle(
-                                        color: Colors.grey,
-                                        fontSize: 14,
+                                        color: Colors.white,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                   ],
                                 ),
-                                SizedBox(height: 4),
-                                Text(
-                                  '₹ 1,840.00',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            // Expense
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
+                                // Expense
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Icon(Icons.arrow_upward,
-                                        color: Colors.red, size: 20),
-                                    SizedBox(width: 4),
+                                    Row(
+                                      children: [
+                                        Icon(Icons.arrow_upward,
+                                            color: Colors.red, size: 20),
+                                        SizedBox(width: 4),
+                                        Text(
+                                          'Expenses',
+                                          style: TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 4),
                                     Text(
-                                      'Expenses',
+                                      '₹ ${state.expense}',
                                       style: TextStyle(
-                                        color: Colors.grey,
-                                        fontSize: 14,
+                                        color: Colors.white,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                   ],
-                                ),
-                                SizedBox(height: 4),
-                                Text(
-                                  '₹ 284.00',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
                                 ),
                               ],
                             ),
                           ],
                         ),
-                      ],
-                    ),
+                      );
+                    },
                   ))
             ],
           ),

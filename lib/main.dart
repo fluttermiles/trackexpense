@@ -9,9 +9,11 @@ import 'package:trackexpense/view/screen/dashboard/home/bloc/expenseCreditBloc/e
 import 'package:trackexpense/view/screen/dashboard/home/bloc/rupeeMonthlyBloc/rupee_monthly_bloc.dart';
 import 'package:trackexpense/view/screen/dashboard/home/bloc/rupeeMonthlyDataBloc/rupee_monthly_data_bloc.dart';
 import 'package:trackexpense/view/screen/dashboard/profile/bloc/logout/logout_bloc.dart';
+import 'package:trackexpense/view/screen/dashboard/search/view/filter/bloc/filter_bloc_bloc.dart';
 import 'package:trackexpense/view/screen/moneyData/bloc/rupee_data_bloc.dart';
 import 'package:trackexpense/view/screen/moneyData/view/addData/bloc/add_expense_bloc_bloc.dart';
 import 'package:trackexpense/view/screen/dashboard/profile/bloc/profileData/profile_data_bloc.dart';
+import 'package:trackexpense/view/screen/moneyMonthlyData/bloc/money_monthly_bloc.dart';
 import 'package:trackexpense/view/screen/splash/bloc/bloc/fetch_profile_data_bloc.dart';
 
 
@@ -84,6 +86,12 @@ void main() async {
         ),
         BlocProvider(
           create: (context) => RupeeMonthlyBloc(rupeeMateRepository: rupeeMateRepository),
+        ),
+        BlocProvider(
+          create: (context) => FilterBlocBloc(),
+        ),
+        BlocProvider(
+          create: (context) => MoneyMonthlyBloc(),
         ),
       ],
       child: const MyApp(),
