@@ -1,35 +1,32 @@
 import 'package:objectbox/objectbox.dart';
-import 'package:json_annotation/json_annotation.dart';
-
-part 'rupee_object_data_model.g.dart';
 
 @Entity()
-@JsonSerializable()
 class RupeeObjectDataModel {
+  @Id()
   int id = 0;
-  String userId;
-  String rupeeId;
-  String title;
-  String description;
-  DateTime date;
-  double amount;
-  int day;
-  int month;
-  int year;
-  String type;
+  String? userId;
+  String? rupeeId;
+  String? title;
+  String? description;
+  DateTime? date;
+  double? amount;
+  int? day;
+  int? month;
+  int? year;
+  String? type;
   bool isSynced;
 
   RupeeObjectDataModel({
-    required this.rupeeId,
-    required this.userId,
-    required this.title,
-    required this.date,
-    required this.description,
-    required this.amount,
-    required this.day,
-    required this.month,
-    required this.year,
-    required this.type,
+    this.rupeeId,
+    this.userId,
+    this.title,
+    this.date,
+    this.description,
+    this.amount,
+    this.day,
+    this.month,
+    this.year,
+    this.type,
     this.isSynced = false,
   });
 
@@ -41,7 +38,7 @@ class RupeeObjectDataModel {
       'rupeeId': rupeeId,
       'title': title,
       'description': description,
-      'date': date.toIso8601String(),
+      'date': date?.toIso8601String(),
       'amount': amount,
       'day': day,
       'month': month,
@@ -58,7 +55,7 @@ class RupeeObjectDataModel {
       userId: json['userId'] ?? '',
       title: json['title'] ?? '',
       description: json['description'] ?? '',
-      date: DateTime.parse(json['date'] ?? DateTime.now().toIso8601String()),
+      date: json['date'] != null ? DateTime.tryParse(json['date']) : null,
       amount: (json['amount'] as num?)?.toDouble() ?? 0.0,
       day: json['day'] ?? 1,
       month: json['month'] ?? 1,

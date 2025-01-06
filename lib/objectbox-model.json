@@ -1,0 +1,141 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:4850328478320768766",
+      "lastPropertyId": "9:6614749700073237402",
+      "name": "ProfileObjectModel",
+      "properties": [
+        {
+          "id": "1:1927258536169094875",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:4112269246319900304",
+          "name": "userId",
+          "type": 9
+        },
+        {
+          "id": "3:4028117535479744305",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "4:5457077896235989577",
+          "name": "emailId",
+          "type": 9
+        },
+        {
+          "id": "5:3655017867095592189",
+          "name": "phoneNumber",
+          "type": 9
+        },
+        {
+          "id": "6:1273680390665240934",
+          "name": "imageUrl",
+          "type": 9
+        },
+        {
+          "id": "7:6472891423127616996",
+          "name": "countryCode",
+          "type": 9
+        },
+        {
+          "id": "8:4053432137560577797",
+          "name": "age",
+          "type": 9
+        },
+        {
+          "id": "9:6614749700073237402",
+          "name": "isSynced",
+          "type": 1
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "2:1734922640630762035",
+      "lastPropertyId": "12:3943863301210245284",
+      "name": "RupeeObjectDataModel",
+      "properties": [
+        {
+          "id": "1:7625509108890213151",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:7075325923841843624",
+          "name": "userId",
+          "type": 9
+        },
+        {
+          "id": "3:6877547023478587009",
+          "name": "rupeeId",
+          "type": 9
+        },
+        {
+          "id": "4:6496507223995453687",
+          "name": "title",
+          "type": 9
+        },
+        {
+          "id": "5:5609595802906630377",
+          "name": "description",
+          "type": 9
+        },
+        {
+          "id": "6:1089745204257574684",
+          "name": "date",
+          "type": 10
+        },
+        {
+          "id": "7:4464743645568287399",
+          "name": "amount",
+          "type": 8
+        },
+        {
+          "id": "8:3770251970081202184",
+          "name": "day",
+          "type": 6
+        },
+        {
+          "id": "9:2040227657326435021",
+          "name": "month",
+          "type": 6
+        },
+        {
+          "id": "10:1426379049228627075",
+          "name": "year",
+          "type": 6
+        },
+        {
+          "id": "11:2268341993066158905",
+          "name": "type",
+          "type": 9
+        },
+        {
+          "id": "12:3943863301210245284",
+          "name": "isSynced",
+          "type": 1
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "2:1734922640630762035",
+  "lastIndexId": "0:0",
+  "lastRelationId": "0:0",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [],
+  "retiredRelationUids": [],
+  "version": 1
+}

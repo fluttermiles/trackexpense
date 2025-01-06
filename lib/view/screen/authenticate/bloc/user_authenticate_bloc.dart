@@ -5,6 +5,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meta/meta.dart';
 import 'package:trackexpense/core/constants.dart';
 import 'package:trackexpense/core/state/data_state.dart';
+import 'package:trackexpense/data/local/profile/profile_object_repo.dart';
 import 'package:trackexpense/data/remote/profile/models/profile_model.dart';
 import 'package:trackexpense/data/remote/profile/profile_repository.dart';
 import 'package:trackexpense/utils/logger.dart';
@@ -15,8 +16,9 @@ part 'user_authenticate_state.dart';
 
 class UserAuthenticateBloc extends Bloc<UserAuthenticateBlocEvent, UserAuthenticateBlocState> {
   final ProfileRepository profileRepository;
+  final ProfileObjectRepository profileObjectRepository;
   final ProfileDataBloc profileDataBloc;
-  UserAuthenticateBloc({required this.profileRepository, required this.profileDataBloc}) : super(UserAuthenticateBlocInitial()) {
+  UserAuthenticateBloc({required this.profileRepository, required this.profileDataBloc, required this.profileObjectRepository}) : super(UserAuthenticateBlocInitial()) {
     on<UserAuthenticate>((event, emit) async {
       emit(UserAuthenticateBlocLoading());
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
@@ -46,6 +48,7 @@ class UserAuthenticateBloc extends Bloc<UserAuthenticateBlocEvent, UserAuthentic
           switch(response) {
             case DataStateSuccess<ProfileModel>(data: var data):
               emit(UserAuthenticateBlocLoaded(data: data));
+              profileObjectRepository.setProfileToObjectBox(profileModel: profileModel);
               profileDataBloc.add(ProfileData(profileModel: data));
               Logger.printSuccess(data.toString());
             case DataStateError<ProfileModel>(ex: var ex):

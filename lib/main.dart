@@ -1,4 +1,6 @@
 import 'package:flutter/services.dart';
+import 'package:trackexpense/core/object_init.dart';
+import 'package:trackexpense/data/local/profile/profile_object_repo_impl.dart';
 import 'package:trackexpense/data/remote/profile/profile_repository_impl.dart';
 import 'package:trackexpense/data/remote/rupeemate/rupeemate_repo_impl.dart';
 import 'package:trackexpense/utils/utils.dart';
@@ -12,6 +14,8 @@ import 'package:trackexpense/view/screen/moneyData/view/addData/bloc/add_expense
 import 'package:trackexpense/view/screen/dashboard/profile/bloc/profileData/profile_data_bloc.dart';
 import 'package:trackexpense/view/screen/splash/bloc/bloc/fetch_profile_data_bloc.dart';
 
+
+late ObjectBox objectBox; 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -27,10 +31,12 @@ void main() async {
   );
   MobileAds.instance.initialize();
   await Firebase.initializeApp();
+  objectBox = await ObjectBox.create();
 
   final profileDataBloc = ProfileDataBloc();
   final expenseCreditBloc = ExpenseCreditBloc();
   final profileRepository = ProfileRepositoryImpl();
+  final profileObjectRepository = ProfileObjectRepositoryImpl();
   final rupeeMateRepository = RupeeMateRepositoryImpl();
 
   runApp(
@@ -47,6 +53,7 @@ void main() async {
         BlocProvider(
           create: (context) => UserAuthenticateBloc(
             profileRepository: profileRepository,
+            profileObjectRepository: profileObjectRepository,
             profileDataBloc: profileDataBloc,
           ),
         ),
