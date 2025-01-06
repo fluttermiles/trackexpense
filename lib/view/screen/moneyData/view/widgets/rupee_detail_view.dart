@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:trackexpense/data/remote/rupeemate/models/rupeemate_model.dart';
 import 'package:trackexpense/utils/colors.dart';
 import 'package:flutter/material.dart';
@@ -59,7 +60,7 @@ void showCustomBottomSheet(BuildContext context, RupeeMateModel rupeeMateModel) 
                 ),
               ],
             ),
-            SizedBox(height: 8),
+            SizedBox(height: rupeeMateModel.description == '' || rupeeMateModel.description == null ? 0 : 8),
             rupeeMateModel.description == '' || rupeeMateModel.description == null ? SizedBox()
             : Text(
               'Description:',
@@ -83,7 +84,7 @@ void showCustomBottomSheet(BuildContext context, RupeeMateModel rupeeMateModel) 
                   style: TextStyle(color: kGrey, fontSize: 16),
                 ),
                 Text(
-                  '\$${rupeeMateModel.amount?.toStringAsFixed(2)}',
+                  '₹ ${rupeeMateModel.amount?.toStringAsFixed(2)}',
                   style: TextStyle(color: kWhite, fontSize: 16),
                 ),
               ],
@@ -97,7 +98,7 @@ void showCustomBottomSheet(BuildContext context, RupeeMateModel rupeeMateModel) 
                   style: TextStyle(color: kGrey, fontSize: 16),
                 ),
                 Text(
-                  '${rupeeMateModel.day}-${rupeeMateModel.month}-${rupeeMateModel.year}',
+                  DateFormat('dd MMM yyy').format(DateTime(rupeeMateModel.year ?? 2025,  rupeeMateModel.month ?? 1, rupeeMateModel.day ?? 1)),
                   style: TextStyle(color: kWhite, fontSize: 16),
                 ),
               ],

@@ -171,9 +171,6 @@ class _ProfileViewState extends State<ProfileView> {
                                         context
                                             .read<LogoutBloc>()
                                             .add(LogoutEvent());
-                                        // SharedPreferences prefs = await SharedPreferences.getInstance();
-                                        // await prefs.remove('uid');
-                                        // context.read<SignUpViewModel>().signOut(context);
                                       },
                                       child: const Text(
                                         "Yes",

@@ -4,7 +4,9 @@ part of 'money_monthly_bloc.dart';
 sealed class MoneyMonthlyBlocEvent {}
 
 class MoneyMonthly extends MoneyMonthlyBlocEvent {
-  final List<RupeeMateModel> rupeeMateList;
+  final String title;
+  final int month;
+  final int year;
 
-  MoneyMonthly({required this.rupeeMateList});
+  MoneyMonthly({required this.title, required this.month, required this.year});
 }

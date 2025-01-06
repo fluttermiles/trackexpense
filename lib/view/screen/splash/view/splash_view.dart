@@ -28,7 +28,7 @@ class _SplashViewState extends State<SplashView> {
     return BlocListener<FetchProfileDataBloc, FetchProfileBlocState>(
       listener: (context, state) {
         if(state is FetchProfileBlocLoaded){
-          context.read<RupeeMonthlyDataBloc>().add(RupeeMonthlyData(month: DateTime.now().month, year: DateTime.now().year, userId: state.profileData.userId ?? ''));
+          context.read<RupeeMonthlyDataBloc>().add(RupeeMonthlyData());
           context.pushReplacementNamed(AppRoute.dashboardPage.name);
         }
         if(state is FetchProfileBlocError){

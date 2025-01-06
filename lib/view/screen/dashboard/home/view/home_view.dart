@@ -220,7 +220,7 @@ class _HomeViewState extends State<HomeView> {
                           });
                           Logger.printSuccess('$selectedDay $focusedDay');
                           context.pushNamed(AppRoute.moneyDataScreen.name, extra: selectedDay).then((value){
-                            context.read<RupeeMonthlyDataBloc>().add(RupeeMonthlyData(month: DateTime.now().month, year: DateTime.now().year, userId: state.profileData.userId ?? ''));
+                            context.read<RupeeMonthlyDataBloc>().add(RupeeMonthlyData());
                           });
                         },
                       ),

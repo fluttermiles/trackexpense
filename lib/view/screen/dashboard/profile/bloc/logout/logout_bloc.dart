@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:trackexpense/data/local/profile/profile_object_repo.dart';
+import 'package:trackexpense/data/local/rupeeMate/rupeemate_object_repo.dart';
 import 'package:trackexpense/data/remote/profile/models/profile_model.dart';
 import 'package:trackexpense/utils/utils.dart';
 import 'package:trackexpense/view/screen/dashboard/profile/bloc/profileData/profile_data_bloc.dart';
@@ -9,7 +11,9 @@ part 'logout_state.dart';
 
 class LogoutBloc extends Bloc<LogoutBlocEvent, LogoutBlocState> {
   final ProfileDataBloc profileDataBloc;
-  LogoutBloc({required this.profileDataBloc}) : super(LogoutBlocInitial()) {
+  final RupeeObjectRepository rupeeObjectRepository;
+  final ProfileObjectRepository profileObjectRepository;
+  LogoutBloc({required this.profileDataBloc, required this.profileObjectRepository, required this.rupeeObjectRepository}) : super(LogoutBlocInitial()) {
     on<LogoutEvent>((event, emit) async {
       await FirebaseAuth.instance.signOut();
       Logger.printInfo('Firebase sign-out successful.');
@@ -27,8 +31,10 @@ class LogoutBloc extends Bloc<LogoutBlocEvent, LogoutBlocState> {
       } else {
         Logger.printInfo('No Google account signed in.');
       }
-      emit(LogoutBlocLoaded());
+      await profileObjectRepository.removeProfileFromObjectBox(profileDataBloc.state.profileData.userId ?? '');
+      await rupeeObjectRepository.removeAllRupeeFromObjectBox();
       profileDataBloc.add(ProfileData(profileModel: ProfileModel()));
+      emit(LogoutBlocLoaded());
       Logger.printSuccess('User successfully logged out.');
     });
   }

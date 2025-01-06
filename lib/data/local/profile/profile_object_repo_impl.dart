@@ -33,6 +33,7 @@ class ProfileObjectRepositoryImpl implements ProfileObjectRepository {
     return DataStateSuccess<ProfileModel>(data: profileModel);
   }
 
+  @override
   Future<void> removeProfileFromObjectBox(String userId) async {
     final box = objectBox.profileBox;
     final query = box.query(ProfileObjectModel_.userId.equals(userId)).build();
@@ -60,7 +61,7 @@ class ProfileObjectRepositoryImpl implements ProfileObjectRepository {
     );
     final box = objectBox.profileBox;
     box.put(profileObjectModel);
-    Logger.printError(profileObjectModel.toString());
+    Logger.printError(profileObjectModel.toJson().toString());
     return DataStateSuccess<ProfileModel>(data: profileModel);
   }
 }

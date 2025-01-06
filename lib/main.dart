@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:trackexpense/core/object_init.dart';
 import 'package:trackexpense/data/local/profile/profile_object_repo_impl.dart';
+import 'package:trackexpense/data/local/rupeeMate/rupeemate_object_repo_impl.dart';
 import 'package:trackexpense/data/remote/profile/profile_repository_impl.dart';
 import 'package:trackexpense/data/remote/rupeemate/rupeemate_repo_impl.dart';
 import 'package:trackexpense/utils/utils.dart';
@@ -8,6 +9,7 @@ import 'package:trackexpense/view/screen/authenticate/bloc/user_authenticate_blo
 import 'package:trackexpense/view/screen/dashboard/home/bloc/expenseCreditBloc/expense_credit_bloc.dart';
 import 'package:trackexpense/view/screen/dashboard/home/bloc/rupeeMonthlyBloc/rupee_monthly_bloc.dart';
 import 'package:trackexpense/view/screen/dashboard/home/bloc/rupeeMonthlyDataBloc/rupee_monthly_data_bloc.dart';
+import 'package:trackexpense/view/screen/dashboard/home/bloc/saveRupeeToObjectBloc/save_rupee_to_object_bloc.dart';
 import 'package:trackexpense/view/screen/dashboard/profile/bloc/logout/logout_bloc.dart';
 import 'package:trackexpense/view/screen/dashboard/search/view/filter/bloc/filter_bloc_bloc.dart';
 import 'package:trackexpense/view/screen/moneyData/bloc/rupee_data_bloc.dart';
@@ -39,6 +41,7 @@ void main() async {
   final expenseCreditBloc = ExpenseCreditBloc();
   final profileRepository = ProfileRepositoryImpl();
   final profileObjectRepository = ProfileObjectRepositoryImpl();
+  final rupeeObjectRepository = RupeeObjectRepositoryImpl();
   final rupeeMateRepository = RupeeMateRepositoryImpl();
 
   runApp(
@@ -47,6 +50,7 @@ void main() async {
         BlocProvider(
           create: (context) => AddExpenseBlocBloc(
             rupeeMateRepository: rupeeMateRepository,
+            rupeeObjectRepository: rupeeObjectRepository
           ),
         ),
         BlocProvider(
@@ -55,43 +59,53 @@ void main() async {
         BlocProvider(
           create: (context) => UserAuthenticateBloc(
             profileRepository: profileRepository,
+            rupeeObjectRepository: rupeeObjectRepository,
             profileObjectRepository: profileObjectRepository,
             profileDataBloc: profileDataBloc,
           ),
         ),
         BlocProvider(
           create: (context) => FetchProfileDataBloc(
-            profileRepository: profileRepository,
+            profileObjectRepository: profileObjectRepository,
             profileDataBloc: profileDataBloc,
           ),
         ),
         BlocProvider(
           create: (context) => LogoutBloc(
             profileDataBloc: profileDataBloc,
+            profileObjectRepository: profileObjectRepository,
+            rupeeObjectRepository: rupeeObjectRepository
           ),
         ),
         BlocProvider(
           create: (context) => RupeeDataBloc(
-            rupeeMateRepository: rupeeMateRepository,
+            rupeeObjectRepository: rupeeObjectRepository,
           ),
         ),
         BlocProvider(
           create: (context) => RupeeMonthlyDataBloc(
-            rupeeMateRepository: rupeeMateRepository,
-            expenseCreditBloc: expenseCreditBloc
+            expenseCreditBloc: expenseCreditBloc, 
+            rupeeObjectRepository: rupeeObjectRepository
           ),
         ),
         BlocProvider(
           create: (context) => expenseCreditBloc,
         ),
         BlocProvider(
-          create: (context) => RupeeMonthlyBloc(rupeeMateRepository: rupeeMateRepository),
+          create: (context) => RupeeMonthlyBloc(rupeeObjectRepository: rupeeObjectRepository),
         ),
         BlocProvider(
           create: (context) => FilterBlocBloc(),
         ),
         BlocProvider(
-          create: (context) => MoneyMonthlyBloc(),
+          create: (context) => MoneyMonthlyBloc(rupeeObjectRepository: rupeeObjectRepository),
+        ),
+        BlocProvider(
+          create: (context) => SaveRupeeToObjectBloc(
+            rupeeMateRepository: rupeeMateRepository,
+            rupeeObjectRepository: rupeeObjectRepository, 
+            rupeeMonthlyDataBloc: context.read<RupeeMonthlyDataBloc>(),
+          ),
         ),
       ],
       child: const MyApp(),

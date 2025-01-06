@@ -137,7 +137,7 @@ class _MoneyDataScreenState extends State<MoneyDataScreen> {
           ),
           ...items.map((item) => Padding(
               padding: const EdgeInsets.symmetric(vertical: 4.0),
-              child: GestureDetector(
+              child: InkWell(
                 onTap: () => showCustomBottomSheet(context, item),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

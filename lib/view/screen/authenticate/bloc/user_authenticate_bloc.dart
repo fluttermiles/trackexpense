@@ -6,6 +6,7 @@ import 'package:meta/meta.dart';
 import 'package:trackexpense/core/constants.dart';
 import 'package:trackexpense/core/state/data_state.dart';
 import 'package:trackexpense/data/local/profile/profile_object_repo.dart';
+import 'package:trackexpense/data/local/rupeeMate/rupeemate_object_repo.dart';
 import 'package:trackexpense/data/remote/profile/models/profile_model.dart';
 import 'package:trackexpense/data/remote/profile/profile_repository.dart';
 import 'package:trackexpense/utils/logger.dart';
@@ -17,19 +18,25 @@ part 'user_authenticate_state.dart';
 class UserAuthenticateBloc extends Bloc<UserAuthenticateBlocEvent, UserAuthenticateBlocState> {
   final ProfileRepository profileRepository;
   final ProfileObjectRepository profileObjectRepository;
+  final RupeeObjectRepository rupeeObjectRepository;
   final ProfileDataBloc profileDataBloc;
-  UserAuthenticateBloc({required this.profileRepository, required this.profileDataBloc, required this.profileObjectRepository}) : super(UserAuthenticateBlocInitial()) {
+  UserAuthenticateBloc({required this.profileRepository, required this.rupeeObjectRepository, required this.profileDataBloc, required this.profileObjectRepository}) : super(UserAuthenticateBlocInitial()) {
     on<UserAuthenticate>((event, emit) async {
       emit(UserAuthenticateBlocLoading());
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-      final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+      if (googleUser == null) {
+        emit(UserAuthenticateBlocError(ex: 'User isn\'t selected google account'));
+        return;
+      }
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
       final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth?.accessToken,
-        idToken: googleAuth?.idToken,
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
       );
+      await rupeeObjectRepository.removeAllRupeeFromObjectBox();
       await FirebaseAuth.instance.signInWithCredential(credential).whenComplete(() async {
         User user = FirebaseAuth.instance.currentUser!;
-        Logger.printSuccess(googleUser?.id ?? '');
+        Logger.printSuccess(googleUser.id);
         Logger.printSuccess(FirebaseAuth.instance.currentUser?.uid ?? '');
         Logger.printSuccess(user.toString());
 
@@ -48,8 +55,10 @@ class UserAuthenticateBloc extends Bloc<UserAuthenticateBlocEvent, UserAuthentic
           switch(response) {
             case DataStateSuccess<ProfileModel>(data: var data):
               emit(UserAuthenticateBlocLoaded(data: data));
-              profileObjectRepository.setProfileToObjectBox(profileModel: data);
-              profileDataBloc.add(ProfileData(profileModel: data));
+              final objectResponse = await profileObjectRepository.setProfileToObjectBox(profileModel: data);
+              if(objectResponse is DataStateSuccess<ProfileModel>) {
+                profileDataBloc.add(ProfileData(profileModel: objectResponse.data));
+              }
               Logger.printSuccess(data.toString());
             case DataStateError<ProfileModel>(ex: var ex):
               emit(UserAuthenticateBlocError(ex: ex));
@@ -60,8 +69,10 @@ class UserAuthenticateBloc extends Bloc<UserAuthenticateBlocEvent, UserAuthentic
           switch(response) {
             case DataStateSuccess<ProfileModel>(data: var data):
               emit(UserAuthenticateBlocLoaded(data: data));
-              profileObjectRepository.setProfileToObjectBox(profileModel: data);
-              profileDataBloc.add(ProfileData(profileModel: data));
+              final objectResponse = await profileObjectRepository.setProfileToObjectBox(profileModel: data);
+              if(objectResponse is DataStateSuccess<ProfileModel>) {
+                profileDataBloc.add(ProfileData(profileModel: objectResponse.data));
+              }
               Logger.printSuccess(data.toString());
             case DataStateError<ProfileModel>(ex: var ex):
               emit(UserAuthenticateBlocError(ex: ex));

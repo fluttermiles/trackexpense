@@ -75,9 +75,11 @@ class _CustomSearchFieldState extends State<CustomSearchField> {
                   onSuggestionTap: (SearchFieldListItem<String> word) {
                     searchController.text = word.searchKey;
                     if(word.searchKey == 'All') {
-                      context.read<MoneyMonthlyBloc>().add(MoneyMonthly(rupeeMateList: rupeeMonthlyState.allData.where((item) => item.year == filterState.year && item.month == filterState.month).toList()));
+                      // context.read<MoneyMonthlyBloc>().add(MoneyMonthly(rupeeMateList: rupeeMonthlyState.allData.where((item) => item.year == filterState.year && item.month == filterState.month).toList()));
+                      context.read<MoneyMonthlyBloc>().add(MoneyMonthly(title: '', year: filterState.year, month: filterState.month));
                     } else {
-                      context.read<MoneyMonthlyBloc>().add(MoneyMonthly(rupeeMateList: rupeeMonthlyState.allData.where((item) => item.title == word.searchKey.toLowerCase() && item.year == filterState.year && item.month == filterState.month).toList()));
+                      // context.read<MoneyMonthlyBloc>().add(MoneyMonthly(rupeeMateList: rupeeMonthlyState.allData.where((item) => item.title == word.searchKey.toLowerCase() && item.year == filterState.year && item.month == filterState.month).toList()));
+                      context.read<MoneyMonthlyBloc>().add(MoneyMonthly(title: word.searchKey.toLowerCase(), year: filterState.year, month: filterState.month));
                     }
                     context.pushNamed(AppRoute.moneyMonthlyScreen.name);
                     Logger.printError(word.searchKey.toString());

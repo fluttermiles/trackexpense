@@ -1,6 +1,6 @@
 import 'package:trackexpense/core/state/data_state.dart';
+import 'package:trackexpense/data/local/rupeeMate/rupeemate_object_repo.dart';
 import 'package:trackexpense/data/remote/rupeemate/models/rupeemate_model.dart';
-import 'package:trackexpense/data/remote/rupeemate/rupeemate_repo.dart';
 import 'package:trackexpense/utils/utils.dart';
 import 'package:trackexpense/view/screen/dashboard/home/bloc/expenseCreditBloc/expense_credit_bloc.dart';
 
@@ -8,12 +8,12 @@ part 'rupee_monthly_data_event.dart';
 part 'rupee_monthly_data_state.dart';
 
 class RupeeMonthlyDataBloc extends Bloc<RupeeMonthlyDataBlocEvent, RupeeMonthlyDataBlocState> {
-  final RupeeMateRepository rupeeMateRepository;
+  final RupeeObjectRepository rupeeObjectRepository;
   final ExpenseCreditBloc expenseCreditBloc;
-  RupeeMonthlyDataBloc({required this.rupeeMateRepository, required this.expenseCreditBloc}) : super(RupeeMonthlyDataBlocInitial()) {
+  RupeeMonthlyDataBloc({required this.rupeeObjectRepository, required this.expenseCreditBloc}) : super(RupeeMonthlyDataBlocInitial()) {
     on<RupeeMonthlyData>((event, emit) async {
       emit(RupeeMonthlyDataBlocLoading());
-      final response = await rupeeMateRepository.getRupeeData(userId: event.userId);
+      final response = await rupeeObjectRepository.getRupeeDataByFilters(month: DateTime.now().month, year: DateTime.now().year );
       switch(response) {
         case DataStateSuccess<List<RupeeMateModel>>(data: var data):
           Logger.printSuccess(data.toString());
