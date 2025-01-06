@@ -129,6 +129,12 @@ class _ProfileViewState extends State<ProfileView> {
                     itemBuilder: (context, index) {
                       return InkWell(
                         onTap: () async {
+                          if(index == 0) {
+                            context.pushNamed(AppRoute.privacyPolicy.name);
+                          }
+                          if(index == 1) {
+                            context.pushNamed(AppRoute.termsCondition.name);
+                          }
                           if (index == 3) {
                             showDialog(
                               context: context,

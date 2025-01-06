@@ -4,7 +4,9 @@ import 'package:trackexpense/view/screen/dashboard/view/dashboard.dart';
 import 'package:trackexpense/view/screen/authenticate/view/signin.dart';
 import 'package:trackexpense/view/screen/moneyData/view/money_data_screen.dart';
 import 'package:trackexpense/view/screen/moneyMonthlyData/view/money_data_screen.dart';
+import 'package:trackexpense/view/screen/privacyPolicy/privacy_policy.dart';
 import 'package:trackexpense/view/screen/splash/view/splash_view.dart';
+import 'package:trackexpense/view/screen/termsConsdition/terms_condition.dart';
 // import 'package:trackexpense/view/screen/splash/view/splash_view.dart';
 
 enum AppRoute {
@@ -12,7 +14,9 @@ enum AppRoute {
   moneyDataScreen,
   signInPage,
   dashboardPage,
-  moneyMonthlyScreen
+  moneyMonthlyScreen,
+  privacyPolicy,
+  termsCondition
 }
 
 final GoRouter router = GoRouter(
@@ -37,6 +41,16 @@ final GoRouter router = GoRouter(
       name: AppRoute.moneyMonthlyScreen.name,
       path: '/moneyMonthlyScreen',
       builder: (context, state) => const MoneyMonthlyScreen(),
+    ),
+    GoRoute(
+      name: AppRoute.termsCondition.name,
+      path: '/termsCondition',
+      builder: (context, state) => const TermsCondition(),
+    ),
+    GoRoute(
+      name: AppRoute.privacyPolicy.name,
+      path: '/privacyPolicy',
+      builder: (context, state) => const PrivacyPolicy(),
     ),
     GoRoute(
       name: AppRoute.moneyDataScreen.name,
