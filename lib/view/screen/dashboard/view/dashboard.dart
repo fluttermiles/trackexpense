@@ -1,3 +1,4 @@
+import 'package:showcaseview/showcaseview.dart';
 import 'package:trackexpense/utils/colors.dart';
 import 'package:trackexpense/utils/utils.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
@@ -20,7 +21,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
   final PageController pageController = PageController();
 
   List<Widget> pages = [
-    HomeView(),
+    ShowCaseWidget(builder: (context) => HomeView()),
     SearchView(),
     NotificationPage(),
     ProfileView()

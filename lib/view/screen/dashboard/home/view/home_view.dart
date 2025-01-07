@@ -5,6 +5,8 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:trackexpense/utils/app_sizes.dart';
 import 'package:trackexpense/utils/colors.dart';
 import 'package:trackexpense/utils/utils.dart';
+import 'package:showcaseview/showcaseview.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trackexpense/view/screen/dashboard/home/bloc/expenseCreditBloc/expense_credit_bloc.dart';
 import 'package:trackexpense/view/screen/dashboard/home/bloc/rupeeMonthlyBloc/rupee_monthly_bloc.dart';
 import 'package:trackexpense/view/screen/dashboard/home/bloc/rupeeMonthlyDataBloc/rupee_monthly_data_bloc.dart';
@@ -22,6 +24,8 @@ class _HomeViewState extends State<HomeView> {
   DateTime focusedDate = DateTime.now();
   DateTime? selectedDate;
   DateTime currentPage = DateTime.now();
+  final GlobalKey showcaseKey = GlobalKey();
+  final GlobalKey<ShowCaseWidgetState> showCaseWidgetKey = GlobalKey();
 
   Timer? _debounceTimer;
 
@@ -44,6 +48,22 @@ class _HomeViewState extends State<HomeView> {
     });
   }
 
+  Future<void> checkFirstLaunch() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isFirstLaunch = prefs.getBool('isFirstLaunch') ?? true;
+    Logger.printError(isFirstLaunch.toString());
+
+    if (isFirstLaunch) {
+      Future.delayed(Duration(milliseconds: 500), () {
+        if (mounted) {
+          ShowCaseWidget.of(context).startShowCase([showcaseKey]);
+        }
+      });
+
+      await prefs.setBool('isFirstLaunch', false);
+    }
+  }
+
   // id: ca-app-pub-5629444706077995/5531086361
 
   BannerAd bannerAd = BannerAd(
@@ -62,6 +82,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     super.initState();
+    checkFirstLaunch();
     bannerAd.load();
   }
 
@@ -179,104 +200,110 @@ class _HomeViewState extends State<HomeView> {
               SizedBox(height: 24),
               BlocBuilder<ProfileDataBloc, ProfileBlocState>(
                 builder: (context, state) {
-                  return Stack(
-                    children: [
-                      TableCalendar(
-                        firstDay: DateTime.utc(2010, 10, 16),
-                        lastDay: DateTime.now(),
-                        focusedDay: focusedDate,
-                        selectedDayPredicate: (day) =>
-                            isSameDay(selectedDate, day),
-                        calendarStyle: CalendarStyle(
-                          tablePadding:
-                              const EdgeInsets.only(top: 8.0, bottom: 8.0),
-                          selectedDecoration: BoxDecoration(
-                            color: Colors.green,
-                            shape: BoxShape.circle,
+                  return Showcase(
+                    key: showcaseKey,
+                    description: 'Tap on the date to add your money data and view expenses.',
+                    tooltipBackgroundColor: kWhite,
+                    textColor: kBlack,
+                    child: Stack(
+                      children: [
+                        TableCalendar(
+                          firstDay: DateTime.utc(2010, 10, 16),
+                          lastDay: DateTime.now(),
+                          focusedDay: focusedDate,
+                          selectedDayPredicate: (day) =>
+                              isSameDay(selectedDate, day),
+                          calendarStyle: CalendarStyle(
+                            tablePadding:
+                                const EdgeInsets.only(top: 8.0, bottom: 8.0),
+                            selectedDecoration: BoxDecoration(
+                              color: Colors.green,
+                              shape: BoxShape.circle,
+                            ),
+                            todayDecoration: BoxDecoration(
+                              color: Colors.blueAccent,
+                              shape: BoxShape.circle,
+                            ),
+                            defaultTextStyle: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
+                            weekendTextStyle: const TextStyle(
+                              color: Colors.redAccent,
+                              fontSize: 16,
+                            ),
                           ),
-                          todayDecoration: BoxDecoration(
-                            color: Colors.blueAccent,
-                            shape: BoxShape.circle,
+                          daysOfWeekStyle: DaysOfWeekStyle(
+                            weekdayStyle: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                              color: Colors.white,
+                            ),
+                            weekendStyle: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                              color: Colors.redAccent,
+                            ),
                           ),
-                          defaultTextStyle: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
+                          headerStyle: HeaderStyle(
+                            titleCentered: true,
+                            formatButtonVisible: false,
+                            titleTextStyle: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                              color: Colors.white,
+                            ),
+                            leftChevronVisible: false,
+                            rightChevronVisible: false,
+                            headerPadding:
+                                const EdgeInsets.symmetric(vertical: 8.0),
                           ),
-                          weekendTextStyle: const TextStyle(
-                            color: Colors.redAccent,
-                            fontSize: 16,
-                          ),
+                          onPageChanged: (focusedDay) {
+                            onPageChangedDebounced(
+                                focusedDay, state.profileData.userId ?? '');
+                          },
+                          onDaySelected: (selectedDay, focusedDay) {
+                            setState(() {
+                              selectedDate = selectedDay;
+                              focusedDate = focusedDay;
+                            });
+                            Logger.printSuccess('$selectedDay $focusedDay');
+                            context.pushNamed(AppRoute.moneyDataScreen.name, extra: selectedDay).then((value){
+                              context.read<RupeeMonthlyDataBloc>().add(RupeeMonthlyData());
+                            });
+                          },
                         ),
-                        daysOfWeekStyle: DaysOfWeekStyle(
-                          weekdayStyle: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                            color: Colors.white,
-                          ),
-                          weekendStyle: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                            color: Colors.redAccent,
-                          ),
-                        ),
-                        headerStyle: HeaderStyle(
-                          titleCentered: true,
-                          formatButtonVisible: false,
-                          titleTextStyle: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                            color: Colors.white,
-                          ),
-                          leftChevronVisible: false,
-                          rightChevronVisible: false,
-                          headerPadding:
-                              const EdgeInsets.symmetric(vertical: 8.0),
-                        ),
-                        onPageChanged: (focusedDay) {
-                          onPageChangedDebounced(
-                              focusedDay, state.profileData.userId ?? '');
-                        },
-                        onDaySelected: (selectedDay, focusedDay) {
-                          setState(() {
-                            selectedDate = selectedDay;
-                            focusedDate = focusedDay;
-                          });
-                          Logger.printSuccess('$selectedDay $focusedDay');
-                          context.pushNamed(AppRoute.moneyDataScreen.name, extra: selectedDay).then((value){
-                            context.read<RupeeMonthlyDataBloc>().add(RupeeMonthlyData());
-                          });
-                        },
-                      ),
-                      Positioned(
-                        top: 12.0,
-                        left: 16.0,
-                        right: 16.0,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            GestureDetector(
-                              child: SuperTooltip(
-                                popupDirection: TooltipDirection.down,
-                                borderColor: kWhite,
-                                backgroundColor: Colors.grey[800],
-                                shadowColor: Colors.black,
-                                borderWidth: 1.0,
-                                content: const Text(
-                                  'Tap on any date to add your money data for that day.',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 14),
+                        Positioned(
+                          top: 12.0,
+                          left: 16.0,
+                          right: 16.0,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              GestureDetector(
+                                child: SuperTooltip(
+                                  popupDirection: TooltipDirection.down,
+                                  borderColor: kWhite,
+                                  backgroundColor: Colors.grey[800],
+                                  shadowColor: Colors.black,
+                                  borderWidth: 1.0,
+                                  content: const Text(
+                                    'Tap on any date to add your money data for that day.',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 14),
+                                  ),
+                                  child: const Icon(
+                                    Icons.info_outline,
+                                    color: kWhite,
+                                    size: 24,
+                                  ),
                                 ),
-                                child: const Icon(
-                                  Icons.info_outline,
-                                  color: kWhite,
-                                  size: 24,
-                                ),
-                              ),
-                            )
-                          ],
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   );
                 },
               ),

@@ -67,6 +67,8 @@ dependencies:
   connectivity_plus: ^6.1.1
   cached_network_image: ^3.4.1
   flutter_cache_manager: ^3.4.1
+  showcaseview: ^4.0.0
+  shared_preferences: ^2.3.5
 
 dev_dependencies:
   flutter_test:
