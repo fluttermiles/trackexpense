@@ -8,4 +8,5 @@ abstract interface class RupeeObjectRepository{
   Future<void> setRupeeToObjectBox({required RupeeMateModel rupeeMateModel, required bool isSynced});
   Future<void> removeRupeeFromObjectBox(String rupeeId);
   Future<void> removeAllRupeeFromObjectBox();
+  Future<DataState<bool>> syncUnsyncedRupeeDataInIsolate();
 }

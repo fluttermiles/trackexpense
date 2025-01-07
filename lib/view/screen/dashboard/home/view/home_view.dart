@@ -103,20 +103,43 @@ class _HomeViewState extends State<HomeView> {
                           builder: (context, state) {
                             if (state is ProfileBlocLoaded) {
                               return GestureDetector(
-                                onTap: () {
+                                onTap: () { 
                                   Logger.printError(state.data.toString());
                                 },
-                                child: CircleAvatar(
-                                  radius: 30,
-                                  backgroundImage: NetworkImage(
-                                    state.data.imageUrl ?? '',
+                                child: (state.data.imageUrl?.isNotEmpty ?? false) ? CircleAvatar(
+                                  radius: 30.r,
+                                  backgroundColor: kWhite,
+                                  child: ClipOval(
+                                    child: CachedNetworkImage(
+                                      imageUrl: state.data.imageUrl ?? '',
+                                      fit: BoxFit.cover,
+                                      width: 80.r,
+                                      height: 80.r,
+                                      placeholder: (context, url) => Center(
+                                        child: Icon(
+                                          Icons.person,
+                                          size: 56,
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                      errorWidget: (context, url, error) => Icon(
+                                        Icons.person,
+                                        size: 56,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
                                   ),
+                                ) : CircleAvatar(
+                                  backgroundColor: kWhite,
+                                  radius: 30.r,
+                                  child: Icon(Icons.person, size: 38,),
                                 ),
                               );
                             } else {
                               return CircleAvatar(
-                                radius: 30,
-                                child: Icon(Icons.person),
+                                backgroundColor: kWhite,
+                                radius: 30.r,
+                                child: Icon(Icons.person, size: 38,),
                               );
                             }
                           },

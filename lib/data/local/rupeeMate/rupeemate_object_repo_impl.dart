@@ -1,3 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:trackexpense/core/constants.dart';
 import 'package:trackexpense/core/state/data_state.dart';
 import 'package:trackexpense/data/local/rupeeMate/rupeemate_object_repo.dart';
 import 'package:trackexpense/data/remote/rupeemate/models/rupeemate_model.dart';
@@ -137,9 +140,67 @@ class RupeeObjectRepositoryImpl implements RupeeObjectRepository {
 
   @override
   Future<void> removeAllRupeeFromObjectBox() async {
-  final box = objectBox.rupeeBox;
-  box.removeAll();
+    final box = objectBox.rupeeBox;
+    box.removeAll();
 
-  Logger.printSuccess("All RupeeObjectDataModel records removed successfully from ObjectBox.");
-}
+    Logger.printSuccess("All RupeeObjectDataModel records removed successfully from ObjectBox.");
+  }
+  @override
+  Future<DataState<bool>> syncUnsyncedRupeeDataInIsolate() async {
+    final box = objectBox.rupeeBox;
+    final query = box.query(RupeeObjectDataModel_.isSynced.equals(false)).build();
+    final unsyncedRupeeList = query.find();
+    query.close();
+
+    if (unsyncedRupeeList.isEmpty) {
+      Logger.printSuccess("No unsynced data found.");
+      return DataStateSuccess<bool>(data: true);
+    }
+
+    String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
+    if (userId.isEmpty) {
+      Logger.printSuccess("No UserId found.");
+      return DataStateError<bool>(ex: 'Sync Unsuccessful');
+    }
+
+    final firestore = FirebaseFirestore.instance;
+
+    bool allSyncedSuccessfully = true;
+
+    for (RupeeObjectDataModel rupeeObject in unsyncedRupeeList) {
+      try {
+        RupeeMateModel rupeeMateModel = RupeeMateModel(
+          id: rupeeObject.rupeeId,
+          userId: rupeeObject.userId,
+          title: rupeeObject.title,
+          description: rupeeObject.description,
+          amount: rupeeObject.amount,
+          date: rupeeObject.date,
+          day: rupeeObject.day,
+          month: rupeeObject.month,
+          year: rupeeObject.year,
+          type: rupeeObject.type,
+        );
+        await firestore
+            .collection(AppConstants.userCollection)
+            .doc(userId)
+            .collection(AppConstants.userPaymentDataSubcollection)
+            .doc(rupeeObject.rupeeId)
+            .set(rupeeMateModel.toJson());
+
+        rupeeObject.isSynced = true;
+        box.put(rupeeObject);
+
+        Logger.printSuccess("Data with rupeeId ${rupeeObject.rupeeId} synced successfully.");
+      } catch (e) {
+        Logger.printError("Failed to sync data with rupeeId ${rupeeObject.rupeeId}: $e");
+        allSyncedSuccessfully = false;
+      }
+    }
+    if (allSyncedSuccessfully) {
+      return DataStateSuccess<bool>(data: true);
+    } else {
+      return DataStateError<bool>(ex: 'Sync Unsuccessful');
+    }
+  }
 }

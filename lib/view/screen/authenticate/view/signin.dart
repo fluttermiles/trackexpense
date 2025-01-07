@@ -13,125 +13,106 @@ class SignInPage extends StatelessWidget {
     final double screenHeight = MediaQuery.of(context).size.height;
     final double screenWidth = MediaQuery.of(context).size.width;
 
-    return Scaffold(
-      backgroundColor: kBlack,
-      body: Stack(
+    return Container(
+      height: screenHeight * 0.8,
+      color: kBlack,
+      child: Column(
         children: [
-          Column(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              SizedBox(
-                height: screenHeight * 0.2,
+              GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Icon(Icons.cancel_outlined, color: kWhite,)
               ),
-              Container(
-                width: double.infinity,
-                height: screenHeight * 0.4,
-                alignment: Alignment.center,
-                child: Image.asset(
-                  'assets/icons/rupeemate.png',
-                  height: 200,
-                  fit: BoxFit.contain,
+              gapW24
+            ],
+          ),
+          gapH16,
+          Container(
+            width: double.infinity,
+            height: screenHeight * 0.25,
+            alignment: Alignment.center,
+            child: Image.asset(
+              'assets/icons/rupeemate.png',
+              height: 200,
+              fit: BoxFit.contain,
+            ),
+          ),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                "Welcome",
+                style: GoogleFonts.baskervville(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: kWhite,
                 ),
               ),
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    "Welcome",
-                    style: GoogleFonts.baskervville(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: kWhite,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    "Sign in for free to track your expenses",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey[300],
-                        fontWeight: FontWeight.w600),
-                  ),
-                  SizedBox(
-                    height: screenHeight * 0.08,
-                  ),
-                  BlocConsumer<UserAuthenticateBloc, UserAuthenticateBlocState>(
-                    listener: (context, state) {
-                      if(state is UserAuthenticateBlocLoaded) {
-                        context.read<SaveRupeeToObjectBloc>().add(SaveRupeeToObject(userId: state.profileData.userId ?? ''));
-                        // context.read<RupeeMonthlyDataBloc>().add(RupeeMonthlyData(month: DateTime.now().month, year: DateTime.now().year, userId: state.profileData.userId ?? ''));
-                        context.pushReplacementNamed(AppRoute.dashboardPage.name);
-                      }
-                    },
-                    builder: (context, state) {
-                      return InkWell(
-                        onTap: () {
-                          context.read<UserAuthenticateBloc>().add(UserAuthenticate());
-                        },
-                        child: Container(
-                          height: 50,
-                          width: screenWidth * 0.9,
-                          decoration: BoxDecoration(
-                            border: Border.all(color: kWhite),
-                            color: state.isLoading ? kBlack : kWhite,
-                            borderRadius: BorderRadius.circular(30)
-                          ),
-                          child: state.isLoading ? const Center(child: SizedBox(height: 30, width: 30, child: CircularProgressIndicator(color: kWhite,))) 
-                          : Center(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SvgPicture.asset(
-                                  IconConstants().google,
-                                  height: 32,
-                                  width: 32,
-                                ),
-                                gapW10,
-                                const Text(
-                                  "Login with Google",
-                                  style: TextStyle(
-                                    color: kBlack,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
-                      // ElevatedButton.icon(
-                      //   onPressed: () {
-                      //     context
-                      //         .read<UserAuthenticateBloc>()
-                      //         .add(UserAuthenticate());
-                      //   },
-                      //   icon: SvgPicture.asset(
-                      //     IconConstants().google,
-                      //     height: 32,
-                      //     width: 32,
-                      //   ),
-                      //   label: state.isLoading ? SizedBox(height: 60, child: const CircularProgressIndicator(color: kBlack,))
-                      //   : const Text(
-                      //     "Login with Google",
-                      //     style: TextStyle(
-                      //         color: kBlack,
-                      //         fontWeight: FontWeight.bold,
-                      //         fontSize: 18),
-                      //   ),
-                      //   style: ElevatedButton.styleFrom(
-                      //     backgroundColor: kWhite,
-                      //     minimumSize: Size(screenWidth * 0.9, 50),
-                      //     shape: RoundedRectangleBorder(
-                      //       borderRadius: BorderRadius.circular(24),
-                      //     ),
-                      //   ),
-                      // );
-                    },
-                  ),
-                  const SizedBox(height: 16),
-                ],
+              const SizedBox(height: 8),
+              Text(
+                "Sign in for free to track your expenses",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.grey[300],
+                    fontWeight: FontWeight.w600),
               ),
+              SizedBox(
+                height: screenHeight * 0.08,
+              ),
+              BlocConsumer<UserAuthenticateBloc, UserAuthenticateBlocState>(
+                listener: (context, state) {
+                  if(state is UserAuthenticateBlocLoaded) {
+                    context.read<SaveRupeeToObjectBloc>().add(SaveRupeeToObject(userId: state.profileData.userId ?? ''));
+                    context.pop();
+                    // context.read<RupeeMonthlyDataBloc>().add(RupeeMonthlyData(month: DateTime.now().month, year: DateTime.now().year, userId: state.profileData.userId ?? ''));
+                    // context.pushReplacementNamed(AppRoute.dashboardPage.name);
+                  }
+                },
+                builder: (context, state) {
+                  return InkWell(
+                    onTap: () {
+                      context.read<UserAuthenticateBloc>().add(UserAuthenticate());
+                    },
+                    child: Container(
+                      height: 50,
+                      width: screenWidth * 0.9,
+                      decoration: BoxDecoration( 
+                        border: Border.all(color: kWhite),
+                        color: state.isLoading ? kBlack : kWhite,
+                        borderRadius: BorderRadius.circular(30)
+                      ),
+                      child: state.isLoading ? const Center(child: SizedBox(height: 30, width: 30, child: CircularProgressIndicator(color: kWhite,))) 
+                      : Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset(
+                              IconConstants().google,
+                              height: 32,
+                              width: 32,
+                            ),
+                            gapW10,
+                            const Text(
+                              "Login with Google",
+                              style: TextStyle(
+                                color: kBlack,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(height: 16),
             ],
           ),
         ],

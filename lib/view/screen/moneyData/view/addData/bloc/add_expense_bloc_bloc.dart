@@ -3,6 +3,7 @@ import 'package:trackexpense/core/state/data_state.dart';
 import 'package:trackexpense/data/local/rupeeMate/rupeemate_object_repo.dart';
 import 'package:trackexpense/data/remote/rupeemate/models/rupeemate_model.dart';
 import 'package:trackexpense/data/remote/rupeemate/rupeemate_repo.dart';
+import 'package:trackexpense/utils/internet_checker.dart';
 import 'package:trackexpense/utils/utils.dart';
 
 part 'add_expense_bloc_event.dart';
@@ -14,8 +15,9 @@ class AddExpenseBlocBloc extends Bloc<AddExpenseBlocEvent, AddExpenseBlocState> 
   AddExpenseBlocBloc({required this.rupeeMateRepository, required this.rupeeObjectRepository}) : super(AddExpenseBlocInitial()) {
     on<AddExpense>((event, emit) async {
       emit(const AddExpenseBlocLoading());
+      bool internetAvailable = await isInternetAvailable();
       String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
-      if(userId.isEmpty) {
+      if(userId.isEmpty || !internetAvailable) {
         await rupeeObjectRepository.setRupeeToObjectBox(rupeeMateModel: event.expenseModel, isSynced: false);
         emit(AddExpenseBlocLoaded(data: event.expenseModel));
       } else {

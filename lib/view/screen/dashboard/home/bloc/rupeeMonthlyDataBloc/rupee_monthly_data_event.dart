@@ -4,6 +4,6 @@ part of 'rupee_monthly_data_bloc.dart';
 sealed class RupeeMonthlyDataBlocEvent {}
 
 class RupeeMonthlyData extends RupeeMonthlyDataBlocEvent {
-
-  RupeeMonthlyData();
+  final bool? isLogOut;
+  RupeeMonthlyData({this.isLogOut});
 }

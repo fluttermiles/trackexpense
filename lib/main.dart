@@ -67,6 +67,7 @@ void main() async {
         BlocProvider(
           create: (context) => FetchProfileDataBloc(
             profileObjectRepository: profileObjectRepository,
+            rupeeObjectRepository: rupeeObjectRepository,
             profileDataBloc: profileDataBloc,
           ),
         ),

@@ -32,7 +32,7 @@ class _SplashViewState extends State<SplashView> {
           context.pushReplacementNamed(AppRoute.dashboardPage.name);
         }
         if(state is FetchProfileBlocError){
-          context.pushReplacementNamed(AppRoute.signInPage.name);
+          context.pushReplacementNamed(AppRoute.dashboardPage.name);
         }
       },
       child: Scaffold(

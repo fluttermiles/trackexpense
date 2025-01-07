@@ -12,4 +12,6 @@ export 'package:trackexpense/utils/logger.dart';
 export 'package:lottie/lottie.dart';
 export 'package:uuid/uuid.dart';
 export 'package:google_mobile_ads/google_mobile_ads.dart';
+export 'package:cached_network_image/cached_network_image.dart';
+
 

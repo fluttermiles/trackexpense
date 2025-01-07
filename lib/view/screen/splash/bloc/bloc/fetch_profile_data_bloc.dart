@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:trackexpense/core/state/data_state.dart';
 import 'package:trackexpense/data/local/profile/profile_object_repo.dart';
+import 'package:trackexpense/data/local/rupeeMate/rupeemate_object_repo.dart';
 import 'package:trackexpense/data/remote/profile/models/profile_model.dart';
+import 'package:trackexpense/utils/internet_checker.dart';
 import 'package:trackexpense/utils/utils.dart';
 import 'package:trackexpense/view/screen/dashboard/profile/bloc/profileData/profile_data_bloc.dart';
 
@@ -10,13 +12,18 @@ part 'fetch_profile_data_state.dart';
 
 class FetchProfileDataBloc extends Bloc<FetchProfileBlocEvent, FetchProfileBlocState> {
   final ProfileObjectRepository profileObjectRepository;
+  final RupeeObjectRepository rupeeObjectRepository;
   final ProfileDataBloc profileDataBloc;
 
-  FetchProfileDataBloc({required this.profileObjectRepository, required this.profileDataBloc}) : super(FetchProfileBlocInitial()) {
+  FetchProfileDataBloc({required this.profileObjectRepository, required this.rupeeObjectRepository, required this.profileDataBloc}) : super(FetchProfileBlocInitial()) {
     on<FetchProfileData>((event, emit) async {
       String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
+      bool internetAvailable = await isInternetAvailable();
       if(userId.isNotEmpty){
         emit(FetchProfileBlocLoading());
+        if(internetAvailable){
+          await rupeeObjectRepository.syncUnsyncedRupeeDataInIsolate();
+        }
         final response = await profileObjectRepository.getProfileFromObjectBox(userId: userId);
         switch(response) {
           case DataStateSuccess<ProfileModel>(data: var data):
