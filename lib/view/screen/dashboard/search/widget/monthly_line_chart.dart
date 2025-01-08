@@ -49,33 +49,52 @@ class MonthlyLineChart extends StatelessWidget {
     );
   }
 
+
   Map<String, List<FlSpot>> groupDataByDay(List<RupeeMateModel> data) {
-    Map<String, List<FlSpot>> groupedData = {
-      'Credit': [],
-      'Expense': [],
-      'Debt': [],
-      'Lend': [],
+    // 1. Prepare a Map of type -> (Map<day, totalAmount>)
+    final Map<String, Map<double, double>> sumsByTypeAndDay = {
+      'Credit': {},
+      'Expense': {},
+      'Debt': {},
+      'Lend': {},
     };
 
-    for (RupeeMateModel item in data) {
-      if (item.day != null && item.amount != null) {
-        final day = item.day?.toDouble();
-        final amount = item.amount;
+    // 2. Accumulate amounts for each (type, day)
+    for (final item in data) {
+      final String? type = item.type;
+      final double? day = item.day?.toDouble();
+      final double? amount = item.amount;
 
-        if ((day ?? 0) > 0 && (amount ?? 0) >= 0) {
-          groupedData[item.type]?.add(FlSpot(day ?? 1, amount ?? 1));
-        }
-      }
+      // Skip invalid or missing values
+      if (type == null || day == null || amount == null) continue;
+
+      // If there's a new or unknown type, optionally handle it:
+      sumsByTypeAndDay.putIfAbsent(type, () => {});
+
+      // Accumulate amount by day
+      sumsByTypeAndDay[type]![day] = (sumsByTypeAndDay[type]![day] ?? 0) + amount;
     }
 
-    groupedData.forEach((type, spots) {
-      if (spots.isEmpty) {
-        groupedData[type] = [FlSpot(0, 0)];
+    // 3. Convert the sums into a final Map<String, List<FlSpot>>
+    final Map<String, List<FlSpot>> groupedData = {};
+
+    sumsByTypeAndDay.forEach((type, dayToSumMap) {
+      // If a particular type has no entries, default it to [FlSpot(0, 0)]
+      if (dayToSumMap.isEmpty) {
+        groupedData[type] = [const FlSpot(0, 0)];
+      } else {
+        groupedData[type] = dayToSumMap.entries
+            .map((entry) => FlSpot(entry.key, entry.value))
+            .toList()
+          // You can optionally sort them by day here
+          ..sort((a, b) => a.x.compareTo(b.x))
+          ;
       }
     });
 
     return groupedData;
   }
+
 
   List<LineChartBarData> createLineBars(Map<String, List<FlSpot>> groupedData) {
     return [
