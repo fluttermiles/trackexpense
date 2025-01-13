@@ -14,6 +14,7 @@ class RupeeMonthlyDataBloc extends Bloc<RupeeMonthlyDataBlocEvent, RupeeMonthlyD
     on<RupeeMonthlyData>((event, emit) async {
       emit(RupeeMonthlyDataBlocLoading());
       if(event.isLogOut ?? false) {
+        rupeeObjectRepository.removeAllRupeeFromObjectBox();
         expenseCreditBloc.add(ExpenseCreditData(month: DateTime.now().month, year: DateTime.now().year, rupeeMateList: []));
         emit(RupeeMonthlyDataBlocLoaded(data: []));
         return;

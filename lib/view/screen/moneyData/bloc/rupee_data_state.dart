@@ -44,6 +44,46 @@ extension RupeeDataBlocExtension on RupeeDataBlocState {
     }
   }
 
+  double get expense {
+    switch(this){
+      case RupeeDataBlocLoaded(data: final data):
+        return data.where((item) => item.type == 'Expense')
+          .fold(0.0, (sum, item) => sum + (item.amount ?? 0.0));
+      default:
+        return 0.0;
+    }
+  }
+
+  double get credit {
+    switch(this){
+      case RupeeDataBlocLoaded(data: final data):
+        return data.where((item) => item.type == 'Credit')
+          .fold(0.0, (sum, item) => sum + (item.amount ?? 0.0));
+      default:
+        return 0.0;
+    }
+  }
+
+  double get lend {
+    switch(this){
+      case RupeeDataBlocLoaded(data: final data):
+        return data.where((item) => item.type == 'Lend')
+          .fold(0.0, (sum, item) => sum + (item.amount ?? 0.0));
+      default:
+        return 0.0;
+    }
+  }
+
+  double get debt {
+    switch(this){
+      case RupeeDataBlocLoaded(data: final data):
+        return data.where((item) => item.type == 'Debt')
+          .fold(0.0, (sum, item) => sum + (item.amount ?? 0.0));
+      default:
+        return 0.0;
+    }
+  }
+
   bool get isLoading {
     switch(this) {
       case RupeeDataBlocLoading():

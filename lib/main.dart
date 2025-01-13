@@ -4,6 +4,7 @@ import 'package:trackexpense/data/local/profile/profile_object_repo_impl.dart';
 import 'package:trackexpense/data/local/rupeeMate/rupeemate_object_repo_impl.dart';
 import 'package:trackexpense/data/remote/profile/profile_repository_impl.dart';
 import 'package:trackexpense/data/remote/rupeemate/rupeemate_repo_impl.dart';
+import 'package:trackexpense/data/remote/travel/travel_repository_impl.dart';
 import 'package:trackexpense/utils/utils.dart';
 import 'package:trackexpense/view/screen/authenticate/bloc/user_authenticate_bloc.dart';
 import 'package:trackexpense/view/screen/dashboard/home/bloc/expenseCreditBloc/expense_credit_bloc.dart';
@@ -17,6 +18,8 @@ import 'package:trackexpense/view/screen/moneyData/view/addData/bloc/add_expense
 import 'package:trackexpense/view/screen/dashboard/profile/bloc/profileData/profile_data_bloc.dart';
 import 'package:trackexpense/view/screen/moneyMonthlyData/bloc/money_monthly_bloc.dart';
 import 'package:trackexpense/view/screen/splash/bloc/bloc/fetch_profile_data_bloc.dart';
+import 'package:trackexpense/view/screen/travelBudget/addTravel/bloc/add_travel_bloc.dart';
+import 'package:trackexpense/view/screen/travelBudget/travelView/bloc/trave_data_bloc.dart';
 
 
 late ObjectBox objectBox; 
@@ -43,6 +46,7 @@ void main() async {
   final profileObjectRepository = ProfileObjectRepositoryImpl();
   final rupeeObjectRepository = RupeeObjectRepositoryImpl();
   final rupeeMateRepository = RupeeMateRepositoryImpl();
+  final travelRepository = TravelRepositoryImpl();
 
   runApp(
     MultiBlocProvider(
@@ -107,6 +111,12 @@ void main() async {
             rupeeObjectRepository: rupeeObjectRepository, 
             rupeeMonthlyDataBloc: context.read<RupeeMonthlyDataBloc>(),
           ),
+        ),
+        BlocProvider(
+          create: (context) => AddTravelBloc(travelRepository: travelRepository),
+        ),
+        BlocProvider(
+          create: (context) => TravelDataBloc(travelRepository: travelRepository),
         ),
       ],
       child: const MyApp(),

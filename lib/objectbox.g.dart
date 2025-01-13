@@ -14,8 +14,8 @@ import 'package:objectbox/internal.dart'
 import 'package:objectbox/objectbox.dart' as obx;
 import 'package:objectbox_flutter_libs/objectbox_flutter_libs.dart';
 
-import 'rupee_object_data_model.dart';
 import 'profile_object_data_model.dart';
+import 'rupee_object_data_model.dart';
 
 export 'package:objectbox/objectbox.dart'; // so that callers only have to import this file
 
@@ -275,11 +275,17 @@ obx_int.ModelDefinition getObjectBoxModel() {
           object.id = id;
         },
         objectToFB: (RupeeObjectDataModel object, fb.Builder fbb) {
-          final userIdOffset = fbb.writeString(object.userId ?? '');
-          final rupeeIdOffset = fbb.writeString(object.rupeeId ?? '');
-          final titleOffset = fbb.writeString(object.title ?? '');
-          final descriptionOffset = fbb.writeString(object.description ?? '');
-          final typeOffset = fbb.writeString(object.type ?? '');
+          final userIdOffset =
+              object.userId == null ? null : fbb.writeString(object.userId!);
+          final rupeeIdOffset =
+              object.rupeeId == null ? null : fbb.writeString(object.rupeeId!);
+          final titleOffset =
+              object.title == null ? null : fbb.writeString(object.title!);
+          final descriptionOffset = object.description == null
+              ? null
+              : fbb.writeString(object.description!);
+          final typeOffset =
+              object.type == null ? null : fbb.writeString(object.type!);
           fbb.startTable(13);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, userIdOffset);
@@ -299,27 +305,30 @@ obx_int.ModelDefinition getObjectBoxModel() {
         objectFromFB: (obx.Store store, ByteData fbData) {
           final buffer = fb.BufferContext(fbData);
           final rootOffset = buffer.derefObject(0);
+          final dateValue =
+              const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 14);
           final rupeeIdParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGet(buffer, rootOffset, 8, '');
+              .vTableGetNullable(buffer, rootOffset, 8);
           final userIdParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGet(buffer, rootOffset, 6, '');
+              .vTableGetNullable(buffer, rootOffset, 6);
           final titleParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGet(buffer, rootOffset, 10, '');
-          final dateParam = DateTime.fromMillisecondsSinceEpoch(
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 14, 0));
+              .vTableGetNullable(buffer, rootOffset, 10);
+          final dateParam = dateValue == null
+              ? null
+              : DateTime.fromMillisecondsSinceEpoch(dateValue);
           final descriptionParam =
               const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 12, '');
-          final amountParam =
-              const fb.Float64Reader().vTableGet(buffer, rootOffset, 16, 0);
+                  .vTableGetNullable(buffer, rootOffset, 12);
+          final amountParam = const fb.Float64Reader()
+              .vTableGetNullable(buffer, rootOffset, 16);
           final dayParam =
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 18, 0);
+              const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 18);
           final monthParam =
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 20, 0);
+              const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 20);
           final yearParam =
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 22, 0);
+              const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 22);
           final typeParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGet(buffer, rootOffset, 24, '');
+              .vTableGetNullable(buffer, rootOffset, 24);
           final isSyncedParam =
               const fb.BoolReader().vTableGet(buffer, rootOffset, 26, false);
           final object = RupeeObjectDataModel(

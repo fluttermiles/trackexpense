@@ -65,7 +65,7 @@ class _TermsConditionState extends State<TermsCondition> {
             WebViewWidget(controller: _webViewController),
             if (_isLoading)
               const Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(color: kWhite,),
               ),
           ],
         ),

@@ -64,6 +64,7 @@ class _MoneyDataScreenState extends State<MoneyDataScreen> {
                     title: 'Expense',
                     dateTime: widget.selectedDate,
                     items: state.newExpenseData.where((item) => item.type == 'Expense').toList(),
+                    amount: state.expense
                   ),
                   SizedBox(height: 16),
                   state.isLoading ? buildSectionShimmer()
@@ -71,6 +72,7 @@ class _MoneyDataScreenState extends State<MoneyDataScreen> {
                     title: 'Credit',
                     dateTime: widget.selectedDate,
                     items: state.newExpenseData.where((item) => item.type == 'Credit').toList(),
+                    amount: state.credit
                   ),
                   SizedBox(height: 16),
                   state.isLoading ? buildSectionShimmer()
@@ -78,12 +80,14 @@ class _MoneyDataScreenState extends State<MoneyDataScreen> {
                     title: 'Lend',
                     dateTime: widget.selectedDate,
                     items: state.newExpenseData.where((item) => item.type == 'Lend').toList(),
+                    amount: state.lend
                   ),
                   SizedBox(height: 16),
                   buildSection(
                     title: 'Debt',
                     dateTime: widget.selectedDate,
                     items: state.newExpenseData.where((item) => item.type == 'Debt').toList(),
+                    amount: state.debt
                   ),
                 ],
               ),
@@ -93,7 +97,7 @@ class _MoneyDataScreenState extends State<MoneyDataScreen> {
     );
   }
 
-  Widget buildSection({required String title, required DateTime dateTime, required List<RupeeMateModel> items}) {
+  Widget buildSection({required String title, required DateTime dateTime, required List<RupeeMateModel> items, required double amount}) {
     return Container(
       padding: EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -148,13 +152,14 @@ class _MoneyDataScreenState extends State<MoneyDataScreen> {
                 ),
               ),
             )),
-          // items.length < 5 ? const SizedBox() : Divider(color: kWhite, thickness: 0.3,),
-          // items.length < 5 ? const SizedBox() : Row(
-          //   mainAxisAlignment: MainAxisAlignment.center,
-          //   children: [
-          //     Text('View More', style: TextStyle(fontSize: 14, color: kWhite))
-          //   ],
-          // )
+          items.length < 2 ? const SizedBox() : Divider(color: kWhite, thickness: 0.3,),
+          items.length < 2 ? const SizedBox() : Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(capitalize('total'), style: TextStyle(fontSize: 16, color: kWhite)),
+              Text(amount.toString(), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: kWhite))
+            ],
+          )
         ],
       ),
     );

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:line_icons/line_icons.dart';
 import 'package:super_tooltip/super_tooltip.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:trackexpense/utils/app_sizes.dart';
@@ -28,6 +29,7 @@ class _HomeViewState extends State<HomeView> {
   final GlobalKey<ShowCaseWidgetState> showCaseWidgetKey = GlobalKey();
 
   Timer? _debounceTimer;
+  bool isAnimated = true;
 
   void onPageChangedDebounced(DateTime focusedDay, String userId) {
     if (_debounceTimer?.isActive ?? false) {
@@ -82,6 +84,11 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     super.initState();
+    Future.delayed(Duration(milliseconds: 300), () {
+      setState(() {
+        isAnimated = true;
+      });
+    });
     checkFirstLaunch();
     bannerAd.load();
   }
@@ -101,99 +108,139 @@ class _HomeViewState extends State<HomeView> {
           child: Column(
             children: [
               SizedBox(height: 12),
-              Container(
-                padding: EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                    color: kBlack,
-                    borderRadius: BorderRadius.vertical(
-                      bottom: Radius.circular(20),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                          color: const Color.fromARGB(255, 33, 30, 30),
-                          spreadRadius: 1,
-                          blurRadius: 10,
-                          offset: const Offset(0, 3))
-                    ]),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.14,
+                child: Stack(
                   children: [
-                    Row(
-                      children: [
-                        BlocBuilder<ProfileDataBloc, ProfileBlocState>(
-                          builder: (context, state) {
-                            if (state is ProfileBlocLoaded) {
-                              return GestureDetector(
-                                onTap: () { 
-                                  Logger.printError(state.data.toString());
-                                },
-                                child: (state.data.imageUrl?.isNotEmpty ?? false) ? CircleAvatar(
-                                  radius: 30.r,
-                                  backgroundColor: kWhite,
-                                  child: ClipOval(
-                                    child: CachedNetworkImage(
-                                      imageUrl: state.data.imageUrl ?? '',
-                                      fit: BoxFit.cover,
-                                      width: 80.r,
-                                      height: 80.r,
-                                      placeholder: (context, url) => Center(
-                                        child: Icon(
-                                          Icons.person,
-                                          size: 56,
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                      errorWidget: (context, url, error) => Icon(
-                                        Icons.person,
-                                        size: 56,
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                  ),
-                                ) : CircleAvatar(
-                                  backgroundColor: kWhite,
-                                  radius: 30.r,
-                                  child: Icon(Icons.person, size: 38,),
-                                ),
-                              );
-                            } else {
-                              return CircleAvatar(
-                                backgroundColor: kWhite,
-                                radius: 30.r,
-                                child: Icon(Icons.person, size: 38,),
-                              );
-                            }
-                          },
-                        ),
-                        SizedBox(width: 16),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            BlocBuilder<ProfileDataBloc, ProfileBlocState>(
-                              builder: (context, state) {
-                                return Text(
-                                  'Hello, ${state.profileData.name ?? 'Rupee Mate'}',
-                                  style: GoogleFonts.baskervville(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                );
-                              },
-                            ),
-                            SizedBox(height: 4),
-                            Text(
-                              'Manage your expenses and stay on track.',
-                              style: TextStyle(
-                                  color: Colors.white70,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600),
-                            ),
+                    AnimatedPositioned(
+                      duration: Duration(milliseconds: 1200),
+                      curve: Curves.easeOut,
+                      top: isAnimated ? 0 : -100,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        padding: EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: kBlack,
+                          borderRadius: BorderRadius.vertical(
+                            bottom: Radius.circular(20),
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color.fromARGB(255, 33, 30, 30),
+                              spreadRadius: 1,
+                              blurRadius: 10,
+                              offset: Offset(0, 3),
+                            )
                           ],
                         ),
-                      ],
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                BlocBuilder<ProfileDataBloc, ProfileBlocState>(
+                                  builder: (context, state) {
+                                    if (state is ProfileBlocLoaded) {
+                                      return GestureDetector(
+                                        onTap: () {
+                                          Logger.printError(state.data.toString());
+                                        },
+                                        child: (state.data.imageUrl?.isNotEmpty ?? false)
+                                            ? CircleAvatar(
+                                                radius: 30.r,
+                                                backgroundColor: kWhite,
+                                                child: ClipOval(
+                                                  child: CachedNetworkImage(
+                                                    imageUrl: state.data.imageUrl ?? '',
+                                                    fit: BoxFit.cover,
+                                                    width: 80.r,
+                                                    height: 80.r,
+                                                    placeholder: (context, url) => Center(
+                                                      child: Icon(
+                                                        Icons.person,
+                                                        size: 56,
+                                                        color: Colors.grey,
+                                                      ),
+                                                    ),
+                                                    errorWidget: (context, url, error) =>
+                                                        Icon(
+                                                      Icons.person,
+                                                      size: 56,
+                                                      color: Colors.grey,
+                                                    ),
+                                                  ),
+                                                ),
+                                              )
+                                            : CircleAvatar(
+                                                backgroundColor: kWhite,
+                                                radius: 30.r,
+                                                child: Icon(
+                                                  Icons.person,
+                                                  size: 38,
+                                                ),
+                                              ),
+                                      );
+                                    } else {
+                                      return CircleAvatar(
+                                        backgroundColor: kWhite,
+                                        radius: 30.r,
+                                        child: Icon(
+                                          Icons.person,
+                                          size: 38,
+                                        ),
+                                      );
+                                    }
+                                  },
+                                ),
+                                SizedBox(width: 16),
+                                SizedBox(
+                                  width: MediaQuery.of(context).size.width * 0.6,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      BlocBuilder<ProfileDataBloc, ProfileBlocState>(
+                                        builder: (context, state) {
+                                          return Text(
+                                            'Hello, ${state.profileData.name ?? 'Rupee Mate'}',
+                                            style: GoogleFonts.baskervville(
+                                              color: Colors.white,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                      SizedBox(height: 4),
+                                      Text(
+                                        'Manage your expenses and stay on track.',
+                                        style: TextStyle(
+                                          color: Colors.white70,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Spacer(),
+                                GestureDetector(
+                                  onTap: () {
+                                    context.pushNamed(AppRoute.notificationScreen.name);
+                                  },
+                                  child: Icon(
+                                    LineIcons.bell,
+                                    color: kWhite,
+                                  ),
+                                )
+                              ],
+                            ),
+                            SizedBox(height: 12),
+                          ],
+                        ),
+                      ),
                     ),
-                    SizedBox(height: 12),
                   ],
                 ),
               ),
@@ -441,7 +488,7 @@ class _HomeViewState extends State<HomeView> {
               ),
             ],
           ),
-        ),
+        )
       ),
     );
   }

@@ -171,7 +171,7 @@ class RupeeObjectRepositoryImpl implements RupeeObjectRepository {
       try {
         RupeeMateModel rupeeMateModel = RupeeMateModel(
           id: rupeeObject.rupeeId,
-          userId: rupeeObject.userId,
+          userId: userId,
           title: rupeeObject.title,
           description: rupeeObject.description,
           amount: rupeeObject.amount,

@@ -33,7 +33,7 @@ class _ProfileViewState extends State<ProfileView> {
     },
     {
       "icon": Icons.question_mark_outlined,
-      "title": "FAQs",
+      "title": "FeedBack",
     },
     {
       "icon": Icons.logout,
@@ -195,12 +195,16 @@ class _ProfileViewState extends State<ProfileView> {
                           : InkWell(
                               onTap: () async {
                                 if (index == 0) {
-                                  context
-                                      .pushNamed(AppRoute.privacyPolicy.name);
+                                  context.pushNamed(AppRoute.privacyPolicy.name);
                                 }
                                 if (index == 1) {
-                                  context
-                                      .pushNamed(AppRoute.termsCondition.name);
+                                  context.pushNamed(AppRoute.termsCondition.name);
+                                }
+                                if (index == 2) {
+                                  context.read<RupeeMonthlyDataBloc>().add(RupeeMonthlyData(isLogOut: true));
+                                }
+                                if (index == 3) {
+                                  context.pushNamed(AppRoute.feedback.name);
                                 }
                                 if (index == 4) {
                                   if (userId.isEmpty) {
@@ -259,11 +263,14 @@ class _ProfileViewState extends State<ProfileView> {
                               child: Container(
                                 height: 60,
                                 decoration: BoxDecoration(
-                                  color: kWhite,
+                                  color: kBlack,
                                   borderRadius: BorderRadius.circular(12),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: Colors.grey.withOpacity(0.3),
+                                      color: Color.fromARGB(255, 54, 52, 52),
+                                      offset: Offset(3, 0),
+                                      blurRadius: 4,
+                                      spreadRadius: 1,
                                     ),
                                   ],
                                 ),
@@ -274,20 +281,16 @@ class _ProfileViewState extends State<ProfileView> {
                                       height: 40,
                                       width: 40,
                                       decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          border: Border.all(
-                                              color: kBlack, width: 2)),
+                                          borderRadius: BorderRadius.circular(8),
+                                          border: Border.all(color: kWhite, width: 2)),
                                       child: Icon(index == 4 && userId.isEmpty
                                           ? Icons.login
-                                          : tileNames[index]['icon']),
+                                          : tileNames[index]['icon'], color: kWhite,),
                                     ),
                                     gapW16,
                                     Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         Text(
                                           index == 4 && userId.isEmpty
@@ -295,7 +298,7 @@ class _ProfileViewState extends State<ProfileView> {
                                               : tileNames[index]['title'],
                                           style: GoogleFonts.poppins(
                                               fontSize: 20,
-                                              color: kBlack,
+                                              color: kWhite,
                                               fontWeight: FontWeight.bold),
                                         ),
                                       ],

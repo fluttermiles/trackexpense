@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:trackexpense/utils/app_sizes.dart';
 import 'package:trackexpense/utils/colors.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-class PrivacyPolicy extends StatefulWidget {
-  const PrivacyPolicy({super.key});
+class FAQPage extends StatefulWidget {
+  const FAQPage({super.key});
 
   @override
-  State<PrivacyPolicy> createState() => _PrivacyPolicyState();
+  State<FAQPage> createState() => _FAQPageState();
 }
 
-class _PrivacyPolicyState extends State<PrivacyPolicy> {
+class _FAQPageState extends State<FAQPage> {
 
   late final WebViewController _webViewController;
   bool _isLoading = true;
@@ -38,7 +39,7 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
             debugPrint('Web resource error: ${error.description}');
           },
           onNavigationRequest: (NavigationRequest request) {
-            const String allowedUrl = 'https://www.rupeemate.in/privacy-policy';
+            const String allowedUrl = 'https://www.rupeemate.in/feedback';
             if (request.url == allowedUrl) {
               return NavigationDecision.navigate;
             }
@@ -47,7 +48,7 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
           },
         ),
       )
-      ..loadRequest(Uri.parse('https://www.rupeemate.in/privacy-policy'));
+      ..loadRequest(Uri.parse('https://www.rupeemate.in/feedback'));
     super.initState();
   }
   @override
@@ -57,19 +58,32 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
         backgroundColor: kBlack,
         appBar: AppBar(
           backgroundColor: kBlack,
-          title: Text('Privacy Policy', style: TextStyle(color: kWhite),),
+          title: Text(
+            'FeedBack',
+            style: TextStyle(color: kWhite),
+          ),
           centerTitle: true,
         ),
-        body: Stack(
+        body: Column(
           children: [
-            WebViewWidget(controller: _webViewController),
-            if (_isLoading)
-              const Center(
-                child: CircularProgressIndicator(color: kWhite,),
+            Expanded(
+              child: Stack(
+                children: [
+                  WebViewWidget(controller: _webViewController),
+                  if (_isLoading)
+                    const Center(
+                      child: CircularProgressIndicator(
+                        color: kWhite,
+                      ),
+                    ),
+                ],
               ),
+            ),
+            gapH8
           ],
         ),
       ),
     );
   }
+
 }

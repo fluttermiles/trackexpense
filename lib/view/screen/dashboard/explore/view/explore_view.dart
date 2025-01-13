@@ -1,0 +1,82 @@
+import 'package:line_icons/line_icons.dart';
+import 'package:trackexpense/utils/app_sizes.dart';
+import 'package:trackexpense/utils/colors.dart';
+import 'package:trackexpense/utils/utils.dart';
+import 'package:trackexpense/view/screen/dashboard/profile/bloc/profileData/profile_data_bloc.dart';
+import 'package:trackexpense/view/screen/travelBudget/travelView/bloc/trave_data_bloc.dart';
+
+class ExploreView extends StatefulWidget {
+  const ExploreView({super.key});
+
+  @override
+  State<ExploreView> createState() => _ExploreViewState();
+}
+
+class _ExploreViewState extends State<ExploreView> {
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: kBlack,
+      appBar: AppBar(
+        backgroundColor: kBlack,
+        title: Text(
+          'Explore', 
+          style: GoogleFonts.libreBaskerville(
+            color: kWhite,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        centerTitle: true,
+      ),
+      body: Column(
+        children: [
+          gapH16,
+          Row(
+            children: [
+              BlocBuilder<ProfileDataBloc, ProfileBlocState>(
+                builder: (context, state) {
+                  return GestureDetector(
+                      onTap: () {
+                        context.read<TravelDataBloc>().add(TravelData(userId: state.profileData.userId ?? ''));
+                        context.pushNamed(AppRoute.travelView.name);
+                      },
+                      child: Container(
+                        margin: EdgeInsets.all(16),
+                        width: MediaQuery.of(context).size.width * 0.44,
+                        height: MediaQuery.of(context).size.width * 0.4,
+                        decoration: BoxDecoration(
+                          // border: Border.all(color: kWhite),
+                          color: kBlack,
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                              BoxShadow(
+                                  color: const Color.fromARGB(255, 80, 78, 78),
+                                  spreadRadius: 1,
+                                  blurRadius: 10,
+                                  offset: const Offset(0, 3))
+                            ]
+                        ),
+                        child: Center(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(LineIcons.plane, color: kWhite, size: 40,),
+                              Text(
+                                'Travel Budget',
+                                style: TextStyle(color: kWhite, fontSize: 18, fontWeight: FontWeight.bold),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                },
+              )
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}

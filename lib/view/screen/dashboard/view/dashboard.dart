@@ -3,8 +3,8 @@ import 'package:trackexpense/utils/colors.dart';
 import 'package:trackexpense/utils/utils.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:trackexpense/view/screen/dashboard/explore/view/explore_view.dart';
 import 'package:trackexpense/view/screen/dashboard/home/view/home_view.dart';
-import 'package:trackexpense/view/screen/dashboard/notification/view/notification_page.dart';
 import 'package:trackexpense/view/screen/dashboard/profile/view/profile_view.dart';
 import 'package:trackexpense/view/screen/dashboard/search/view/search_view.dart';
 
@@ -23,7 +23,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
   List<Widget> pages = [
     ShowCaseWidget(builder: (context) => HomeView()),
     SearchView(),
-    NotificationPage(),
+    ExploreView(),
     ProfileView()
   ];
 
@@ -76,8 +76,8 @@ class _DashBoardPageState extends State<DashBoardPage> {
                   text: 'Search',
                 ),
                 GButton(
-                  icon: LineIcons.bell,
-                  text: 'Notifications',
+                  icon: LineIcons.plane,
+                  text: 'Explore',
                 ),
                 GButton(
                   icon: LineIcons.user,

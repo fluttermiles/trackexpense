@@ -1,4 +1,5 @@
 import 'package:trackexpense/core/image_constants.dart';
+import 'package:trackexpense/utils/box_shadow.dart';
 import 'package:trackexpense/utils/colors.dart';
 import 'package:trackexpense/utils/utils.dart';
 
@@ -22,6 +23,29 @@ class _NotificationPageState extends State<NotificationPage> {
             color: kWhite,
             fontWeight: FontWeight.bold,
           ),
+        ),
+        leading: Row(
+          children: [
+            const SizedBox(
+              width: 16,
+            ),
+            GestureDetector(
+              onTap: () {
+                context.pop();
+              },
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                    color: kBlack,
+                    borderRadius: BorderRadius.circular(100),
+                    boxShadow: [customBoxShadow()]),
+                child: const Icon(
+                  Icons.arrow_back_ios,
+                  color: kWhite,
+                ),
+              ),
+            ),
+          ],
         ),
         centerTitle: true,
       ),

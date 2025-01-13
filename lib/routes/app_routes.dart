@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:trackexpense/data/remote/travel/models/travel_model.dart';
+import 'package:trackexpense/view/screen/faqs/faq_view.dart';
+import 'package:trackexpense/view/screen/notification/view/notification_page.dart';
 import 'package:trackexpense/view/screen/dashboard/view/dashboard.dart';
 import 'package:trackexpense/view/screen/authenticate/view/signin.dart';
 import 'package:trackexpense/view/screen/moneyData/view/money_data_screen.dart';
@@ -7,6 +10,9 @@ import 'package:trackexpense/view/screen/moneyMonthlyData/view/money_data_screen
 import 'package:trackexpense/view/screen/privacyPolicy/privacy_policy.dart';
 import 'package:trackexpense/view/screen/splash/view/splash_view.dart';
 import 'package:trackexpense/view/screen/termsConsdition/terms_condition.dart';
+import 'package:trackexpense/view/screen/travelBudget/addTravel/view/add_travel_view.dart';
+import 'package:trackexpense/view/screen/travelBudget/travelDetailView/view/travel_detail_view.dart';
+import 'package:trackexpense/view/screen/travelBudget/travelView/view/travel_view.dart';
 // import 'package:trackexpense/view/screen/splash/view/splash_view.dart';
 
 enum AppRoute {
@@ -16,7 +22,12 @@ enum AppRoute {
   dashboardPage,
   moneyMonthlyScreen,
   privacyPolicy,
-  termsCondition
+  termsCondition,
+  travelView,
+  travelDetailView,
+  addTravelData,
+  notificationScreen,
+  feedback
 }
 
 final GoRouter router = GoRouter(
@@ -53,6 +64,34 @@ final GoRouter router = GoRouter(
       builder: (context, state) => const PrivacyPolicy(),
     ),
     GoRoute(
+      name: AppRoute.notificationScreen.name,
+      path: '/notificationScreen',
+      builder: (context, state) => const NotificationPage(),
+    ),
+    GoRoute(
+      name: AppRoute.travelView.name,
+      path: '/travelView',
+      builder: (context, state) => const TravelView(),
+    ),
+    GoRoute(
+      name: AppRoute.travelDetailView.name,
+      path: '/travelDetailView',
+      builder: (context, state) {
+        final TravelModel data = state.extra! as TravelModel;
+        return TravelDetailView(travelModel: data,);
+      },
+    ),
+    GoRoute(
+      name: AppRoute.addTravelData.name,
+      path: '/addTravelData',
+      builder: (context, state) => const AddTravelView(),
+    ),
+    GoRoute(
+      name: AppRoute.feedback.name,
+      path: '/feedback',
+      builder: (context, state) => const FAQPage(),
+    ),
+    GoRoute(
       name: AppRoute.moneyDataScreen.name,
       path: '/moneyDataScreen',
       builder: (context, state) {
@@ -69,3 +108,4 @@ final GoRouter router = GoRouter(
     );
   },
 );
+
