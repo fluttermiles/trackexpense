@@ -36,6 +36,10 @@ mixin _$TravelMateModel {
   int? get month => throw _privateConstructorUsedError;
   @JsonKey(name: "year")
   int? get year => throw _privateConstructorUsedError;
+  @JsonKey(name: "amout")
+  double? get amount => throw _privateConstructorUsedError;
+  @JsonKey(name: "type")
+  String? get type => throw _privateConstructorUsedError;
   @JsonKey(name: "description")
   String? get description => throw _privateConstructorUsedError;
 
@@ -64,6 +68,8 @@ abstract class $TravelMateModelCopyWith<$Res> {
       @JsonKey(name: "day") int? day,
       @JsonKey(name: "month") int? month,
       @JsonKey(name: "year") int? year,
+      @JsonKey(name: "amout") double? amount,
+      @JsonKey(name: "type") String? type,
       @JsonKey(name: "description") String? description});
 }
 
@@ -90,6 +96,8 @@ class _$TravelMateModelCopyWithImpl<$Res, $Val extends TravelMateModel>
     Object? day = freezed,
     Object? month = freezed,
     Object? year = freezed,
+    Object? amount = freezed,
+    Object? type = freezed,
     Object? description = freezed,
   }) {
     return _then(_value.copyWith(
@@ -125,6 +133,14 @@ class _$TravelMateModelCopyWithImpl<$Res, $Val extends TravelMateModel>
           ? _value.year
           : year // ignore: cast_nullable_to_non_nullable
               as int?,
+      amount: freezed == amount
+          ? _value.amount
+          : amount // ignore: cast_nullable_to_non_nullable
+              as double?,
+      type: freezed == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String?,
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -150,6 +166,8 @@ abstract class _$$TravelMateModelImplCopyWith<$Res>
       @JsonKey(name: "day") int? day,
       @JsonKey(name: "month") int? month,
       @JsonKey(name: "year") int? year,
+      @JsonKey(name: "amout") double? amount,
+      @JsonKey(name: "type") String? type,
       @JsonKey(name: "description") String? description});
 }
 
@@ -174,6 +192,8 @@ class __$$TravelMateModelImplCopyWithImpl<$Res>
     Object? day = freezed,
     Object? month = freezed,
     Object? year = freezed,
+    Object? amount = freezed,
+    Object? type = freezed,
     Object? description = freezed,
   }) {
     return _then(_$TravelMateModelImpl(
@@ -209,6 +229,14 @@ class __$$TravelMateModelImplCopyWithImpl<$Res>
           ? _value.year
           : year // ignore: cast_nullable_to_non_nullable
               as int?,
+      amount: freezed == amount
+          ? _value.amount
+          : amount // ignore: cast_nullable_to_non_nullable
+              as double?,
+      type: freezed == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String?,
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -229,6 +257,8 @@ class _$TravelMateModelImpl implements _TravelMateModel {
       @JsonKey(name: "day") this.day,
       @JsonKey(name: "month") this.month,
       @JsonKey(name: "year") this.year,
+      @JsonKey(name: "amout") this.amount,
+      @JsonKey(name: "type") this.type,
       @JsonKey(name: "description") this.description});
 
   factory _$TravelMateModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -259,12 +289,18 @@ class _$TravelMateModelImpl implements _TravelMateModel {
   @JsonKey(name: "year")
   final int? year;
   @override
+  @JsonKey(name: "amout")
+  final double? amount;
+  @override
+  @JsonKey(name: "type")
+  final String? type;
+  @override
   @JsonKey(name: "description")
   final String? description;
 
   @override
   String toString() {
-    return 'TravelMateModel(userId: $userId, travelId: $travelId, id: $id, title: $title, date: $date, day: $day, month: $month, year: $year, description: $description)';
+    return 'TravelMateModel(userId: $userId, travelId: $travelId, id: $id, title: $title, date: $date, day: $day, month: $month, year: $year, amount: $amount, type: $type, description: $description)';
   }
 
   @override
@@ -281,6 +317,8 @@ class _$TravelMateModelImpl implements _TravelMateModel {
             (identical(other.day, day) || other.day == day) &&
             (identical(other.month, month) || other.month == month) &&
             (identical(other.year, year) || other.year == year) &&
+            (identical(other.amount, amount) || other.amount == amount) &&
+            (identical(other.type, type) || other.type == type) &&
             (identical(other.description, description) ||
                 other.description == description));
   }
@@ -288,7 +326,7 @@ class _$TravelMateModelImpl implements _TravelMateModel {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, userId, travelId, id, title,
-      date, day, month, year, description);
+      date, day, month, year, amount, type, description);
 
   /// Create a copy of TravelMateModel
   /// with the given fields replaced by the non-null parameter values.
@@ -317,6 +355,8 @@ abstract class _TravelMateModel implements TravelMateModel {
           @JsonKey(name: "day") final int? day,
           @JsonKey(name: "month") final int? month,
           @JsonKey(name: "year") final int? year,
+          @JsonKey(name: "amout") final double? amount,
+          @JsonKey(name: "type") final String? type,
           @JsonKey(name: "description") final String? description}) =
       _$TravelMateModelImpl;
 
@@ -347,6 +387,12 @@ abstract class _TravelMateModel implements TravelMateModel {
   @override
   @JsonKey(name: "year")
   int? get year;
+  @override
+  @JsonKey(name: "amout")
+  double? get amount;
+  @override
+  @JsonKey(name: "type")
+  String? get type;
   @override
   @JsonKey(name: "description")
   String? get description;

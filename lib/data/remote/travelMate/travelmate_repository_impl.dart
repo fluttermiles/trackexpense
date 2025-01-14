@@ -12,7 +12,9 @@ class TravelMateRepositoryImpl implements TravelMateRepository {
   Future<DataState<List<TravelMateModel>>> getTravelMateData({ required String travelId }) async {
     try {
       Query query = FirebaseFirestore.instance
-        .collection(AppConstants.travelCollection);
+        .collection(AppConstants.travelCollection)
+        .doc(travelId)
+        .collection(AppConstants.travelPaymentDataSubcollection);
       final querySnapshot = await query.get();
       final List<TravelMateModel> travelList = querySnapshot.docs
           .map((doc) {

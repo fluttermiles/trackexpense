@@ -31,8 +31,6 @@ class TravelRepositoryImpl implements TravelRepository {
     }
   }
 
-
-
   @override
   Future<DataState<TravelModel>> addNewTravelData({required TravelModel travelModel}) async {
     try {

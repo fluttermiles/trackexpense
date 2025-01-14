@@ -18,6 +18,8 @@ _$TravelMateModelImpl _$$TravelMateModelImplFromJson(
       day: (json['day'] as num?)?.toInt(),
       month: (json['month'] as num?)?.toInt(),
       year: (json['year'] as num?)?.toInt(),
+      amount: (json['amout'] as num?)?.toDouble(),
+      type: json['type'] as String?,
       description: json['description'] as String?,
     );
 
@@ -32,5 +34,7 @@ Map<String, dynamic> _$$TravelMateModelImplToJson(
       'day': instance.day,
       'month': instance.month,
       'year': instance.year,
+      'amout': instance.amount,
+      'type': instance.type,
       'description': instance.description,
     };

@@ -27,6 +27,10 @@ class TravelMateModel with _$TravelMateModel {
         int? month,
         @JsonKey(name: "year")
         int? year,
+        @JsonKey(name: "amout")
+        double? amount,
+        @JsonKey(name: "type")
+        String? type,
         @JsonKey(name: "description")
         String? description,
     }) = _TravelMateModel;
