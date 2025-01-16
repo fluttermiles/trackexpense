@@ -45,13 +45,12 @@ class MonthlyLineChart extends StatelessWidget {
       minX: 1,
       maxX: 31,
       minY: 0,
-      maxY: maxYValue.isFinite ? maxYValue + 10 : 10, // Ensure maxY is finite
+      maxY: maxYValue.isFinite ? maxYValue + 10 : 10,
     );
   }
 
 
   Map<String, List<FlSpot>> groupDataByDay(List<RupeeMateModel> data) {
-    // 1. Prepare a Map of type -> (Map<day, totalAmount>)
     final Map<String, Map<double, double>> sumsByTypeAndDay = {
       'Credit': {},
       'Expense': {},
@@ -59,34 +58,25 @@ class MonthlyLineChart extends StatelessWidget {
       'Lend': {},
     };
 
-    // 2. Accumulate amounts for each (type, day)
     for (final item in data) {
       final String? type = item.type;
       final double? day = item.day?.toDouble();
       final double? amount = item.amount;
 
-      // Skip invalid or missing values
       if (type == null || day == null || amount == null) continue;
-
-      // If there's a new or unknown type, optionally handle it:
       sumsByTypeAndDay.putIfAbsent(type, () => {});
-
-      // Accumulate amount by day
       sumsByTypeAndDay[type]![day] = (sumsByTypeAndDay[type]![day] ?? 0) + amount;
     }
 
-    // 3. Convert the sums into a final Map<String, List<FlSpot>>
     final Map<String, List<FlSpot>> groupedData = {};
 
     sumsByTypeAndDay.forEach((type, dayToSumMap) {
-      // If a particular type has no entries, default it to [FlSpot(0, 0)]
       if (dayToSumMap.isEmpty) {
         groupedData[type] = [const FlSpot(0, 0)];
       } else {
         groupedData[type] = dayToSumMap.entries
             .map((entry) => FlSpot(entry.key, entry.value))
             .toList()
-          // You can optionally sort them by day here
           ..sort((a, b) => a.x.compareTo(b.x))
           ;
       }
@@ -118,34 +108,33 @@ class MonthlyLineChart extends StatelessWidget {
   }
 
   FlTitlesData get titlesData => FlTitlesData(
-        bottomTitles: AxisTitles(
-          sideTitles: bottomTitles,
-        ),
-        leftTitles: AxisTitles(
-          sideTitles: leftTitles(),
-        ),
-        topTitles: const AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
-        ),
-        rightTitles: const AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
-        ),
-      );
+    bottomTitles: AxisTitles(
+      sideTitles: bottomTitles,
+    ),
+    leftTitles: AxisTitles(
+      sideTitles: leftTitles(),
+    ),
+    topTitles: const AxisTitles(
+      sideTitles: SideTitles(showTitles: false),
+    ),
+    rightTitles: const AxisTitles(
+      sideTitles: SideTitles(showTitles: false),
+    ),
+  );
 
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
     const style = TextStyle(color: kWhite, fontWeight: FontWeight.bold, fontSize: 12);
     String text = '';
 
-    // Check for specific x values to display titles
     if (value.toInt() == 1 || value.toInt() == 7 || value.toInt() == 14 || value.toInt() == 21 || value.toInt() == 28) {
       text = value.toInt().toString();
     } else {
-      return Container(); // Return empty container for other values
+      return Container();
     }
 
     return SideTitleWidget(
       axisSide: meta.axisSide,
-      space: 4, // Space between the axis and the title
+      space: 4,
       child: Text(text, style: style),
     );
   }
@@ -153,7 +142,7 @@ class MonthlyLineChart extends StatelessWidget {
   SideTitles get bottomTitles => SideTitles(
         showTitles: true,
         reservedSize: 32,
-        interval: 1, // Ensure the chart iterates over each x-axis value
+        interval: 1,
         getTitlesWidget: bottomTitleWidgets,
       );
 

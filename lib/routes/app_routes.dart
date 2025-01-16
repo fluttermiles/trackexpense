@@ -9,6 +9,8 @@ import 'package:trackexpense/view/screen/moneyData/view/money_data_screen.dart';
 import 'package:trackexpense/view/screen/moneyMonthlyData/view/money_data_screen.dart';
 import 'package:trackexpense/view/screen/privacyPolicy/privacy_policy.dart';
 import 'package:trackexpense/view/screen/splash/view/splash_view.dart';
+import 'package:trackexpense/view/screen/splitWithFriend/addSplitFriend/view/add_split_Friend_view.dart';
+import 'package:trackexpense/view/screen/splitWithFriend/splitFriend/view/split_friend_view.dart';
 import 'package:trackexpense/view/screen/termsConsdition/terms_condition.dart';
 import 'package:trackexpense/view/screen/travelBudget/addTravel/view/add_travel_view.dart';
 import 'package:trackexpense/view/screen/travelBudget/travelDetailView/view/travel_detail_view.dart';
@@ -26,6 +28,8 @@ enum AppRoute {
   travelView,
   travelDetailView,
   addTravelData,
+  splitFriendView,
+  addSplitFriend,
   notificationScreen,
   feedback
 }
@@ -72,6 +76,16 @@ final GoRouter router = GoRouter(
       name: AppRoute.travelView.name,
       path: '/travelView',
       builder: (context, state) => const TravelView(),
+    ),
+    GoRoute(
+      name: AppRoute.splitFriendView.name,
+      path: '/splitFriendView',
+      builder: (context, state) => const SplitFriendView(),
+    ),
+    GoRoute(
+      name: AppRoute.addSplitFriend.name,
+      path: '/addSplitFriend',
+      builder: (context, state) => const AddSplitFriendView(),
     ),
     GoRoute(
       name: AppRoute.travelDetailView.name,
