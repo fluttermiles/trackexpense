@@ -2,8 +2,10 @@ import 'package:flutter/services.dart';
 import 'package:trackexpense/core/object_init.dart';
 import 'package:trackexpense/data/local/profile/profile_object_repo_impl.dart';
 import 'package:trackexpense/data/local/rupeeMate/rupeemate_object_repo_impl.dart';
+import 'package:trackexpense/data/remote/notification/notification_repository_impl.dart';
 import 'package:trackexpense/data/remote/profile/profile_repository_impl.dart';
 import 'package:trackexpense/data/remote/rupeemate/rupeemate_repo_impl.dart';
+import 'package:trackexpense/data/remote/splitFriend/split_friend_repository_impl.dart';
 import 'package:trackexpense/data/remote/travel/travel_repository_impl.dart';
 import 'package:trackexpense/data/remote/travelMate/travelmate_repository_impl.dart';
 import 'package:trackexpense/utils/utils.dart';
@@ -18,7 +20,12 @@ import 'package:trackexpense/view/screen/moneyData/bloc/rupee_data_bloc.dart';
 import 'package:trackexpense/view/screen/moneyData/view/addData/bloc/add_expense_bloc_bloc.dart';
 import 'package:trackexpense/view/screen/dashboard/profile/bloc/profileData/profile_data_bloc.dart';
 import 'package:trackexpense/view/screen/moneyMonthlyData/bloc/money_monthly_bloc.dart';
+import 'package:trackexpense/view/screen/notification/bloc/notification_bloc.dart';
 import 'package:trackexpense/view/screen/splash/bloc/bloc/fetch_profile_data_bloc.dart';
+import 'package:trackexpense/view/screen/splitWithFriend/addMember/bloc/addUserSplitBloc/add_user_split_bloc.dart';
+import 'package:trackexpense/view/screen/splitWithFriend/addMember/bloc/userSearchBloc/user_search_bloc.dart';
+import 'package:trackexpense/view/screen/splitWithFriend/addSplitFriend/bloc/add_split_friend_bloc.dart';
+import 'package:trackexpense/view/screen/splitWithFriend/splitFriend/bloc/split_friend_bloc.dart';
 import 'package:trackexpense/view/screen/travelBudget/addTravel/bloc/add_travel_bloc.dart';
 import 'package:trackexpense/view/screen/travelBudget/addTravelMate/bloc/add_travel_mate_bloc.dart';
 import 'package:trackexpense/view/screen/travelBudget/travelDetailView/bloc/travel_detail_bloc.dart';
@@ -51,6 +58,8 @@ void main() async {
   final rupeeMateRepository = RupeeMateRepositoryImpl();
   final travelRepository = TravelRepositoryImpl();
   final travelMateRepository = TravelMateRepositoryImpl();
+  final splitFriendRepository = SplitFriendRepositoryImpl();
+  final notificationRepository = NotificationRepositoryImpl();
 
   runApp(
     MultiBlocProvider(
@@ -127,6 +136,21 @@ void main() async {
         ),
         BlocProvider(
           create: (context) => TravelDetailBloc(travelMateRepository: travelMateRepository),
+        ),
+        BlocProvider(
+          create: (context) => AddSplitFriendBloc(splitFriendRepository: splitFriendRepository),
+        ),
+        BlocProvider(
+          create: (context) => SplitFriendBloc(splitFriendRepository: splitFriendRepository),
+        ),
+        BlocProvider(
+          create: (context) => UserSearchBloc(profileRepository: profileRepository),
+        ),
+        BlocProvider(
+          create: (context) => AddUserSplitBloc(notificationRepository: notificationRepository),
+        ),
+        BlocProvider(
+          create: (context) => NotificationBloc(notificationRepository: notificationRepository),
         ),
       ],
       child: const MyApp(),

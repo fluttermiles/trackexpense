@@ -24,12 +24,16 @@ mixin _$SplitFriendModel {
   String? get creatorId => throw _privateConstructorUsedError;
   @JsonKey(name: "splitID")
   String? get splitId => throw _privateConstructorUsedError;
+  @JsonKey(name: "totalAmount")
+  double? get totalAmount => throw _privateConstructorUsedError;
   @JsonKey(name: "startDate")
   DateTime? get startDate => throw _privateConstructorUsedError;
   @JsonKey(name: "endDate")
   DateTime? get endDate => throw _privateConstructorUsedError;
   @JsonKey(name: "userList")
   List<String>? get userList => throw _privateConstructorUsedError;
+  @JsonKey(name: "userListDetail")
+  List<UserList>? get userListDetail => throw _privateConstructorUsedError;
   @JsonKey(name: "writerList")
   List<String>? get writerList => throw _privateConstructorUsedError;
   @JsonKey(name: "adminList")
@@ -62,9 +66,11 @@ abstract class $SplitFriendModelCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: "creatorId") String? creatorId,
       @JsonKey(name: "splitID") String? splitId,
+      @JsonKey(name: "totalAmount") double? totalAmount,
       @JsonKey(name: "startDate") DateTime? startDate,
       @JsonKey(name: "endDate") DateTime? endDate,
       @JsonKey(name: "userList") List<String>? userList,
+      @JsonKey(name: "userListDetail") List<UserList>? userListDetail,
       @JsonKey(name: "writerList") List<String>? writerList,
       @JsonKey(name: "adminList") List<String>? adminList,
       @JsonKey(name: "title") String? title,
@@ -90,9 +96,11 @@ class _$SplitFriendModelCopyWithImpl<$Res, $Val extends SplitFriendModel>
   $Res call({
     Object? creatorId = freezed,
     Object? splitId = freezed,
+    Object? totalAmount = freezed,
     Object? startDate = freezed,
     Object? endDate = freezed,
     Object? userList = freezed,
+    Object? userListDetail = freezed,
     Object? writerList = freezed,
     Object? adminList = freezed,
     Object? title = freezed,
@@ -109,6 +117,10 @@ class _$SplitFriendModelCopyWithImpl<$Res, $Val extends SplitFriendModel>
           ? _value.splitId
           : splitId // ignore: cast_nullable_to_non_nullable
               as String?,
+      totalAmount: freezed == totalAmount
+          ? _value.totalAmount
+          : totalAmount // ignore: cast_nullable_to_non_nullable
+              as double?,
       startDate: freezed == startDate
           ? _value.startDate
           : startDate // ignore: cast_nullable_to_non_nullable
@@ -121,6 +133,10 @@ class _$SplitFriendModelCopyWithImpl<$Res, $Val extends SplitFriendModel>
           ? _value.userList
           : userList // ignore: cast_nullable_to_non_nullable
               as List<String>?,
+      userListDetail: freezed == userListDetail
+          ? _value.userListDetail
+          : userListDetail // ignore: cast_nullable_to_non_nullable
+              as List<UserList>?,
       writerList: freezed == writerList
           ? _value.writerList
           : writerList // ignore: cast_nullable_to_non_nullable
@@ -160,9 +176,11 @@ abstract class _$$SplitFriendModelImplCopyWith<$Res>
   $Res call(
       {@JsonKey(name: "creatorId") String? creatorId,
       @JsonKey(name: "splitID") String? splitId,
+      @JsonKey(name: "totalAmount") double? totalAmount,
       @JsonKey(name: "startDate") DateTime? startDate,
       @JsonKey(name: "endDate") DateTime? endDate,
       @JsonKey(name: "userList") List<String>? userList,
+      @JsonKey(name: "userListDetail") List<UserList>? userListDetail,
       @JsonKey(name: "writerList") List<String>? writerList,
       @JsonKey(name: "adminList") List<String>? adminList,
       @JsonKey(name: "title") String? title,
@@ -186,9 +204,11 @@ class __$$SplitFriendModelImplCopyWithImpl<$Res>
   $Res call({
     Object? creatorId = freezed,
     Object? splitId = freezed,
+    Object? totalAmount = freezed,
     Object? startDate = freezed,
     Object? endDate = freezed,
     Object? userList = freezed,
+    Object? userListDetail = freezed,
     Object? writerList = freezed,
     Object? adminList = freezed,
     Object? title = freezed,
@@ -205,6 +225,10 @@ class __$$SplitFriendModelImplCopyWithImpl<$Res>
           ? _value.splitId
           : splitId // ignore: cast_nullable_to_non_nullable
               as String?,
+      totalAmount: freezed == totalAmount
+          ? _value.totalAmount
+          : totalAmount // ignore: cast_nullable_to_non_nullable
+              as double?,
       startDate: freezed == startDate
           ? _value.startDate
           : startDate // ignore: cast_nullable_to_non_nullable
@@ -217,6 +241,10 @@ class __$$SplitFriendModelImplCopyWithImpl<$Res>
           ? _value._userList
           : userList // ignore: cast_nullable_to_non_nullable
               as List<String>?,
+      userListDetail: freezed == userListDetail
+          ? _value._userListDetail
+          : userListDetail // ignore: cast_nullable_to_non_nullable
+              as List<UserList>?,
       writerList: freezed == writerList
           ? _value._writerList
           : writerList // ignore: cast_nullable_to_non_nullable
@@ -251,9 +279,11 @@ class _$SplitFriendModelImpl implements _SplitFriendModel {
   const _$SplitFriendModelImpl(
       {@JsonKey(name: "creatorId") this.creatorId,
       @JsonKey(name: "splitID") this.splitId,
+      @JsonKey(name: "totalAmount") this.totalAmount,
       @JsonKey(name: "startDate") this.startDate,
       @JsonKey(name: "endDate") this.endDate,
       @JsonKey(name: "userList") final List<String>? userList,
+      @JsonKey(name: "userListDetail") final List<UserList>? userListDetail,
       @JsonKey(name: "writerList") final List<String>? writerList,
       @JsonKey(name: "adminList") final List<String>? adminList,
       @JsonKey(name: "title") this.title,
@@ -261,6 +291,7 @@ class _$SplitFriendModelImpl implements _SplitFriendModel {
       @JsonKey(name: "createdAt") this.createdAt,
       @JsonKey(name: "updatedAt") this.updatedAt})
       : _userList = userList,
+        _userListDetail = userListDetail,
         _writerList = writerList,
         _adminList = adminList;
 
@@ -274,6 +305,9 @@ class _$SplitFriendModelImpl implements _SplitFriendModel {
   @JsonKey(name: "splitID")
   final String? splitId;
   @override
+  @JsonKey(name: "totalAmount")
+  final double? totalAmount;
+  @override
   @JsonKey(name: "startDate")
   final DateTime? startDate;
   @override
@@ -286,6 +320,17 @@ class _$SplitFriendModelImpl implements _SplitFriendModel {
     final value = _userList;
     if (value == null) return null;
     if (_userList is EqualUnmodifiableListView) return _userList;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  final List<UserList>? _userListDetail;
+  @override
+  @JsonKey(name: "userListDetail")
+  List<UserList>? get userListDetail {
+    final value = _userListDetail;
+    if (value == null) return null;
+    if (_userListDetail is EqualUnmodifiableListView) return _userListDetail;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(value);
   }
@@ -327,7 +372,7 @@ class _$SplitFriendModelImpl implements _SplitFriendModel {
 
   @override
   String toString() {
-    return 'SplitFriendModel(creatorId: $creatorId, splitId: $splitId, startDate: $startDate, endDate: $endDate, userList: $userList, writerList: $writerList, adminList: $adminList, title: $title, currency: $currency, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'SplitFriendModel(creatorId: $creatorId, splitId: $splitId, totalAmount: $totalAmount, startDate: $startDate, endDate: $endDate, userList: $userList, userListDetail: $userListDetail, writerList: $writerList, adminList: $adminList, title: $title, currency: $currency, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -338,10 +383,14 @@ class _$SplitFriendModelImpl implements _SplitFriendModel {
             (identical(other.creatorId, creatorId) ||
                 other.creatorId == creatorId) &&
             (identical(other.splitId, splitId) || other.splitId == splitId) &&
+            (identical(other.totalAmount, totalAmount) ||
+                other.totalAmount == totalAmount) &&
             (identical(other.startDate, startDate) ||
                 other.startDate == startDate) &&
             (identical(other.endDate, endDate) || other.endDate == endDate) &&
             const DeepCollectionEquality().equals(other._userList, _userList) &&
+            const DeepCollectionEquality()
+                .equals(other._userListDetail, _userListDetail) &&
             const DeepCollectionEquality()
                 .equals(other._writerList, _writerList) &&
             const DeepCollectionEquality()
@@ -361,9 +410,11 @@ class _$SplitFriendModelImpl implements _SplitFriendModel {
       runtimeType,
       creatorId,
       splitId,
+      totalAmount,
       startDate,
       endDate,
       const DeepCollectionEquality().hash(_userList),
+      const DeepCollectionEquality().hash(_userListDetail),
       const DeepCollectionEquality().hash(_writerList),
       const DeepCollectionEquality().hash(_adminList),
       title,
@@ -392,9 +443,11 @@ abstract class _SplitFriendModel implements SplitFriendModel {
   const factory _SplitFriendModel(
           {@JsonKey(name: "creatorId") final String? creatorId,
           @JsonKey(name: "splitID") final String? splitId,
+          @JsonKey(name: "totalAmount") final double? totalAmount,
           @JsonKey(name: "startDate") final DateTime? startDate,
           @JsonKey(name: "endDate") final DateTime? endDate,
           @JsonKey(name: "userList") final List<String>? userList,
+          @JsonKey(name: "userListDetail") final List<UserList>? userListDetail,
           @JsonKey(name: "writerList") final List<String>? writerList,
           @JsonKey(name: "adminList") final List<String>? adminList,
           @JsonKey(name: "title") final String? title,
@@ -413,6 +466,9 @@ abstract class _SplitFriendModel implements SplitFriendModel {
   @JsonKey(name: "splitID")
   String? get splitId;
   @override
+  @JsonKey(name: "totalAmount")
+  double? get totalAmount;
+  @override
   @JsonKey(name: "startDate")
   DateTime? get startDate;
   @override
@@ -421,6 +477,9 @@ abstract class _SplitFriendModel implements SplitFriendModel {
   @override
   @JsonKey(name: "userList")
   List<String>? get userList;
+  @override
+  @JsonKey(name: "userListDetail")
+  List<UserList>? get userListDetail;
   @override
   @JsonKey(name: "writerList")
   List<String>? get writerList;
@@ -445,5 +504,206 @@ abstract class _SplitFriendModel implements SplitFriendModel {
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SplitFriendModelImplCopyWith<_$SplitFriendModelImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+UserList _$UserListFromJson(Map<String, dynamic> json) {
+  return _UserList.fromJson(json);
+}
+
+/// @nodoc
+mixin _$UserList {
+  @JsonKey(name: "name")
+  String? get name => throw _privateConstructorUsedError;
+  @JsonKey(name: "userId")
+  String? get userId => throw _privateConstructorUsedError;
+  @JsonKey(name: "amount")
+  double? get amount => throw _privateConstructorUsedError;
+
+  /// Serializes this UserList to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of UserList
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $UserListCopyWith<UserList> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $UserListCopyWith<$Res> {
+  factory $UserListCopyWith(UserList value, $Res Function(UserList) then) =
+      _$UserListCopyWithImpl<$Res, UserList>;
+  @useResult
+  $Res call(
+      {@JsonKey(name: "name") String? name,
+      @JsonKey(name: "userId") String? userId,
+      @JsonKey(name: "amount") double? amount});
+}
+
+/// @nodoc
+class _$UserListCopyWithImpl<$Res, $Val extends UserList>
+    implements $UserListCopyWith<$Res> {
+  _$UserListCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of UserList
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? name = freezed,
+    Object? userId = freezed,
+    Object? amount = freezed,
+  }) {
+    return _then(_value.copyWith(
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      userId: freezed == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      amount: freezed == amount
+          ? _value.amount
+          : amount // ignore: cast_nullable_to_non_nullable
+              as double?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$UserListImplCopyWith<$Res>
+    implements $UserListCopyWith<$Res> {
+  factory _$$UserListImplCopyWith(
+          _$UserListImpl value, $Res Function(_$UserListImpl) then) =
+      __$$UserListImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {@JsonKey(name: "name") String? name,
+      @JsonKey(name: "userId") String? userId,
+      @JsonKey(name: "amount") double? amount});
+}
+
+/// @nodoc
+class __$$UserListImplCopyWithImpl<$Res>
+    extends _$UserListCopyWithImpl<$Res, _$UserListImpl>
+    implements _$$UserListImplCopyWith<$Res> {
+  __$$UserListImplCopyWithImpl(
+      _$UserListImpl _value, $Res Function(_$UserListImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of UserList
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? name = freezed,
+    Object? userId = freezed,
+    Object? amount = freezed,
+  }) {
+    return _then(_$UserListImpl(
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      userId: freezed == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      amount: freezed == amount
+          ? _value.amount
+          : amount // ignore: cast_nullable_to_non_nullable
+              as double?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$UserListImpl implements _UserList {
+  const _$UserListImpl(
+      {@JsonKey(name: "name") this.name,
+      @JsonKey(name: "userId") this.userId,
+      @JsonKey(name: "amount") this.amount});
+
+  factory _$UserListImpl.fromJson(Map<String, dynamic> json) =>
+      _$$UserListImplFromJson(json);
+
+  @override
+  @JsonKey(name: "name")
+  final String? name;
+  @override
+  @JsonKey(name: "userId")
+  final String? userId;
+  @override
+  @JsonKey(name: "amount")
+  final double? amount;
+
+  @override
+  String toString() {
+    return 'UserList(name: $name, userId: $userId, amount: $amount)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$UserListImpl &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.userId, userId) || other.userId == userId) &&
+            (identical(other.amount, amount) || other.amount == amount));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, name, userId, amount);
+
+  /// Create a copy of UserList
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$UserListImplCopyWith<_$UserListImpl> get copyWith =>
+      __$$UserListImplCopyWithImpl<_$UserListImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$UserListImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _UserList implements UserList {
+  const factory _UserList(
+      {@JsonKey(name: "name") final String? name,
+      @JsonKey(name: "userId") final String? userId,
+      @JsonKey(name: "amount") final double? amount}) = _$UserListImpl;
+
+  factory _UserList.fromJson(Map<String, dynamic> json) =
+      _$UserListImpl.fromJson;
+
+  @override
+  @JsonKey(name: "name")
+  String? get name;
+  @override
+  @JsonKey(name: "userId")
+  String? get userId;
+  @override
+  @JsonKey(name: "amount")
+  double? get amount;
+
+  /// Create a copy of UserList
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$UserListImplCopyWith<_$UserListImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

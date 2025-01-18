@@ -15,12 +15,16 @@ class SplitFriendModel with _$SplitFriendModel {
         String? creatorId,
         @JsonKey(name: "splitID")
         String? splitId,
+        @JsonKey(name: "totalAmount")
+        double? totalAmount,
         @JsonKey(name: "startDate")
         DateTime? startDate,
         @JsonKey(name: "endDate")
         DateTime? endDate,
         @JsonKey(name: "userList")
         List<String>? userList,
+        @JsonKey(name: "userListDetail")
+        List<UserList>? userListDetail,
         @JsonKey(name: "writerList")
         List<String>? writerList,
         @JsonKey(name: "adminList")
@@ -36,4 +40,18 @@ class SplitFriendModel with _$SplitFriendModel {
     }) = _SplitFriendModel;
 
     factory SplitFriendModel.fromJson(Map<String, dynamic> json) => _$SplitFriendModelFromJson(json);
+}
+
+@freezed
+class UserList with _$UserList {
+    const factory UserList({
+        @JsonKey(name: "name")
+        String? name,
+        @JsonKey(name: "userId")
+        String? userId,
+        @JsonKey(name: "amount")
+        double? amount,
+    }) = _UserList;
+
+    factory UserList.fromJson(Map<String, dynamic> json) => _$UserListFromJson(json);
 }

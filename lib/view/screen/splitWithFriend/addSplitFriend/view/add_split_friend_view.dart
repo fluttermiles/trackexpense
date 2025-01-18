@@ -5,8 +5,9 @@ import 'package:trackexpense/utils/app_sizes.dart';
 import 'package:trackexpense/utils/box_shadow.dart';
 import 'package:trackexpense/utils/colors.dart';
 import 'package:trackexpense/utils/utils.dart';
-import 'package:trackexpense/view/screen/travelBudget/addTravel/bloc/add_travel_bloc.dart';
-import 'package:trackexpense/view/screen/travelBudget/travelView/bloc/trave_data_bloc.dart';
+import 'package:trackexpense/view/screen/dashboard/profile/bloc/profileData/profile_data_bloc.dart';
+import 'package:trackexpense/view/screen/splitWithFriend/addSplitFriend/bloc/add_split_friend_bloc.dart';
+import 'package:trackexpense/view/screen/splitWithFriend/splitFriend/bloc/split_friend_bloc.dart';
 
 class AddSplitFriendView extends StatefulWidget {
   const AddSplitFriendView({super.key});
@@ -27,7 +28,7 @@ class _AddSplitFriendViewState extends State<AddSplitFriendView> {
 
   Future<void> pickStartDate(BuildContext context) async {
     final today = DateTime.now().subtract(const Duration(days: 150));
-    final initialDate = startDate ?? today.add(const Duration(days: 1));
+    final initialDate = startDate ?? DateTime.now().add(const Duration(days: 1));
     final firstDate = today;
     final lastDate = DateTime(2100);
 
@@ -101,12 +102,20 @@ class _AddSplitFriendViewState extends State<AddSplitFriendView> {
       startDate: startDate,
       endDate: endDate,
       userList: [userId],
+      userListDetail: [
+        UserList(
+          name: context.read<ProfileDataBloc>().state.profileData.name,
+          userId: userId,
+          amount: 0.0
+        )
+      ],
       writerList: [],
       adminList: [userId],
       title: titleController.text.trim(),
       currency: currency
     );
 
+    context.read<AddSplitFriendBloc>().add(AddSplitFriend(splitFriendModel: splitFriendModel));
     Logger.printSuccess(splitFriendModel.toString());
   }
 
@@ -145,7 +154,7 @@ class _AddSplitFriendViewState extends State<AddSplitFriendView> {
 
     if (picked != null) {
       setState(() {
-        isStart = false;
+        isEnd = false;
         endDate = picked;
       });
     }
@@ -265,7 +274,7 @@ class _AddSplitFriendViewState extends State<AddSplitFriendView> {
                     height: 40,
                     decoration: BoxDecoration(
                         border: Border.all(
-                          color: isStart ? redColor : kWhite
+                          color: isEnd ? redColor : kWhite
                         ),
                         borderRadius: BorderRadius.circular(8)),
                     child: Center(
@@ -311,11 +320,11 @@ class _AddSplitFriendViewState extends State<AddSplitFriendView> {
               ],
             ),
             Spacer(),
-            BlocConsumer<AddTravelBloc, AddTravelBlocState>(
+            BlocConsumer<AddSplitFriendBloc, AddSplitFriendBlocState>(
               listener: (context, state) {
-                if(state is AddTravelBlocLoaded) {
+                if(state is AddSplitFriendBlocLoaded) {
                   String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
-                  context.read<TravelDataBloc>().add(TravelData(userId: userId));
+                  context.read<SplitFriendBloc>().add(SplitFriend(userId: userId));
                   context.pop();
                 }
               },

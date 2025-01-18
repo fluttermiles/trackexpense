@@ -4,8 +4,7 @@ import 'package:trackexpense/utils/box_shadow.dart';
 import 'package:trackexpense/utils/capitalize.dart';
 import 'package:trackexpense/utils/colors.dart';
 import 'package:trackexpense/utils/utils.dart';
-import 'package:trackexpense/view/screen/travelBudget/travelView/bloc/trave_data_bloc.dart';
-
+import 'package:trackexpense/view/screen/splitWithFriend/splitFriend/bloc/split_friend_bloc.dart';
 class SplitFriendView extends StatefulWidget {
   const SplitFriendView({super.key});
 
@@ -60,10 +59,10 @@ class _SplitFriendViewState extends State<SplitFriendView> {
         ),
         centerTitle: true,
       ),
-      body: BlocBuilder<TravelDataBloc, TravelDataBlocState>(
+      body: BlocBuilder<SplitFriendBloc, SplitFriendBlocState>(
         builder: (context, state) {
           return state.isLoading ? buildShimmerList(size)
-            : state.travelList.isEmpty ? SizedBox(
+            : state.splitFriendList.isEmpty ? SizedBox(
               height: size.height,
               width: size.width,
               child: Column(
@@ -89,7 +88,7 @@ class _SplitFriendViewState extends State<SplitFriendView> {
             itemBuilder: (context, index) {
               return GestureDetector(
                 onTap: () {
-                  context.pushNamed(AppRoute.travelDetailView.name, extra: state.travelList[index]);
+                  context.pushNamed(AppRoute.splitFriendDetailView.name, extra: state.splitFriendList[index]);
                 },
                 child: Container(
                   margin: EdgeInsets.symmetric(horizontal: 16),
@@ -119,14 +118,7 @@ class _SplitFriendViewState extends State<SplitFriendView> {
                       Row(
                         children: [
                           Text(
-                            'Place: ',
-                            style: TextStyle(
-                                color: Colors.white70,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18),
-                          ),
-                          Text(
-                            capitalize(state.travelList[index].place ?? ''),
+                            capitalize(state.splitFriendList[index].title ?? ''),
                             style: TextStyle(
                                 color: kWhite,
                                 fontWeight: FontWeight.bold,
@@ -138,7 +130,7 @@ class _SplitFriendViewState extends State<SplitFriendView> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(
-                            padding: EdgeInsets.all(8),
+                            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                             decoration: BoxDecoration(
                               border: Border.all(color: Colors.white24),
                               borderRadius: BorderRadius.circular(8),
@@ -148,67 +140,66 @@ class _SplitFriendViewState extends State<SplitFriendView> {
                                 Row(
                                   children: [
                                     Text(
-                                      'Approx. Budget',
+                                      'Total Amount',
                                       style: TextStyle(
                                           color: Colors.white60,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 14),
+                                          fontSize: 18),
                                     ),
                                     gapW10,
-                                    Text('≈', style: TextStyle(color: redColor, fontSize: 24),)
+                                    Text('₹', style: TextStyle(color: kGreen, fontWeight: FontWeight.bold, fontSize: 26),)
                                   ],
                                 ),
-                                gapH4,
                                 Text(
-                                  '₹ ${state.travelList[index].approxCost}',
+                                  '₹ ${state.splitFriendList[index].totalAmount}',
                                   style: TextStyle(
                                       color: kWhite,
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 16),
+                                      fontSize: 22),
                                 ),
                               ],
                             ),
                           ),
-                          gapW12,
-                          Container(
-                            padding: EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.white24),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Text(
-                                      'Actual Expenditure',
-                                      style: TextStyle(
-                                          color: Colors.white60,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 14),
-                                    ),
-                                    gapW10,
-                                    Text('=', style: TextStyle(color: kGreen, fontSize: 24),)
-                                  ],
-                                ),
-                                gapH4,
-                                Text(
-                                  '₹ ${state.travelList[index].actualCost}',
-                                  style: TextStyle(
-                                      color: kWhite,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16),
-                                ),
-                              ],
-                            ),
-                          )
+                          // gapW12,
+                          // Container(
+                          //   padding: EdgeInsets.all(8),
+                          //   decoration: BoxDecoration(
+                          //     border: Border.all(color: Colors.white24),
+                          //     borderRadius: BorderRadius.circular(8),
+                          //   ),
+                          //   child: Column(
+                          //     children: [
+                          //       Row(
+                          //         children: [
+                          //           Text(
+                          //             'Actual Expenditure',
+                          //             style: TextStyle(
+                          //                 color: Colors.white60,
+                          //                 fontWeight: FontWeight.bold,
+                          //                 fontSize: 14),
+                          //           ),
+                          //           gapW10,
+                          //           Text('=', style: TextStyle(color: kGreen, fontSize: 24),)
+                          //         ],
+                          //       ),
+                          //       gapH4,
+                          //       Text(
+                          //         '₹ ${state.travelList[index].actualCost}',
+                          //         style: TextStyle(
+                          //             color: kWhite,
+                          //             fontWeight: FontWeight.bold,
+                          //             fontSize: 16),
+                          //       ),
+                          //     ],
+                          //   ),
+                          // )
                         ],
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Text(
-                            '${DateFormat('dd MMM yyy').format(state.travelList[index].startDate ?? DateTime.now())} to ${DateFormat('dd MMM yyy').format(state.travelList[index].endDate ?? DateTime.now())}',
+                            '${DateFormat('dd MMM yyy').format(state.splitFriendList[index].startDate ?? DateTime.now())} to ${DateFormat('dd MMM yyy').format(state.splitFriendList[index].endDate ?? DateTime.now())}',
                             style: TextStyle(
                                 color: Colors.white70,
                                 fontWeight: FontWeight.bold,
@@ -224,7 +215,7 @@ class _SplitFriendViewState extends State<SplitFriendView> {
             separatorBuilder: (context, index) {
               return gapH24;
             },
-            itemCount: state.travelList.length
+            itemCount: state.splitFriendList.length
           );
         },
       ),

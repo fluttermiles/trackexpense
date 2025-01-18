@@ -32,4 +32,23 @@ class ProfileRepositoryImpl implements ProfileRepository {
       return DataStateError<ProfileModel>(ex: e.toString());
     }
   }
+
+  @override
+  Future<DataState<List<String>>> searchEmails({required String prefix}) async {
+    try {
+      final querySnapshot = await FirebaseFirestore.instance
+        .collection(AppConstants.userCollection)
+        .where('emailId', isGreaterThanOrEqualTo: prefix)
+        .where('emailId', isLessThan: '${prefix}z')
+        .get();
+
+      List<String> emails = [];
+      for (var doc in querySnapshot.docs) {
+        emails.add(doc['email']);
+      }
+      return DataStateSuccess<List<String>>(data: emails);
+    } catch (e) {
+      return DataStateError<List<String>>(ex: e.toString());
+    }
+  }
 }

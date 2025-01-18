@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:trackexpense/data/remote/splitFriend/models/split_friend_model.dart';
 import 'package:trackexpense/data/remote/travel/models/travel_model.dart';
 import 'package:trackexpense/view/screen/faqs/faq_view.dart';
 import 'package:trackexpense/view/screen/notification/view/notification_page.dart';
@@ -11,6 +12,7 @@ import 'package:trackexpense/view/screen/privacyPolicy/privacy_policy.dart';
 import 'package:trackexpense/view/screen/splash/view/splash_view.dart';
 import 'package:trackexpense/view/screen/splitWithFriend/addSplitFriend/view/add_split_Friend_view.dart';
 import 'package:trackexpense/view/screen/splitWithFriend/splitFriend/view/split_friend_view.dart';
+import 'package:trackexpense/view/screen/splitWithFriend/splitFriendDetails/view/split_friend_detail_view.dart';
 import 'package:trackexpense/view/screen/termsConsdition/terms_condition.dart';
 import 'package:trackexpense/view/screen/travelBudget/addTravel/view/add_travel_view.dart';
 import 'package:trackexpense/view/screen/travelBudget/travelDetailView/view/travel_detail_view.dart';
@@ -29,6 +31,7 @@ enum AppRoute {
   travelDetailView,
   addTravelData,
   splitFriendView,
+  splitFriendDetailView,
   addSplitFriend,
   notificationScreen,
   feedback
@@ -81,6 +84,14 @@ final GoRouter router = GoRouter(
       name: AppRoute.splitFriendView.name,
       path: '/splitFriendView',
       builder: (context, state) => const SplitFriendView(),
+    ),
+    GoRoute(
+      name: AppRoute.splitFriendDetailView.name,
+      path: '/splitFriendDetailView',
+      builder: (context, state) {
+        final SplitFriendModel data = state.extra! as SplitFriendModel;
+        return SplitFriendDetailView(splitFriendModel: data,);
+      },
     ),
     GoRoute(
       name: AppRoute.addSplitFriend.name,

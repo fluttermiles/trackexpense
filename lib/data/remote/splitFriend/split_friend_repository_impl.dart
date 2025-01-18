@@ -3,6 +3,7 @@ import 'package:trackexpense/core/constants.dart';
 import 'package:trackexpense/core/state/data_state.dart';
 import 'package:trackexpense/data/remote/splitFriend/models/split_friend_model.dart';
 import 'package:trackexpense/data/remote/splitFriend/split_friend_repository.dart';
+import 'package:trackexpense/utils/utils.dart';
 
 class SplitFriendRepositoryImpl implements SplitFriendRepository {
 
@@ -15,7 +16,7 @@ class SplitFriendRepositoryImpl implements SplitFriendRepository {
         .collection(AppConstants.splitFriendCollection)
         .where('userList', arrayContains: userId);
       final querySnapshot = await query.get();
-      final List<SplitFriendModel> travelList = querySnapshot.docs
+      final List<SplitFriendModel> splitList = querySnapshot.docs
           .map((doc) {
             final data = doc.data();
             if (data is Map<String, dynamic>) {
@@ -25,7 +26,8 @@ class SplitFriendRepositoryImpl implements SplitFriendRepository {
             }
           })
           .toList();
-      return DataStateSuccess<List<SplitFriendModel>>(data: travelList);
+      Logger.printSuccess(splitList.first.toJson().toString());
+      return DataStateSuccess<List<SplitFriendModel>>(data: splitList);
     } catch (e) {
       return DataStateError<List<SplitFriendModel>>(ex: e.toString());
     }
@@ -35,6 +37,7 @@ class SplitFriendRepositoryImpl implements SplitFriendRepository {
   Future<DataState<SplitFriendModel>> addSplitFriendData({required SplitFriendModel splitFriendModel}) async {
     try {
       final docRef = FirebaseFirestore.instance.collection(AppConstants.splitFriendCollection).doc(splitFriendModel.splitId);
+      Logger.printSuccess(splitFriendModel.toString());
       await docRef.set(splitFriendModel.toJson());
       return DataStateSuccess<SplitFriendModel>(data: splitFriendModel);
     } catch (e) {

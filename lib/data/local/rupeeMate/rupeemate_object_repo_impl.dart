@@ -51,6 +51,8 @@ class RupeeObjectRepositoryImpl implements RupeeObjectRepository {
       queryBuilder = box.query(RupeeObjectDataModel_.title.contains(title) & RupeeObjectDataModel_.month.equals(month) & RupeeObjectDataModel_.year.equals(year));
     } else if(month != null &&  day != null) {
       queryBuilder = box.query(RupeeObjectDataModel_.month.equals(month) & RupeeObjectDataModel_.day.equals(day) & RupeeObjectDataModel_.year.equals(year));
+    } else if(month != null) {
+      queryBuilder = box.query(RupeeObjectDataModel_.year.equals(year) & RupeeObjectDataModel_.month.equals(month));
     } else {
       queryBuilder = box.query(RupeeObjectDataModel_.year.equals(year));
     }

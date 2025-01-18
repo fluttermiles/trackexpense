@@ -13,6 +13,7 @@ import 'package:trackexpense/view/screen/dashboard/home/bloc/rupeeMonthlyBloc/ru
 import 'package:trackexpense/view/screen/dashboard/home/bloc/rupeeMonthlyDataBloc/rupee_monthly_data_bloc.dart';
 import 'package:trackexpense/view/screen/dashboard/home/widgets/monthly_balance_widget.dart';
 import 'package:trackexpense/view/screen/dashboard/profile/bloc/profileData/profile_data_bloc.dart';
+import 'package:trackexpense/view/screen/notification/bloc/notification_bloc.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -227,6 +228,7 @@ class _HomeViewState extends State<HomeView> {
                                 Spacer(),
                                 GestureDetector(
                                   onTap: () {
+                                    context.read<NotificationBloc>().add(FetchNotification(userId: context.read<ProfileDataBloc>().state.profileData.userId ?? 'No UserId Found'));
                                     context.pushNamed(AppRoute.notificationScreen.name);
                                   },
                                   child: Icon(
