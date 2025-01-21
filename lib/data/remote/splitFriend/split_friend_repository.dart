@@ -4,4 +4,5 @@ import 'package:trackexpense/data/remote/splitFriend/models/split_friend_model.d
 abstract interface class SplitFriendRepository{
   Future<DataState<List<SplitFriendModel>>> getSplitFriendData({required String userId});
   Future<DataState<SplitFriendModel>> addSplitFriendData({required SplitFriendModel splitFriendModel});
+  Future<String> addUserToSplitFriend({required String splitId, required UserList userData});
 }

@@ -44,4 +44,22 @@ class SplitFriendRepositoryImpl implements SplitFriendRepository {
       return DataStateError<SplitFriendModel>(ex: e.toString());
     }
   }
+
+  @override
+  Future<String> addUserToSplitFriend({required String splitId, required UserList userData}) async {
+    try {
+      await FirebaseFirestore.instance.collection(AppConstants.splitFriendCollection) 
+        .doc(splitId)
+        .update({
+          'userListDetail': FieldValue.arrayUnion([userData.toJson()]),
+          'userList': FieldValue.arrayUnion([userData.userId]),
+          'writerList': FieldValue.arrayUnion([userData.userId]),
+        });
+      Logger.printSuccess('User added to the userList successfully.');
+      return 'User Added';
+    } catch (e) {
+      Logger.printError('Error adding user to the list: $e');
+      return 'User Not Added';
+    }
+  }
 }

@@ -53,6 +53,18 @@ class NotificationRepositoryImpl implements NotificationRepository {
     }
   }
 
+  @override
+  Future<DataState<NotificationModel>> updateNotificationData({required NotificationModel notificationModel}) async {
+    try {
+      Logger.printError(notificationModel.toString());
+      final docRef = FirebaseFirestore.instance.collection(AppConstants.notificationCollection).doc(notificationModel.id);
+      await docRef.set(notificationModel.toJson());
+      return DataStateSuccess<NotificationModel>(data: notificationModel);
+    } catch (e) {
+      return DataStateError<NotificationModel>(ex: e.toString());
+    }
+  }
+
   Future<String> checkEmailExistence(String email) async {
     try {
       final querySnapshot = await FirebaseFirestore.instance

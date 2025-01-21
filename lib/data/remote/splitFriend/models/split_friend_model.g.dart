@@ -62,6 +62,7 @@ _$UserListImpl _$$UserListImplFromJson(Map<String, dynamic> json) =>
     _$UserListImpl(
       name: json['name'] as String?,
       userId: json['userId'] as String?,
+      emailId: json['emailId'] as String?,
       amount: (json['amount'] as num?)?.toDouble(),
     );
 
@@ -69,5 +70,6 @@ Map<String, dynamic> _$$UserListImplToJson(_$UserListImpl instance) =>
     <String, dynamic>{
       'name': instance.name,
       'userId': instance.userId,
+      'emailId': instance.emailId,
       'amount': instance.amount,
     };

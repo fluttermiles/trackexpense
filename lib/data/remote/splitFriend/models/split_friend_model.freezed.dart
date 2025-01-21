@@ -517,6 +517,8 @@ mixin _$UserList {
   String? get name => throw _privateConstructorUsedError;
   @JsonKey(name: "userId")
   String? get userId => throw _privateConstructorUsedError;
+  @JsonKey(name: "emailId")
+  String? get emailId => throw _privateConstructorUsedError;
   @JsonKey(name: "amount")
   double? get amount => throw _privateConstructorUsedError;
 
@@ -538,6 +540,7 @@ abstract class $UserListCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: "name") String? name,
       @JsonKey(name: "userId") String? userId,
+      @JsonKey(name: "emailId") String? emailId,
       @JsonKey(name: "amount") double? amount});
 }
 
@@ -558,6 +561,7 @@ class _$UserListCopyWithImpl<$Res, $Val extends UserList>
   $Res call({
     Object? name = freezed,
     Object? userId = freezed,
+    Object? emailId = freezed,
     Object? amount = freezed,
   }) {
     return _then(_value.copyWith(
@@ -568,6 +572,10 @@ class _$UserListCopyWithImpl<$Res, $Val extends UserList>
       userId: freezed == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      emailId: freezed == emailId
+          ? _value.emailId
+          : emailId // ignore: cast_nullable_to_non_nullable
               as String?,
       amount: freezed == amount
           ? _value.amount
@@ -588,6 +596,7 @@ abstract class _$$UserListImplCopyWith<$Res>
   $Res call(
       {@JsonKey(name: "name") String? name,
       @JsonKey(name: "userId") String? userId,
+      @JsonKey(name: "emailId") String? emailId,
       @JsonKey(name: "amount") double? amount});
 }
 
@@ -606,6 +615,7 @@ class __$$UserListImplCopyWithImpl<$Res>
   $Res call({
     Object? name = freezed,
     Object? userId = freezed,
+    Object? emailId = freezed,
     Object? amount = freezed,
   }) {
     return _then(_$UserListImpl(
@@ -616,6 +626,10 @@ class __$$UserListImplCopyWithImpl<$Res>
       userId: freezed == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      emailId: freezed == emailId
+          ? _value.emailId
+          : emailId // ignore: cast_nullable_to_non_nullable
               as String?,
       amount: freezed == amount
           ? _value.amount
@@ -631,6 +645,7 @@ class _$UserListImpl implements _UserList {
   const _$UserListImpl(
       {@JsonKey(name: "name") this.name,
       @JsonKey(name: "userId") this.userId,
+      @JsonKey(name: "emailId") this.emailId,
       @JsonKey(name: "amount") this.amount});
 
   factory _$UserListImpl.fromJson(Map<String, dynamic> json) =>
@@ -643,12 +658,15 @@ class _$UserListImpl implements _UserList {
   @JsonKey(name: "userId")
   final String? userId;
   @override
+  @JsonKey(name: "emailId")
+  final String? emailId;
+  @override
   @JsonKey(name: "amount")
   final double? amount;
 
   @override
   String toString() {
-    return 'UserList(name: $name, userId: $userId, amount: $amount)';
+    return 'UserList(name: $name, userId: $userId, emailId: $emailId, amount: $amount)';
   }
 
   @override
@@ -658,12 +676,13 @@ class _$UserListImpl implements _UserList {
             other is _$UserListImpl &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.userId, userId) || other.userId == userId) &&
+            (identical(other.emailId, emailId) || other.emailId == emailId) &&
             (identical(other.amount, amount) || other.amount == amount));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, name, userId, amount);
+  int get hashCode => Object.hash(runtimeType, name, userId, emailId, amount);
 
   /// Create a copy of UserList
   /// with the given fields replaced by the non-null parameter values.
@@ -685,6 +704,7 @@ abstract class _UserList implements UserList {
   const factory _UserList(
       {@JsonKey(name: "name") final String? name,
       @JsonKey(name: "userId") final String? userId,
+      @JsonKey(name: "emailId") final String? emailId,
       @JsonKey(name: "amount") final double? amount}) = _$UserListImpl;
 
   factory _UserList.fromJson(Map<String, dynamic> json) =
@@ -696,6 +716,9 @@ abstract class _UserList implements UserList {
   @override
   @JsonKey(name: "userId")
   String? get userId;
+  @override
+  @JsonKey(name: "emailId")
+  String? get emailId;
   @override
   @JsonKey(name: "amount")
   double? get amount;

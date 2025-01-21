@@ -1,4 +1,4 @@
-import 'package:trackexpense/utils/utils.dart';
+ import 'package:trackexpense/utils/utils.dart';
 
 class CurrencySearchModal extends StatefulWidget {
   final Map<String, dynamic> currencyCountryMap;
@@ -52,7 +52,8 @@ class _CurrencySearchModalState extends State<CurrencySearchModal> {
     // Filter by code or country name
     setState(() {
       filteredCodes = allCurrencyCodes.where((code) {
-        final country = widget.currencyCountryMap[code]?.toString().toLowerCase() ?? '';
+        final data = widget.currencyCountryMap[code];
+        final country = data["country"]?.toString().toLowerCase() ?? '';
         return code.toLowerCase().contains(query) || country.contains(query);
       }).toList();
     });
@@ -98,10 +99,11 @@ class _CurrencySearchModalState extends State<CurrencySearchModal> {
                 ),
                 itemBuilder: (context, index) {
                   final code = filteredCodes[index];
-                  final country = widget.currencyCountryMap[code] ?? "";
+                  final country = widget.currencyCountryMap[code]?["country"] ?? "";
+                  final symbol = widget.currencyCountryMap[code]?["symbol"] ?? "";
                   return ListTile(
                     title: Text(
-                      code,
+                      "$code $symbol", // Display code and symbol together
                       style: const TextStyle(color: Colors.white),
                     ),
                     subtitle: Text(

@@ -27,8 +27,8 @@ class NotificationModel with _$NotificationModel {
         DateTime? updatedAt,
         @JsonKey(name: "type")
         String? type,
-        @JsonKey(name: "isAccepted")
-        bool? isAccepted,
+        @JsonKey(name: "status")
+        String? status,
         @JsonKey(name: "description")
         String? description,
     }) = _NotificationModel;

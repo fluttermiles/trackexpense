@@ -49,6 +49,8 @@ class UserList with _$UserList {
         String? name,
         @JsonKey(name: "userId")
         String? userId,
+        @JsonKey(name: "emailId")
+        String? emailId,
         @JsonKey(name: "amount")
         double? amount,
     }) = _UserList;

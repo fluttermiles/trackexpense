@@ -154,7 +154,7 @@ class _AddMemberBottomSheetState extends State<AddMemberBottomSheet> {
                               recieverId: '',
                               createdAt: DateTime.now(),
                               updatedAt: DateTime.now(),
-                              isAccepted: false,
+                              status: 'pending',
                               type: 'splitrequest',
                               id: notificationId);
                       Logger.printSuccess(notificationModel.toString());

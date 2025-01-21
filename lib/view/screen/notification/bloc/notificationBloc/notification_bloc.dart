@@ -8,15 +8,24 @@ part 'notification_state.dart';
 
 class NotificationBloc extends Bloc<NotificationBlocEvent, NotificationBlocState> {
   final NotificationRepository notificationRepository;
+
   NotificationBloc({required this.notificationRepository}) : super(NotificationBlocInitial()) {
     on<FetchNotification>((event, emit) async {
+      if(event.isEditNotification) {
+        emit(NotificationBlocLoaded(data: event.notificationList ?? []));
+        return;
+      }
       emit(NotificationBlocLoading());
       final response = await notificationRepository.getNotificationData(userId: event.userId);
+      
       switch(response){
         case DataStateSuccess<List<NotificationModel>>(data: var data):
-          emit(NotificationBlocLoaded(data: data));
+            emit(NotificationBlocLoaded(data: data));
+          break;
+
         case DataStateError<List<NotificationModel>>(ex: var ex):
           emit(NotificationBlocError(ex: ex));
+          break;
       }
     });
   }

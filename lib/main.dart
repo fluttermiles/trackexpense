@@ -20,7 +20,8 @@ import 'package:trackexpense/view/screen/moneyData/bloc/rupee_data_bloc.dart';
 import 'package:trackexpense/view/screen/moneyData/view/addData/bloc/add_expense_bloc_bloc.dart';
 import 'package:trackexpense/view/screen/dashboard/profile/bloc/profileData/profile_data_bloc.dart';
 import 'package:trackexpense/view/screen/moneyMonthlyData/bloc/money_monthly_bloc.dart';
-import 'package:trackexpense/view/screen/notification/bloc/notification_bloc.dart';
+import 'package:trackexpense/view/screen/notification/bloc/acceptRejectSplitBloc/accept_reject_split_bloc.dart';
+import 'package:trackexpense/view/screen/notification/bloc/notificationBloc/notification_bloc.dart';
 import 'package:trackexpense/view/screen/splash/bloc/bloc/fetch_profile_data_bloc.dart';
 import 'package:trackexpense/view/screen/splitWithFriend/addMember/bloc/addUserSplitBloc/add_user_split_bloc.dart';
 import 'package:trackexpense/view/screen/splitWithFriend/addMember/bloc/userSearchBloc/user_search_bloc.dart';
@@ -151,6 +152,12 @@ void main() async {
         ),
         BlocProvider(
           create: (context) => NotificationBloc(notificationRepository: notificationRepository),
+        ),
+        BlocProvider(
+          create: (context) => AcceptRejectSplitBloc(
+            notificationRepository: notificationRepository,
+            splitFriendRepository: splitFriendRepository,
+          ),
         ),
       ],
       child: const MyApp(),

@@ -4,4 +4,5 @@ import 'package:trackexpense/data/remote/notification/models/notification_model.
 abstract interface class NotificationRepository{
   Future<DataState<List<NotificationModel>>> getNotificationData({required String userId});
   Future<DataState<NotificationModel>> addNewNotificationData({required NotificationModel notificationModel, required String emailId});
+  Future<DataState<NotificationModel>> updateNotificationData({required NotificationModel notificationModel});
 }

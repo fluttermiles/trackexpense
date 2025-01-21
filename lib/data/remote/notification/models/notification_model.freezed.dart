@@ -36,8 +36,8 @@ mixin _$NotificationModel {
   DateTime? get updatedAt => throw _privateConstructorUsedError;
   @JsonKey(name: "type")
   String? get type => throw _privateConstructorUsedError;
-  @JsonKey(name: "isAccepted")
-  bool? get isAccepted => throw _privateConstructorUsedError;
+  @JsonKey(name: "status")
+  String? get status => throw _privateConstructorUsedError;
   @JsonKey(name: "description")
   String? get description => throw _privateConstructorUsedError;
 
@@ -66,7 +66,7 @@ abstract class $NotificationModelCopyWith<$Res> {
       @JsonKey(name: "createdAt") DateTime? createdAt,
       @JsonKey(name: "updatedAt") DateTime? updatedAt,
       @JsonKey(name: "type") String? type,
-      @JsonKey(name: "isAccepted") bool? isAccepted,
+      @JsonKey(name: "status") String? status,
       @JsonKey(name: "description") String? description});
 }
 
@@ -93,7 +93,7 @@ class _$NotificationModelCopyWithImpl<$Res, $Val extends NotificationModel>
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
     Object? type = freezed,
-    Object? isAccepted = freezed,
+    Object? status = freezed,
     Object? description = freezed,
   }) {
     return _then(_value.copyWith(
@@ -129,10 +129,10 @@ class _$NotificationModelCopyWithImpl<$Res, $Val extends NotificationModel>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as String?,
-      isAccepted: freezed == isAccepted
-          ? _value.isAccepted
-          : isAccepted // ignore: cast_nullable_to_non_nullable
-              as bool?,
+      status: freezed == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as String?,
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -158,7 +158,7 @@ abstract class _$$NotificationModelImplCopyWith<$Res>
       @JsonKey(name: "createdAt") DateTime? createdAt,
       @JsonKey(name: "updatedAt") DateTime? updatedAt,
       @JsonKey(name: "type") String? type,
-      @JsonKey(name: "isAccepted") bool? isAccepted,
+      @JsonKey(name: "status") String? status,
       @JsonKey(name: "description") String? description});
 }
 
@@ -183,7 +183,7 @@ class __$$NotificationModelImplCopyWithImpl<$Res>
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
     Object? type = freezed,
-    Object? isAccepted = freezed,
+    Object? status = freezed,
     Object? description = freezed,
   }) {
     return _then(_$NotificationModelImpl(
@@ -219,10 +219,10 @@ class __$$NotificationModelImplCopyWithImpl<$Res>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as String?,
-      isAccepted: freezed == isAccepted
-          ? _value.isAccepted
-          : isAccepted // ignore: cast_nullable_to_non_nullable
-              as bool?,
+      status: freezed == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as String?,
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -243,7 +243,7 @@ class _$NotificationModelImpl implements _NotificationModel {
       @JsonKey(name: "createdAt") this.createdAt,
       @JsonKey(name: "updatedAt") this.updatedAt,
       @JsonKey(name: "type") this.type,
-      @JsonKey(name: "isAccepted") this.isAccepted,
+      @JsonKey(name: "status") this.status,
       @JsonKey(name: "description") this.description});
 
   factory _$NotificationModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -274,15 +274,15 @@ class _$NotificationModelImpl implements _NotificationModel {
   @JsonKey(name: "type")
   final String? type;
   @override
-  @JsonKey(name: "isAccepted")
-  final bool? isAccepted;
+  @JsonKey(name: "status")
+  final String? status;
   @override
   @JsonKey(name: "description")
   final String? description;
 
   @override
   String toString() {
-    return 'NotificationModel(senderId: $senderId, recieverId: $recieverId, splitId: $splitId, id: $id, notificationTitle: $notificationTitle, createdAt: $createdAt, updatedAt: $updatedAt, type: $type, isAccepted: $isAccepted, description: $description)';
+    return 'NotificationModel(senderId: $senderId, recieverId: $recieverId, splitId: $splitId, id: $id, notificationTitle: $notificationTitle, createdAt: $createdAt, updatedAt: $updatedAt, type: $type, status: $status, description: $description)';
   }
 
   @override
@@ -303,26 +303,15 @@ class _$NotificationModelImpl implements _NotificationModel {
             (identical(other.updatedAt, updatedAt) ||
                 other.updatedAt == updatedAt) &&
             (identical(other.type, type) || other.type == type) &&
-            (identical(other.isAccepted, isAccepted) ||
-                other.isAccepted == isAccepted) &&
+            (identical(other.status, status) || other.status == status) &&
             (identical(other.description, description) ||
                 other.description == description));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      senderId,
-      recieverId,
-      splitId,
-      id,
-      notificationTitle,
-      createdAt,
-      updatedAt,
-      type,
-      isAccepted,
-      description);
+  int get hashCode => Object.hash(runtimeType, senderId, recieverId, splitId,
+      id, notificationTitle, createdAt, updatedAt, type, status, description);
 
   /// Create a copy of NotificationModel
   /// with the given fields replaced by the non-null parameter values.
@@ -351,7 +340,7 @@ abstract class _NotificationModel implements NotificationModel {
           @JsonKey(name: "createdAt") final DateTime? createdAt,
           @JsonKey(name: "updatedAt") final DateTime? updatedAt,
           @JsonKey(name: "type") final String? type,
-          @JsonKey(name: "isAccepted") final bool? isAccepted,
+          @JsonKey(name: "status") final String? status,
           @JsonKey(name: "description") final String? description}) =
       _$NotificationModelImpl;
 
@@ -383,8 +372,8 @@ abstract class _NotificationModel implements NotificationModel {
   @JsonKey(name: "type")
   String? get type;
   @override
-  @JsonKey(name: "isAccepted")
-  bool? get isAccepted;
+  @JsonKey(name: "status")
+  String? get status;
   @override
   @JsonKey(name: "description")
   String? get description;
