@@ -36,7 +36,7 @@ mixin _$TravelMateModel {
   int? get month => throw _privateConstructorUsedError;
   @JsonKey(name: "year")
   int? get year => throw _privateConstructorUsedError;
-  @JsonKey(name: "amout")
+  @JsonKey(name: "amount")
   double? get amount => throw _privateConstructorUsedError;
   @JsonKey(name: "type")
   String? get type => throw _privateConstructorUsedError;
@@ -68,7 +68,7 @@ abstract class $TravelMateModelCopyWith<$Res> {
       @JsonKey(name: "day") int? day,
       @JsonKey(name: "month") int? month,
       @JsonKey(name: "year") int? year,
-      @JsonKey(name: "amout") double? amount,
+      @JsonKey(name: "amount") double? amount,
       @JsonKey(name: "type") String? type,
       @JsonKey(name: "description") String? description});
 }
@@ -166,7 +166,7 @@ abstract class _$$TravelMateModelImplCopyWith<$Res>
       @JsonKey(name: "day") int? day,
       @JsonKey(name: "month") int? month,
       @JsonKey(name: "year") int? year,
-      @JsonKey(name: "amout") double? amount,
+      @JsonKey(name: "amount") double? amount,
       @JsonKey(name: "type") String? type,
       @JsonKey(name: "description") String? description});
 }
@@ -257,7 +257,7 @@ class _$TravelMateModelImpl implements _TravelMateModel {
       @JsonKey(name: "day") this.day,
       @JsonKey(name: "month") this.month,
       @JsonKey(name: "year") this.year,
-      @JsonKey(name: "amout") this.amount,
+      @JsonKey(name: "amount") this.amount,
       @JsonKey(name: "type") this.type,
       @JsonKey(name: "description") this.description});
 
@@ -289,7 +289,7 @@ class _$TravelMateModelImpl implements _TravelMateModel {
   @JsonKey(name: "year")
   final int? year;
   @override
-  @JsonKey(name: "amout")
+  @JsonKey(name: "amount")
   final double? amount;
   @override
   @JsonKey(name: "type")
@@ -355,7 +355,7 @@ abstract class _TravelMateModel implements TravelMateModel {
           @JsonKey(name: "day") final int? day,
           @JsonKey(name: "month") final int? month,
           @JsonKey(name: "year") final int? year,
-          @JsonKey(name: "amout") final double? amount,
+          @JsonKey(name: "amount") final double? amount,
           @JsonKey(name: "type") final String? type,
           @JsonKey(name: "description") final String? description}) =
       _$TravelMateModelImpl;
@@ -388,7 +388,7 @@ abstract class _TravelMateModel implements TravelMateModel {
   @JsonKey(name: "year")
   int? get year;
   @override
-  @JsonKey(name: "amout")
+  @JsonKey(name: "amount")
   double? get amount;
   @override
   @JsonKey(name: "type")

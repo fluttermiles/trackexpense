@@ -1,14 +1,16 @@
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:trackexpense/data/remote/splitFriend/models/split_friend_model.dart';
-import 'package:trackexpense/data/remote/travelMate/models/travelmate_models.dart';
+import 'package:trackexpense/data/remote/splitFriendDetail/models/split_friend_detail_model.dart';
 import 'package:trackexpense/utils/app_sizes.dart';
 import 'package:trackexpense/utils/box_shadow.dart';
 import 'package:trackexpense/utils/capitalize.dart';
 import 'package:trackexpense/utils/colors.dart';
 import 'package:trackexpense/utils/utils.dart';
 import 'package:trackexpense/view/screen/splitWithFriend/addMember/view/add_member_view.dart';
-import 'package:trackexpense/view/screen/splitWithFriend/splitFriend/bloc/split_friend_bloc.dart';
+import 'package:trackexpense/view/screen/splitWithFriend/addSplitFriendDetail/view/add_split_friend_detail.dart';
+import 'package:trackexpense/view/screen/splitWithFriend/splitFriendDetails/bloc/split_friend_detail_bloc.dart';
+import 'package:trackexpense/view/screen/splitWithFriend/splitFriendDetails/widgets/split_friend_bottomsheet.dart';
+import 'package:trackexpense/view/screen/travelBudget/travelDetailView/widget/shimmer_effect.dart';
 
 class SplitFriendDetailView extends StatefulWidget {
   final SplitFriendModel splitFriendModel;
@@ -21,6 +23,8 @@ class SplitFriendDetailView extends StatefulWidget {
 class _SplitFriendDetailViewState extends State<SplitFriendDetailView> {
   late DateTime startDate;
   late DateTime endDate;
+  late PageController pageController;
+  int selectedPageIndex = 0;
 
   late DateTime selectedDate;
   List<DateTime> _getDateRange(DateTime start, DateTime end) {
@@ -37,13 +41,46 @@ class _SplitFriendDetailViewState extends State<SplitFriendDetailView> {
     return days;
   }
 
+  List<Map<String, dynamic>> userContribution = [];
+
+  List<Map<String, dynamic>> calculateTotalUserContributions(List<SplitFriendDetailModel> splitDetails) {
+    final userTotalContributions = splitDetails
+        .expand((split) => split.userContribution ?? [])
+        .fold<Map<String, Map<String, dynamic>>>({}, (acc, contribution) {
+          if (contribution.userId != null && contribution.amount != null) {
+            acc.update(contribution.userId!, 
+              (existing) => {
+                "userId": contribution.userId,
+                "name": contribution.name ?? existing["name"],
+                "totalAmount": (existing["totalAmount"] as double) + contribution.amount!,
+              }, 
+              ifAbsent: () => {
+                "userId": contribution.userId,
+                "name": contribution.name ?? "Unknown",
+                "totalAmount": contribution.amount!,
+              }
+            );
+          }
+          return acc;
+        });
+    List<Map<String, dynamic>> result = userTotalContributions.values.toList();
+    return result;
+  }
+
   @override
   void initState() {
     super.initState();
-    // context.read<TravelDetailBloc>().add(TravelMateData(travelId: widget.travelModel.travelId ?? ''));
+    context.read<SplitFriendDetailBloc>().add(SplitFriendDetail(splitFriendId: widget.splitFriendModel.splitId ?? ''));
     startDate = widget.splitFriendModel.startDate ?? DateTime.now();
     endDate = widget.splitFriendModel.endDate ?? DateTime(2024);
     selectedDate = startDate;
+    pageController = PageController(initialPage: selectedPageIndex);
+  }
+
+  @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
   }
 
   @override
@@ -54,143 +91,217 @@ class _SplitFriendDetailViewState extends State<SplitFriendDetailView> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: kBlack,
-        body: BlocBuilder<SplitFriendBloc, SplitFriendBlocState>(
+        body: BlocConsumer<SplitFriendDetailBloc, SplitFriendDetailBlocState>(
+          listener: (context, state) {
+            if(state is SplitFriendDetailBlocLoaded){
+              userContribution = calculateTotalUserContributions(state.data);
+            }
+          },
           builder: (context, state) {
-            return Column(
-              children: [
-                Stack(
-                  children: [
-                    Container(
-                      width: size.width,
-                      height: 60,
-                      decoration: BoxDecoration(
-                          border: BorderDirectional(bottom: BorderSide(color: kWhite))),
-                    ),
-                    Positioned(
-                      bottom: 16,
-                      child: SizedBox(
-                          width: size.width,
-                          child: Center(
-                              child: Text(
-                            widget.splitFriendModel.title ?? 'Split Friend',
-                            style: TextStyle(
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  Stack(
+                    children: [
+                      Container(
+                        width: size.width,
+                        height: 60,
+                        decoration: BoxDecoration(
+                            border: BorderDirectional(bottom: BorderSide(color: kWhite))),
+                      ),
+                      Positioned(
+                        bottom: 16,
+                        child: SizedBox(
+                            width: size.width,
+                            child: Center(
+                                child: Text(
+                              widget.splitFriendModel.title ?? 'Split Friend',
+                              style: TextStyle(
                                 color: kWhite,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 24),
-                          ))),
-                    ),
-                    Positioned(
-                      bottom: 16,
-                      right: 8,
-                      child: GestureDetector(
-                        onTap: () {
-                          context.pop();
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                              color: kBlack,
-                              borderRadius: BorderRadius.circular(100),
-                              boxShadow: [customBoxShadow()]),
-                          child: const Icon(
-                            Icons.cancel_outlined,
-                            color: kWhite,
+                                fontSize: 24
+                              ),
+                            )
+                          )
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 16,
+                        right: 8,
+                        child: GestureDetector(
+                          onTap: () {
+                            context.pop();
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                                color: kBlack,
+                                borderRadius: BorderRadius.circular(100),
+                                boxShadow: [customBoxShadow()]),
+                            child: const Icon(
+                              Icons.cancel_outlined,
+                              color: kWhite,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                gapH8,
-                GestureDetector(
-                  onTap: () {
-                    Logger.printSuccess(dates.toString());
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          DateFormat('MMMM yyyy').format(selectedDate),
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: kWhite),
-                        ),
-                      ],
-                    ),
+                    ],
                   ),
-                ),
-                SizedBox(height: 8),
-                SizedBox(
-                  height: 80,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: dates.length,
-                    itemBuilder: (context, index) {
-                      final date = dates[index];
-                      final isSelected = date.year == selectedDate.year &&
-                          date.month == selectedDate.month &&
-                          date.day == selectedDate.day;
-      
-                      return GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            selectedDate = date;
-                          });
-                        },
-                        child: Container(
-                          width: 60,
-                          margin: EdgeInsets.symmetric(horizontal: 4),
-                          decoration: BoxDecoration(
-                            color: kBlack,
-                            border: isSelected ? Border.all(color: kWhite) : null,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                dateFormat.format(date),
-                                style: TextStyle(
-                                  color: kWhite,
-                                ),
-                              ),
-                              Text(
-                                date.day.toString(),
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: kWhite,
-                                    fontSize: 18),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
+                  gapH8,
+                  GestureDetector(
+                    onTap: () {
+                      Logger.printSuccess(dates.toString());
                     },
-                  ),
-                ),
-                SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        showModalBottomSheet(
-                          backgroundColor: kBlack,
-                          context: context,
-                          shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.vertical(top: Radius.circular(16)),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            DateFormat('MMMM yyyy').format(selectedDate),
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: kWhite),
                           ),
-                          isScrollControlled: true,
-                          builder: (context) => AddMemberBottomSheet(
-                            splitFriendModel: widget.splitFriendModel,
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  SizedBox(
+                    height: 80,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: dates.length,
+                      itemBuilder: (context, index) {
+                        final date = dates[index];
+                        final isSelected = date.year == selectedDate.year &&
+                            date.month == selectedDate.month &&
+                            date.day == selectedDate.day;
+                    
+                        return GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              selectedDate = date;
+                              selectedPageIndex = index;
+                              pageController.jumpToPage(index);
+                            });
+                          },
+                          child: Container(
+                            width: 60,
+                            margin: EdgeInsets.symmetric(horizontal: 4),
+                            decoration: BoxDecoration(
+                              color: kBlack,
+                              border: isSelected ? Border.all(color: kWhite) : null,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  dateFormat.format(date),
+                                  style: TextStyle(
+                                    color: kWhite,
+                                  ),
+                                ),
+                                Text(
+                                  date.day.toString(),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: kWhite,
+                                      fontSize: 18),
+                                ),
+                              ],
+                            ),
                           ),
                         );
                       },
-                      child: Container(
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          showModalBottomSheet(
+                            backgroundColor: kBlack,
+                            context: context,
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.vertical(top: Radius.circular(16)),
+                            ),
+                            isScrollControlled: true,
+                            builder: (context) => AddMemberBottomSheet(
+                              splitFriendModel: widget.splitFriendModel,
+                            ),
+                          );
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                          width: size.width * 0.4,
+                          decoration: BoxDecoration(color: kBlack,
+                            border: Border.all(color: kBlack),
+                            borderRadius: BorderRadius.circular(8), // Radius of 16
+                            boxShadow: [
+                              BoxShadow(
+                                color: Color.fromARGB(255, 152, 148, 148),
+                                spreadRadius: 1,
+                                blurRadius: 10,
+                                offset: const Offset(0, 3))
+                          ]),
+                          child: Center(
+                            child: Text('ADD MEMBER', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: kWhite),),
+                          ),
+                        ),
+                      ),
+                      gapW16
+                    ],
+                  ),
+                  gapH40,
+                  SizedBox(
+                    height: size.height * 0.42,
+                    child: PageView.builder(
+                      controller: pageController,
+                      itemCount: dates.length,
+                      onPageChanged: (index) {
+                        setState(() {
+                          selectedDate = dates[index];
+                          selectedPageIndex = index;
+                        });
+                      },
+                      itemBuilder: (context, index) {
+                        final selectedDate = dates[index];
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: state.isLoading
+                              ? buildTravelDetailShimmer(context)
+                              : buildSection(
+                                  title: 'Total Expense',
+                                  splitExpenseList: state.splitFriendList.where((item) =>
+                                      item.day == selectedDate.day &&
+                                      item.month == selectedDate.month &&
+                                      item.year == selectedDate.year).toList(),
+                                  totalAmount: state.splitFriendList.fold(0.0, (sum, item) => sum + (item.amount ?? 0.0))
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  gapH16,
+                  GridView.builder(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 16.0,
+                      mainAxisSpacing: 16.0,
+                      childAspectRatio: 2.3, 
+                    ),
+                    itemBuilder: (context, index) {
+                      return Container(
                         padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                         width: size.width * 0.4,
                         decoration: BoxDecoration(color: kBlack,
@@ -200,29 +311,24 @@ class _SplitFriendDetailViewState extends State<SplitFriendDetailView> {
                             BoxShadow(
                               color: Color.fromARGB(255, 152, 148, 148),
                               spreadRadius: 1,
-                              blurRadius: 10,
-                              offset: const Offset(0, 3))
+                              blurRadius: 3,
+                              offset: const Offset(-3, 3))
                         ]),
                         child: Center(
-                          child: Text('ADD MEMBER', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: kWhite),),
+                          child: Column(
+                            children: [
+                              Text(userContribution[index]["name"], style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: kWhite),),
+                              Text("₹ ${userContribution[index]["totalAmount"].toString()}", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: kWhite),),
+                            ],
+                          ),
                         ),
-                      ),
-                    ),
-                    gapW16
-                  ],
-                ),
-                // Padding(
-                //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                //   child: state.isLoading ? buildTravelDetailShimmer(context)
-                //   : buildSection(title: 'Estimated Expense', travelMateList: state.estimatedTravelMateList.where((item) => item.type == 'Estimated Expense' && item.day == selectedDate.day && item.month == selectedDate.month && item.year == selectedDate.year).toList()),
-                // ),
-                gapH16,
-                // Padding(
-                //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                //   child: state.isLoading ? buildTravelDetailShimmer(context)
-                //   : buildSection(title: 'Actual Expenditure', travelMateList: state.actualTravelMateList.where((item) => item.type == 'Actual Expenditure').toList()),
-                // )
-              ],
+                      );
+                    },
+                    itemCount: userContribution.length,
+                  ),
+                  gapH54,
+                ],
+              ),
             );
           },
         ),
@@ -230,7 +336,7 @@ class _SplitFriendDetailViewState extends State<SplitFriendDetailView> {
     );
   }
 
-  Widget buildSection({required String title, required List<TravelMateModel> travelMateList}) {
+  Widget buildSection({required String title, required List<SplitFriendDetailModel> splitExpenseList, required double totalAmount}) {
     return Container(
       padding: EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -245,7 +351,7 @@ class _SplitFriendDetailViewState extends State<SplitFriendDetailView> {
             children: [
               GestureDetector(
                 onTap: () {
-                  Logger.printError(travelMateList.toString());
+                  Logger.printError(splitExpenseList.toString());
                 },
                 child: Text(
                   title,
@@ -255,20 +361,20 @@ class _SplitFriendDetailViewState extends State<SplitFriendDetailView> {
               ),
               GestureDetector(
                   onTap: () {
-                    // showModalBottomSheet(
-                    //   backgroundColor: kBlack,
-                    //   context: context,
-                    //   shape: RoundedRectangleBorder(
-                    //     borderRadius:
-                    //         BorderRadius.vertical(top: Radius.circular(16)),
-                    //   ),
-                    //   isScrollControlled: true,
-                    //   builder: (context) => AddTravelMateBottomSheet(
-                    //     type: title,
-                    //     dateTime: selectedDate,
-                    //     travelModel: widget.splitFriendModel,
-                    //   ),
-                    // );
+                    showModalBottomSheet(
+                      backgroundColor: kBlack,
+                      context: context,
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.vertical(top: Radius.circular(16)),
+                      ),
+                      isScrollControlled: true,
+                      builder: (context) => AddSplitDetailBottomSheet(
+                        dateTime: selectedDate,
+                        splitFriendModel: widget.splitFriendModel,
+                        totalAmount: totalAmount,
+                      ),
+                    );
                   },
                   child: Container(
                     padding: EdgeInsets.all(4),
@@ -297,28 +403,42 @@ class _SplitFriendDetailViewState extends State<SplitFriendDetailView> {
             color: kWhite,
             thickness: 0.3,
           ),
-          if(travelMateList.isEmpty) Center(
-            child: Text('Start by Adding Your First $title', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: kWhite)),
-          ),
-          ...travelMateList.map((item) => Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4.0),
-              child: InkWell(
-                // onTap: () => showCustomBottomSheet(context, item),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(capitalize(item.title ?? ''), style: TextStyle(fontSize: 16, color: kWhite)),
-                    Text('${item.amount ?? 0.0}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: kWhite)),
-                  ],
-                ),
+
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.28,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  if(splitExpenseList.isEmpty) Center(
+                    child: Text('Start by Adding Your First $title', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: kWhite)),
+                  ),
+                  ...splitExpenseList.map((item) => InkWell(
+                    onTap: () => showSplitFriendBottomSheet(context, item),
+                    child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 4.0),
+                        child: InkWell(
+                          // onTap: () => showCustomBottomSheet(context, item),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(capitalize(item.title ?? ''), style: TextStyle(fontSize: 16, color: kWhite)),
+                              Text('${item.amount ?? 0.0}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: kWhite)),
+                            ],
+                          ),
+                        ),
+                      ),
+                  )),
+                ],
               ),
-            )),
-          travelMateList.length < 2 ? const SizedBox() : Divider(color: kWhite, thickness: 0.3,),
-          travelMateList.length < 2 ? const SizedBox() : Row(
+            ),
+          ),
+          
+          Divider(color: kWhite, thickness: 0.3,),
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(capitalize('total'), style: TextStyle(fontSize: 16, color: kWhite)),
-              Text(travelMateList.where((item) => item.type == title).fold(0.0, (sum, item) => sum + (item.amount ?? 0.0)).toString(), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: kWhite))
+              Text(splitExpenseList.fold(0.0, (sum, item) => sum + (item.amount ?? 0.0)).toString(), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: kWhite))
             ],
           )
         ],

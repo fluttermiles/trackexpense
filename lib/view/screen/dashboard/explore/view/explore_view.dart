@@ -3,6 +3,7 @@ import 'package:line_icons/line_icons.dart';
 import 'package:trackexpense/utils/app_sizes.dart';
 import 'package:trackexpense/utils/colors.dart';
 import 'package:trackexpense/utils/utils.dart';
+import 'package:trackexpense/view/screen/authenticate/view/signin.dart';
 import 'package:trackexpense/view/screen/splitWithFriend/splitFriend/bloc/split_friend_bloc.dart';
 import 'package:trackexpense/view/screen/travelBudget/travelView/bloc/trave_data_bloc.dart';
 
@@ -14,6 +15,16 @@ class ExploreView extends StatefulWidget {
 }
 
 class _ExploreViewState extends State<ExploreView> {
+
+  Future<void> getSignIn() async {
+    showModalBottomSheet(
+      context: context,
+      isDismissible: false,
+      builder: (context) {
+        return SignInPage();
+      }
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,8 +50,12 @@ class _ExploreViewState extends State<ExploreView> {
               GestureDetector(
                 onTap: () {
                   String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
-                  context.read<TravelDataBloc>().add(TravelData(userId: userId));
-                  context.pushNamed(AppRoute.travelView.name);
+                  if(userId.isEmpty){
+                    getSignIn();
+                  } else {
+                    context.read<TravelDataBloc>().add(TravelData(userId: userId));
+                    context.pushNamed(AppRoute.travelView.name);
+                  }
                 },
                 child: Container(
                   margin: EdgeInsets.symmetric(vertical: 16),
@@ -77,8 +92,12 @@ class _ExploreViewState extends State<ExploreView> {
               GestureDetector(
                 onTap: () {
                   String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
-                  context.read<SplitFriendBloc>().add(SplitFriend(userId: userId));
-                  context.pushNamed(AppRoute.splitFriendView.name);
+                  if(userId.isEmpty){
+                    getSignIn();
+                  } else {
+                    context.read<SplitFriendBloc>().add(SplitFriend(userId: userId));
+                    context.pushNamed(AppRoute.splitFriendView.name);
+                  }
                 },
                 child: Container(
                   margin: EdgeInsets.symmetric(vertical: 16),

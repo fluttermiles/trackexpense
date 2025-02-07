@@ -6,6 +6,7 @@ import 'package:trackexpense/data/remote/notification/notification_repository_im
 import 'package:trackexpense/data/remote/profile/profile_repository_impl.dart';
 import 'package:trackexpense/data/remote/rupeemate/rupeemate_repo_impl.dart';
 import 'package:trackexpense/data/remote/splitFriend/split_friend_repository_impl.dart';
+import 'package:trackexpense/data/remote/splitFriendDetail/split_friend_detail_repository_impl.dart';
 import 'package:trackexpense/data/remote/travel/travel_repository_impl.dart';
 import 'package:trackexpense/data/remote/travelMate/travelmate_repository_impl.dart';
 import 'package:trackexpense/utils/utils.dart';
@@ -26,7 +27,9 @@ import 'package:trackexpense/view/screen/splash/bloc/bloc/fetch_profile_data_blo
 import 'package:trackexpense/view/screen/splitWithFriend/addMember/bloc/addUserSplitBloc/add_user_split_bloc.dart';
 import 'package:trackexpense/view/screen/splitWithFriend/addMember/bloc/userSearchBloc/user_search_bloc.dart';
 import 'package:trackexpense/view/screen/splitWithFriend/addSplitFriend/bloc/add_split_friend_bloc.dart';
+import 'package:trackexpense/view/screen/splitWithFriend/addSplitFriendDetail/bloc/add_split_expense_bloc.dart';
 import 'package:trackexpense/view/screen/splitWithFriend/splitFriend/bloc/split_friend_bloc.dart';
+import 'package:trackexpense/view/screen/splitWithFriend/splitFriendDetails/bloc/split_friend_detail_bloc.dart';
 import 'package:trackexpense/view/screen/travelBudget/addTravel/bloc/add_travel_bloc.dart';
 import 'package:trackexpense/view/screen/travelBudget/addTravelMate/bloc/add_travel_mate_bloc.dart';
 import 'package:trackexpense/view/screen/travelBudget/travelDetailView/bloc/travel_detail_bloc.dart';
@@ -61,6 +64,7 @@ void main() async {
   final travelMateRepository = TravelMateRepositoryImpl();
   final splitFriendRepository = SplitFriendRepositoryImpl();
   final notificationRepository = NotificationRepositoryImpl();
+  final splitFriendDetailRepositoryImpl = SplitFriendDetailRepositoryImpl();
 
   runApp(
     MultiBlocProvider(
@@ -158,6 +162,12 @@ void main() async {
             notificationRepository: notificationRepository,
             splitFriendRepository: splitFriendRepository,
           ),
+        ),
+        BlocProvider(
+          create: (context) => AddSplitExpenseBloc(splitFriendDetailRepository: splitFriendDetailRepositoryImpl),
+        ),
+        BlocProvider(
+          create: (context) => SplitFriendDetailBloc(splitFriendDetailRepository: splitFriendDetailRepositoryImpl),
         ),
       ],
       child: const MyApp(),

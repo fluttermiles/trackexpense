@@ -2,8 +2,8 @@ import 'package:trackexpense/core/state/data_state.dart';
 import 'package:trackexpense/data/local/profile/profile_object_repo.dart';
 import 'package:trackexpense/data/remote/profile/models/profile_model.dart';
 import 'package:trackexpense/main.dart';
-import 'package:trackexpense/objectbox.g.dart';
-import 'package:trackexpense/profile_object_data_model.dart';
+import 'package:trackexpense/data/local/profile/models/objectbox.g.dart';
+import 'package:trackexpense/data/local/profile/models/profile_object_data_model.dart';
 import 'package:trackexpense/utils/utils.dart';
 
 class ProfileObjectRepositoryImpl implements ProfileObjectRepository {

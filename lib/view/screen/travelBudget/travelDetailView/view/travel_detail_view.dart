@@ -176,13 +176,21 @@ class _TravelDetailViewState extends State<TravelDetailView> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: state.isLoading ? buildTravelDetailShimmer(context)
-                : buildSection(title: 'Estimated Expense', travelMateList: state.estimatedTravelMateList.where((item) => item.type == 'Estimated Expense' && item.day == selectedDate.day && item.month == selectedDate.month && item.year == selectedDate.year).toList()),
+                : buildSection(
+                  title: 'Estimated Expense', 
+                  travelMateList: state.estimatedTravelMateList.where((item) => item.day == selectedDate.day && item.month == selectedDate.month && item.year == selectedDate.year).toList(),
+                  totalAmount: state.estimatedTravelMateList.fold(0.0, (sum, item) => sum + (item.amount ?? 0.0))
+                ),
               ),
               gapH16,
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: state.isLoading ? buildTravelDetailShimmer(context)
-                : buildSection(title: 'Actual Expenditure', travelMateList: state.actualTravelMateList.where((item) => item.type == 'Actual Expenditure').toList()),
+                : buildSection(
+                  title: 'Actual Expenditure', 
+                  travelMateList: state.actualTravelMateList.where((item) => item.day == selectedDate.day && item.month == selectedDate.month && item.year == selectedDate.year).toList(),
+                  totalAmount: state.actualTravelMateList.fold(0.0, (sum, item) => sum + (item.amount ?? 0.0))
+                ),
               )
             ],
           );
@@ -191,7 +199,7 @@ class _TravelDetailViewState extends State<TravelDetailView> {
     );
   }
 
-  Widget buildSection({required String title, required List<TravelMateModel> travelMateList}) {
+  Widget buildSection({required String title, required List<TravelMateModel> travelMateList, required double totalAmount}) {
     return Container(
       padding: EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -228,6 +236,7 @@ class _TravelDetailViewState extends State<TravelDetailView> {
                         type: title,
                         dateTime: selectedDate,
                         travelModel: widget.travelModel,
+                        totalAmount: totalAmount,
                       ),
                     );
                   },
@@ -279,7 +288,7 @@ class _TravelDetailViewState extends State<TravelDetailView> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(capitalize('total'), style: TextStyle(fontSize: 16, color: kWhite)),
-              Text(travelMateList.where((item) => item.type == title).fold(0.0, (sum, item) => sum + (item.amount ?? 0.0)).toString(), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: kWhite))
+              Text(travelMateList.fold(0.0, (sum, item) => sum + (item.amount ?? 0.0)).toString(), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: kWhite))
             ],
           )
         ],

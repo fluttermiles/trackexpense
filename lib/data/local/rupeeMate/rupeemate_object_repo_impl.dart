@@ -5,8 +5,8 @@ import 'package:trackexpense/core/state/data_state.dart';
 import 'package:trackexpense/data/local/rupeeMate/rupeemate_object_repo.dart';
 import 'package:trackexpense/data/remote/rupeemate/models/rupeemate_model.dart';
 import 'package:trackexpense/main.dart';
-import 'package:trackexpense/objectbox.g.dart';
-import 'package:trackexpense/rupee_object_data_model.dart';
+import 'package:trackexpense/data/local/profile/models/objectbox.g.dart';
+import 'package:trackexpense/data/local/profile/models/rupee_object_data_model.dart';
 import 'package:trackexpense/utils/utils.dart';
 
 class RupeeObjectRepositoryImpl implements RupeeObjectRepository {

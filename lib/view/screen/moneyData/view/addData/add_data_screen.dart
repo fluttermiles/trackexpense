@@ -31,6 +31,11 @@ class _AddDataBottomSheetState extends State<AddDataBottomSheet> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(

@@ -1,6 +1,6 @@
-import 'package:trackexpense/objectbox.g.dart';
-import 'package:trackexpense/profile_object_data_model.dart';
-import 'package:trackexpense/rupee_object_data_model.dart';
+import 'package:trackexpense/data/local/profile/models/objectbox.g.dart';
+import 'package:trackexpense/data/local/profile/models/profile_object_data_model.dart';
+import 'package:trackexpense/data/local/profile/models/rupee_object_data_model.dart';
 
 class ObjectBox {
   late final Store store;

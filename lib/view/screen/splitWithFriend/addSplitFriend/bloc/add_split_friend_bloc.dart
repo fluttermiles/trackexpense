@@ -14,8 +14,10 @@ class AddSplitFriendBloc extends Bloc<AddSplitFriendBlocEvent, AddSplitFriendBlo
       final response = await splitFriendRepository.addSplitFriendData(splitFriendModel: event.splitFriendModel);
       switch(response){
         case DataStateSuccess<SplitFriendModel>(data: var data):
+          Logger.printWarning(data.toString());
           emit(AddSplitFriendBlocLoaded(data: data));
         case DataStateError<SplitFriendModel>(ex: var ex):
+          Logger.printError(ex.toString());
           emit(AddSplitFriendBlocError(ex: ex));
       }
     });

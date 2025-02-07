@@ -1,9 +1,10 @@
 import 'package:intl/intl.dart';
-import 'package:trackexpense/data/remote/rupeemate/models/rupeemate_model.dart';
+import 'package:trackexpense/data/remote/splitFriendDetail/models/split_friend_detail_model.dart';
+import 'package:trackexpense/utils/app_sizes.dart';
 import 'package:trackexpense/utils/colors.dart';
 import 'package:flutter/material.dart';
 
-void showCustomBottomSheet(BuildContext context, RupeeMateModel rupeeMateModel) {
+void showSplitFriendBottomSheet(BuildContext context, SplitFriendDetailModel splitFriendDetailModel) {
   showModalBottomSheet(
     backgroundColor: Colors.black,
     context: context,
@@ -52,7 +53,7 @@ void showCustomBottomSheet(BuildContext context, RupeeMateModel rupeeMateModel) 
                 ),
                 Flexible(
                   child: Text(
-                    rupeeMateModel.title ?? '',
+                    splitFriendDetailModel.title ?? '',
                     style: TextStyle(color: kWhite, fontSize: 16),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
@@ -60,16 +61,16 @@ void showCustomBottomSheet(BuildContext context, RupeeMateModel rupeeMateModel) 
                 ),
               ],
             ),
-            SizedBox(height: rupeeMateModel.description == '' || rupeeMateModel.description == null ? 0 : 8),
-            rupeeMateModel.description == '' || rupeeMateModel.description == null ? SizedBox()
+            SizedBox(height: splitFriendDetailModel.description == '' || splitFriendDetailModel.description == null ? 0 : 8),
+            splitFriendDetailModel.description == '' || splitFriendDetailModel.description == null ? SizedBox()
             : Text(
               'Description:',
               style: TextStyle(color: kGrey, fontSize: 16),
             ),
-            rupeeMateModel.description == '' || rupeeMateModel.description == null ? SizedBox()
+            splitFriendDetailModel.description == '' || splitFriendDetailModel.description == null ? SizedBox()
             : Flexible(
               child: Text(
-                rupeeMateModel.description ?? '',
+                splitFriendDetailModel.description ?? '',
                 style: TextStyle(color: kWhite, fontSize: 16),
                 textAlign: TextAlign.left,
               
@@ -84,10 +85,33 @@ void showCustomBottomSheet(BuildContext context, RupeeMateModel rupeeMateModel) 
                   style: TextStyle(color: kGrey, fontSize: 16),
                 ),
                 Text(
-                  '₹ ${rupeeMateModel.amount?.toStringAsFixed(2)}',
+                  '₹ ${splitFriendDetailModel.amount?.toStringAsFixed(2)}',
                   style: TextStyle(color: kWhite, fontSize: 16),
                 ),
               ],
+            ),
+            SizedBox(height: 8),
+            ListView.separated(
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      '${splitFriendDetailModel.userContribution?[index].name}:',
+                      style: TextStyle(color: kGrey, fontSize: 16),
+                    ),
+                    Text(
+                      '₹ ${splitFriendDetailModel.userContribution?[index].amount?.toStringAsFixed(2)}',
+                      style: TextStyle(color: kWhite, fontSize: 16),
+                    ),
+                  ],
+                );
+              },
+              separatorBuilder: (context, index) {
+                return gapH4;
+              },
+              itemCount: splitFriendDetailModel.userContribution?.length ?? 0,
             ),
             SizedBox(height: 8),
             Row(
@@ -98,7 +122,7 @@ void showCustomBottomSheet(BuildContext context, RupeeMateModel rupeeMateModel) 
                   style: TextStyle(color: kGrey, fontSize: 16),
                 ),
                 Text(
-                  DateFormat('dd MMM yyy').format(DateTime(rupeeMateModel.year ?? 2025,  rupeeMateModel.month ?? 1, rupeeMateModel.day ?? 1)),
+                  DateFormat('dd MMM yyy').format(DateTime(splitFriendDetailModel.year ?? 2025,  splitFriendDetailModel.month ?? 1, splitFriendDetailModel.day ?? 1)),
                   style: TextStyle(color: kWhite, fontSize: 16),
                 ),
               ],

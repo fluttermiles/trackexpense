@@ -1,4 +1,5 @@
 import 'package:line_icons/line_icons.dart';
+import 'package:trackexpense/core/image_constants.dart';
 import 'package:trackexpense/data/remote/notification/models/notification_model.dart';
 import 'package:trackexpense/data/remote/splitFriend/models/split_friend_model.dart';
 import 'package:trackexpense/utils/app_sizes.dart';
@@ -9,6 +10,7 @@ import 'package:trackexpense/utils/utils.dart';
 import 'package:trackexpense/view/screen/dashboard/profile/bloc/profileData/profile_data_bloc.dart';
 import 'package:trackexpense/view/screen/notification/bloc/acceptRejectSplitBloc/accept_reject_split_bloc.dart';
 import 'package:trackexpense/view/screen/notification/bloc/notificationBloc/notification_bloc.dart';
+import 'package:trackexpense/view/screen/notification/widgets/notification_shimmer.dart';
 
 class NotificationPage extends StatefulWidget {
   const NotificationPage({super.key});
@@ -65,7 +67,16 @@ class _NotificationPageState extends State<NotificationPage> {
         builder: (context, notificationState) {
           return Padding(
             padding: const EdgeInsets.only(top: 8.0),
-            child: ListView.separated(
+            child: notificationState.isLoading ?
+            NotificationShimmer()
+            : notificationState.isEmpty ? 
+            SizedBox(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              child: Center(
+                child: Lottie.asset(AnimationConstant.loading),
+              ),
+            ) : ListView.separated(
                 itemBuilder: (context, index) {
                   return Container(
                     width: size.width,

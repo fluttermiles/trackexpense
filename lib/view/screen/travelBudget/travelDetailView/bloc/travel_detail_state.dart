@@ -47,7 +47,7 @@ extension TravelMateDataExtension on TravelMateDataBlocState {
   List<TravelMateModel> get estimatedTravelMateList {
     switch(this){
       case TravelMateDataBlocLoaded(data: final data):
-        return data;
+        return data.where((item) => item.type == 'Estimated Expense').toList();
       default:
         return [];
     }
@@ -56,7 +56,7 @@ extension TravelMateDataExtension on TravelMateDataBlocState {
   List<TravelMateModel> get actualTravelMateList {
     switch(this){
       case TravelMateDataBlocLoaded(data: final data):
-        return data;
+        return data.where((item) => item.type == 'Actual Expenditure').toList();
       default:
         return [];
     }

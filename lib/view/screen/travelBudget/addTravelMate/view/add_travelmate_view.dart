@@ -13,8 +13,15 @@ class AddTravelMateBottomSheet extends StatefulWidget {
   final String type;
   final DateTime dateTime;
   final TravelModel travelModel;
-  const AddTravelMateBottomSheet(
-      {super.key, required this.type, required this.dateTime, required this.travelModel});
+  final double totalAmount;
+  const AddTravelMateBottomSheet({
+      super.key, 
+      required this.type, 
+      required this.dateTime, 
+      required this.travelModel,
+      required this.totalAmount
+    }
+  );
 
   @override
   State<AddTravelMateBottomSheet> createState() => _AddTravelMateBottomSheetState();
@@ -127,9 +134,9 @@ class _AddTravelMateBottomSheetState extends State<AddTravelMateBottomSheet> {
                   if(addTravelState is AddTravelMateBlocLoaded){
                     TravelModel travelModel = TravelModel();
                     if(widget.type == 'Estimated Expense') {
-                      travelModel =  widget.travelModel.copyWith( approxCost: (widget.travelModel.approxCost ?? 0) + (addTravelState.data.amount ?? 0));
+                      travelModel =  widget.travelModel.copyWith( approxCost: widget.totalAmount + (addTravelState.data.amount ?? 0));
                     } else {
-                      travelModel =  widget.travelModel.copyWith( actualCost: (widget.travelModel.actualCost ?? 0) + (addTravelState.data.amount ?? 0));
+                      travelModel =  widget.travelModel.copyWith( actualCost: widget.totalAmount + (addTravelState.data.amount ?? 0));
                     }
                     context.read<AddTravelBloc>().add(AddTravel(travelModel: travelModel));
                     context.read<TravelDataBloc>().add(TravelData(userId: FirebaseAuth.instance.currentUser?.uid ?? ''));

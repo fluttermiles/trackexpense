@@ -49,7 +49,9 @@ Map<String, dynamic> _$$SplitFriendModelImplToJson(
       'startDate': instance.startDate?.toIso8601String(),
       'endDate': instance.endDate?.toIso8601String(),
       'userList': instance.userList,
-      'userListDetail': instance.userListDetail,
+      'userListDetail': instance.userListDetail
+          ?.map((e) => e.toJson())
+          .toList(),
       'writerList': instance.writerList,
       'adminList': instance.adminList,
       'title': instance.title,

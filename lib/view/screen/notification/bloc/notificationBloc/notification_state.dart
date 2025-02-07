@@ -44,6 +44,20 @@ extension NotificationExtension on NotificationBlocState {
     }
   }
 
+  bool get isEmpty{
+    switch(this) {
+      case NotificationBlocError(ex: _):
+        return true;
+      case NotificationBlocLoaded(data: final data):
+        if(data.isEmpty){
+          return true;
+        }
+        return false;
+      default:
+        return false;
+    }
+  }
+
   bool get isLoading {
     switch(this) {
       case NotificationBlocLoading():
